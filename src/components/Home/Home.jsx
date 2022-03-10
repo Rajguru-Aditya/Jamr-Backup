@@ -35,7 +35,7 @@ function Home() {
         <div className="service-container">
           <div className="service-upperContainer">
             <img
-              src="https://img.icons8.com/color/500/000000/guitar.png"
+              src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/500/000000/external-guitar-stay-home-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
               alt="guitar"
               className="service-icon"
             />
