@@ -1,6 +1,7 @@
 .home {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   height: 100vh;
   width: 100%;
   background-color: #fff;
@@ -13,7 +14,7 @@
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  margin: 250px 0;
+  margin: 250px 0 100px 0;
 }
 
 .banner-bg {
@@ -27,4 +28,61 @@
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.services {
+  width: 90%;
+  height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.service-container {
+  height: 100%;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  background-color: #eee;
+  border-radius: 30px;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 50px;
+}
+
+.service-upperContainer {
+  width: 100%;
+  display: flex;
+  flex: 0.8;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  align-items: center;
+  position: relative;
+}
+
+.service-icon {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: -50px;
+}
+
+.service-lowerContainer {
+  width: 100%;
+  display: flex;
+  flex: 0.3;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-lowerContainer p {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  color: #000;
 }
