@@ -1,0 +1,37 @@
+.studioListing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+}
+
+.studioListing-image {
+  width: 100%;
+  /* position: relative; */
+}
+
+.wavy-orange {
+  height: 60vh;
+  width: 100%;
+  background-position: right bottom;
+  animation: wavy-orange-animation 1.5s infinite;
+}
+
+.listing-Page-Vector {
+  width: 50%;
+  max-width: 600px;
+  height: auto;
+  position: absolute;
+  top: 120px;
+  right: 50px;
+}
+
+.header {
+  position: absolute;
+  top: 220px;
+  left: 150px;
+  font-size: 50px;
+  color: #fff;
+  text-transform: uppercase;
+}

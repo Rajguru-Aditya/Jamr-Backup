@@ -60,14 +60,12 @@
   border-radius: 30px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   align-items: center;
-  position: relative;
+  justify-content: center;
 }
 
 .service-icon {
   width: 150px;
   height: 150px;
-  position: absolute;
-  top: -50px;
 }
 
 .service-lowerContainer {
