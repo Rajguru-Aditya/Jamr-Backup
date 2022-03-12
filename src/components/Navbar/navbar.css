@@ -5,11 +5,12 @@
   z-index: 1000;
   position: fixed;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .jamr-logo {
   height: 5em;
+  margin-left: 80px;
 }
 
 .navbar-items {

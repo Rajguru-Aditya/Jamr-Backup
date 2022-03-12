@@ -1,0 +1,38 @@
+.filter-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+}
+.filter-bar {
+  background-color: #fff;
+  width: 50vw;
+  min-width: 600px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+}
+
+.bar-items {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.item-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.dropdown-arrow {
+  height: 30px;
+  width: 30px;
+  margin-left: 10px;
+}
