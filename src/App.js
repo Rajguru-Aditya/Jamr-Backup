@@ -1,9 +1,10 @@
-import Home from "./components/Home/Home";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Searchbar from "./components/Searchbar/Searchbar";
-import StudioListing from "./components/StudioListing/StudioListing";
 import FilterBar from "./components/FilterBar/FilterBar";
+import Home from "./Pages/Home/Home";
+import StudioListing from "./Pages/StudioListing/StudioListing";
+import StudioDetails from "./Pages/StudioDetails/StudioDetails";
 
 function App() {
   return (
@@ -11,8 +12,9 @@ function App() {
       <Navbar />
       <Searchbar />
       {/* <Home /> */}
-      <StudioListing />
-      <FilterBar />
+      {/* <StudioListing /> */}
+      <StudioDetails />
+      {/* <FilterBar /> */}
     </div>
   );
 }
