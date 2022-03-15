@@ -96,7 +96,6 @@
   align-items: center;
   flex-direction: column;
   width: 100px;
-  margin-right: 50px;
 }
 
 .service-img-container {
@@ -164,4 +163,184 @@
 
 .equipment-name {
   font-size: 22px;
+}
+
+.service-ratings-reviews-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #eee;
+  margin-top: 50px;
+  border-radius: 20px;
+  padding: 20px 0;
+}
+
+.service-overall-ratings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  border-right: 1px solid #666;
+  padding-right: 20px;
+}
+
+.ratings-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.service-ratings-number {
+  font-size: 30px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.verified-ratings {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.verified-ratings-text {
+  width: 50%;
+  margin-left: 10px;
+}
+.service-review-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+.service-review-btn {
+  background-color: #ff782c;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+.reviews-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 40px;
+  margin-bottom: -20px;
+}
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.review-user-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.review-user-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+  background-color: #ccc;
+}
+
+.review-username {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.review-text {
+  font-size: 20px;
+  margin-left: 50px;
+  width: 50%;
+}
+
+.date-time-slots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 50px;
+  width: 70%;
+}
+
+.date,
+.time,
+.date-title {
+  font-size: 30px;
+}
+
+.date-title {
+  text-transform: uppercase;
+}
+
+.date-inner-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 0 20px;
+  box-shadow: 0px 2px 2px #555;
+}
+
+.time-duration-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 50%;
+  margin-top: 20px;
+}
+
+.time-title,
+.duration-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.time-inner-container,
+.duration-inner-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 0 20px;
+  box-shadow: 0px 2px 2px #555;
+}
+
+.book-now-btn {
+  background-color: #ff782c;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 50px;
+  margin-right: 20px;
+  width: 200px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
