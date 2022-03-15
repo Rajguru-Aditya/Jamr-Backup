@@ -175,6 +175,7 @@
   margin-top: 50px;
   border-radius: 20px;
   padding: 20px 0;
+  width: 80%;
 }
 
 .service-overall-ratings {
@@ -343,4 +344,17 @@
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+.slot-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 20px;
+  border: 1px solid #000;
+}
+
+.slots-container {
+  width: 50%;
+  height: 200px;
 }

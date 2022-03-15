@@ -1,7 +1,36 @@
 import React from "react";
 import "./styles.css";
+import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 
 function StudioDetails() {
+  const numOfSlots = [
+    {
+      id: 1,
+      name: "1",
+      selected: false,
+    },
+    {
+      id: 2,
+      name: "2",
+      selected: false,
+    },
+    {
+      id: 3,
+      name: "3",
+      selected: false,
+    },
+    {
+      id: 4,
+      name: "4",
+      selected: false,
+    },
+    {
+      id: 5,
+      name: "5",
+      selected: false,
+    },
+  ];
+
   return (
     <div className="studioDetails">
       <div className="studioDetails-image">
@@ -49,7 +78,15 @@ function StudioDetails() {
                 </div>
               </div>
             </div>
-            <div className="slots-container"></div>
+            <div className="slots-container">
+              <ScrollMenu
+                arrowLeft={<div style={{ fontSize: "30px" }}>{" < "}</div>}
+                arrowRight={<div style={{ fontSize: "30px" }}>{" > "}</div>}
+                data={numOfSlots.map((index) => (
+                  <div className="slot-circle"></div>
+                ))}
+              ></ScrollMenu>
+            </div>
             <div className="book-now-btn">
               <p>Book Now</p>
             </div>
