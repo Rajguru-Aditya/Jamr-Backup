@@ -67,6 +67,28 @@ function StudioDetails() {
                 <p className="service-name">Dubbing</p>
               </div>
             </div>
+            <p className="equipments-title">Equipments</p>
+            <div className="equipments-container">
+              {/* 1 */}
+              <div className="equipment">
+                <p className="bulletpoint">·</p>
+                <p className="equipment-name">
+                  Condenser Microphone- SE Electronics SE2300
+                </p>
+              </div>
+              {/* 1 */}
+              <div className="equipment">
+                <p className="bulletpoint">·</p>
+                <p className="equipment-name">External USB mouse & keyboard</p>
+              </div>
+              {/* 1 */}
+              <div className="equipment">
+                <p className="bulletpoint">·</p>
+                <p className="equipment-name">
+                  Headphones-2 x Pioneer HRM-5 Headphones
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
