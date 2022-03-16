@@ -1,7 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 
 function Payment() {
+  const [pressed, setPressed] = useState(false);
+
+  const PromoCode = () => (
+    <div className="promotional-code">
+      <p className="subtitle">Apply a promotional code</p>
+      <div className="input-btn-container">
+        <input type="text" className="promotional-code-input"></input>
+        <div className="promotional-code-btn">Apply</div>
+      </div>
+    </div>
+  );
+
+  const PaymentDetails = () => (
+    <div className="payment-details-container">
+      <p className="subtitle">Your Card Details</p>
+      <div className="card-input-container">
+        <div>
+          <p className="info-text">Card Number</p>
+          <input type="text" className="payment-input"></input>
+        </div>
+        <div>
+          <p className="info-text">Express Checkout</p>
+          <input type="text" className="payment-input"></input>
+        </div>
+      </div>
+      <div className="card-input-container">
+        <div>
+          <p className="info-text">Expiry Date</p>
+          <input type="text" className="payment-input"></input>
+        </div>
+        <div>
+          <p className="info-text">CVV</p>
+          <input type="text" className="payment-input"></input>
+        </div>
+      </div>
+      <div className="card-input-container">
+        <div>
+          <p className="info-text">Postal Number</p>
+          <input type="text" className="payment-input"></input>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="payment">
       <div className="payment-image">
@@ -23,13 +67,7 @@ function Payment() {
             alt="studio"
             className="studio-image"
           />
-          <div className="promotional-code">
-            <p className="subtitle">Apply a promotional code</p>
-            <div className="input-btn-container">
-              <input type="text" className="promotional-code-input"></input>
-              <div className="promotional-code-btn">Apply</div>
-            </div>
-          </div>
+          {pressed ? <PaymentDetails /> : <PromoCode />}
         </div>
         <div className="payment-studioDetails-right-container">
           <div className="payment-studioDetails-info">
@@ -51,7 +89,13 @@ function Payment() {
               <p className="title">$100</p>
             </div>
           </div>
-          <div className="payment-btn">
+          <div
+            className="payment-btn"
+            onClick={() => {
+              setPressed(true);
+              console.log(pressed);
+            }}
+          >
             <p>Continue to payment</p>
           </div>
         </div>
