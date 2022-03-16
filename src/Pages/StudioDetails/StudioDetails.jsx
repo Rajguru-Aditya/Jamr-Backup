@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles.css";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 function StudioDetails() {
   const numOfSlots = [

@@ -1,0 +1,28 @@
+.payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+}
+
+.payment-image {
+  width: 100%;
+  /* position: relative; */
+}
+
+.wavy-orange {
+  height: 45vh;
+  width: 100%;
+  background-position: right bottom;
+  animation: wavy-orange-animation 1.5s infinite;
+}
+
+.payment-Page-Vector {
+  width: 50%;
+  max-width: 600px;
+  height: auto;
+  position: absolute;
+  top: 50px;
+  right: 100px;
+}

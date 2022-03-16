@@ -5,6 +5,7 @@ import FilterBar from "./components/FilterBar/FilterBar";
 import Home from "./Pages/Home/Home";
 import StudioListing from "./Pages/StudioListing/StudioListing";
 import StudioDetails from "./Pages/StudioDetails/StudioDetails";
+import Payment from "./Pages/Payment/Payment";
 
 function App() {
   return (
@@ -13,8 +14,9 @@ function App() {
       <Searchbar />
       {/* <Home /> */}
       {/* <StudioListing /> */}
-      <StudioDetails />
+      {/* <StudioDetails /> */}
       {/* <FilterBar /> */}
+      <Payment />
     </div>
   );
 }
