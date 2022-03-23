@@ -81,6 +81,51 @@ function Home() {
           </div>
         </div>
       </div>
+      {/* MUSIC STUDIOS */}
+      <div className="studios">
+        <h1 className="title">Music Studios</h1>
+        <div className="studios-main-container">
+          <div className="studio-container">
+            <div className="studio-upperContainer">
+              <img
+                className="studio-img"
+                src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                alt="Studio-1"
+              />
+            </div>
+            <div className="studio-lowerContainer">
+              <p className="studio-name">Studio 1</p>
+              <p className="studio-rating">⭐⭐⭐⭐</p>
+            </div>
+          </div>
+          <div className="studio-container">
+            <div className="studio-upperContainer">
+              <img
+                className="studio-img"
+                src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                alt="Studio-1"
+              />
+            </div>
+            <div className="studio-lowerContainer">
+              <p className="studio-name">Studio 1</p>
+              <p className="studio-rating">⭐⭐⭐⭐</p>
+            </div>
+          </div>
+          <div className="studio-container">
+            <div className="studio-upperContainer">
+              <img
+                className="studio-img"
+                src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                alt="Studio-1"
+              />
+            </div>
+            <div className="studio-lowerContainer">
+              <p className="studio-name">Studio 1</p>
+              <p className="studio-rating">⭐⭐⭐⭐</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
