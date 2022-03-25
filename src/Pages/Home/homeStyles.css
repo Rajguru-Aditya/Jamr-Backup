@@ -58,6 +58,12 @@
   border-radius: 30px;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
   margin-bottom: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.service-container:hover {
+  transform: rotate3d(0, 0, 1, 10deg);
 }
 
 .service-upperContainer {
@@ -120,6 +126,11 @@
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
   margin-bottom: 50px;
   margin-top: 50px;
+  transition: all 0.3s ease-in-out;
+}
+
+.studio-container:hover {
+  transform: scale(1.1);
 }
 
 .studio-upperContainer {

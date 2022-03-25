@@ -1,7 +1,94 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./homeStyles.css";
 
-function Home() {
+function Home(props) {
+  const [studios, setStudios] = useState([]);
+  const [studiosList, setStudiosList] = useState([]);
+  const [studioNames, setStudiosNames] = useState([]);
+  const [studioId, setStudioId] = useState(null);
+
+  useEffect(() => {
+    fetchStudioList();
+    fetchStudios();
+  }, []);
+
+  useEffect(() => {
+    console.log("==GET DATA==", studios);
+    console.log("==GET DATA List==", studiosList);
+  }, [studios, studiosList]);
+
+  const fetchStudios = async () => {
+    await fetch(`http://localhost:3001/studio/details?type=S&id=0}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          setStudios(data.data);
+          console.log("studiosData ----->", data.data);
+          // studios.map((studio, index) => {
+          //   console.log("====================================");
+          //   console.log("studio ----->", studio.studioName);
+          //   console.log("====================================");
+          // });
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const fetchStudioList = async () => {
+    await fetch(`http://localhost:3001/studio/details?type=L&id=0}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          setStudiosList(data.data);
+          console.log("studiosData ----->", studiosList);
+          studiosList.map((studio, index) => {
+            setStudiosNames(studio.studioName);
+            // console.log("=================NAME===================", studio);
+          });
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const onClickMusicStudio = async (id) => {
+    // fetchStudios();
+    setStudioId(id);
+    console.log("id", id);
+  };
+
+  const onClickStudioList = async () => {
+    // fetchStudioList();
+    console.log("------->studio list", studiosList);
+  };
+
+  // console.log("====================================");
+  // console.log("studioNames ----->", studioNames);
+  // console.log("====================================");
+
   return (
     <div className="home">
       {/* Banner Image */}
@@ -20,7 +107,7 @@ function Home() {
 
       {/* Services */}
       <div className="services">
-        <div className="service-container">
+        <div onClick={onClickStudioList} className="service-container">
           <div className="service-upperContainer">
             <img
               src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
@@ -85,7 +172,7 @@ function Home() {
       <div className="studios">
         <h1 className="title">Music Studios</h1>
         <div className="studios-main-container">
-          <div className="studio-container">
+          <div className="studio-container" onClick={onClickMusicStudio}>
             <div className="studio-upperContainer">
               <img
                 className="studio-img"
@@ -98,7 +185,7 @@ function Home() {
               <p className="studio-rating">⭐⭐⭐⭐</p>
             </div>
           </div>
-          <div className="studio-container">
+          <div className="studio-container" onClick={onClickMusicStudio}>
             <div className="studio-upperContainer">
               <img
                 className="studio-img"
@@ -111,7 +198,7 @@ function Home() {
               <p className="studio-rating">⭐⭐⭐⭐</p>
             </div>
           </div>
-          <div className="studio-container">
+          <div className="studio-container" onClick={onClickMusicStudio}>
             <div className="studio-upperContainer">
               <img
                 className="studio-img"
