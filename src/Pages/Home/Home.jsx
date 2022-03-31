@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./homeStyles.css";
 
 function Home(props) {
@@ -8,7 +9,6 @@ function Home(props) {
   const [studioId, setStudioId] = useState(null);
 
   useEffect(() => {
-    fetchStudioList();
     fetchStudios();
   }, []);
 
@@ -46,34 +46,6 @@ function Home(props) {
       });
   };
 
-  const fetchStudioList = async () => {
-    await fetch(`http://localhost:3000/studio/details?type=L&id=0}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (!data.isError) {
-          setStudiosList(data.data);
-          console.log("studiosData ----->", studiosList);
-          studiosList.map((studio, index) => {
-            setStudiosNames(studio.studioName);
-            // console.log("=================NAME===================", studio);
-          });
-        } else {
-          console.log("Failed", data.isError);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   const onClickMusicStudio = async (id) => {
     // fetchStudios();
     setStudioId(id);
@@ -88,6 +60,24 @@ function Home(props) {
   // console.log("====================================");
   // console.log("studioNames ----->", studioNames);
   // console.log("====================================");
+
+  const StudioContainer = (studio) => {
+    return (
+      <div
+        className="studio-container"
+        onClick={onClickMusicStudio}
+        key={studio.key}
+      >
+        <div className="studio-upperContainer">
+          <img className="studio-img" src={studio.image} alt="Studio-1" />
+        </div>
+        <div className="studio-lowerContainer">
+          <p className="studio-name">{studio.name}</p>
+          <p className="studio-rating">⭐⭐⭐⭐</p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="home">
@@ -107,110 +97,88 @@ function Home(props) {
 
       {/* Services */}
       <div className="services">
-        <div onClick={onClickStudioList} className="service-container">
-          <div className="service-upperContainer">
-            <img
-              src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
-              alt="headphone"
-              className="service-icon"
-            />
+        <Link className="service-link" to="/studio-listing">
+          <div onClick={onClickStudioList} className="service-container">
+            <div className="service-upperContainer">
+              <img
+                src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
+                alt="headphone"
+                className="service-icon"
+              />
+            </div>
+            <div className="service-lowerContainer">
+              <p>Music Studios</p>
+            </div>
           </div>
-          <div className="service-lowerContainer">
-            <p>Music Studios</p>
+        </Link>
+        <Link className="service-link" to="/studio-listing">
+          <div className="service-container">
+            <div className="service-upperContainer">
+              <img
+                src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/500/000000/external-guitar-stay-home-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
+                alt="guitar"
+                className="service-icon"
+              />
+            </div>
+            <div className="service-lowerContainer">
+              <p>Jam Pads</p>
+            </div>
           </div>
-        </div>
-        <div className="service-container">
-          <div className="service-upperContainer">
-            <img
-              src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/500/000000/external-guitar-stay-home-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
-              alt="guitar"
-              className="service-icon"
-            />
+        </Link>
+        <Link className="service-link" to="/studio-listing">
+          <div className="service-container">
+            <div className="service-upperContainer">
+              <img
+                src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/500/000000/external-mixer-radio-vitaliy-gorbachev-flat-vitaly-gorbachev.png"
+                alt="mixer"
+                className="service-icon"
+              />
+            </div>
+            <div className="service-lowerContainer">
+              <p>Mixing & Mastering</p>
+            </div>
           </div>
-          <div className="service-lowerContainer">
-            <p>Jam Pads</p>
+        </Link>
+        <Link className="service-link" to="/studio-listing">
+          <div className="service-container">
+            <div className="service-upperContainer">
+              <img
+                src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/500/000000/external-video-advertising-xnimrodx-lineal-color-xnimrodx-6.png"
+                alt="video"
+                className="service-icon"
+              />
+            </div>
+            <div className="service-lowerContainer">
+              <p>Videos</p>
+            </div>
           </div>
-        </div>
-        <div className="service-container">
-          <div className="service-upperContainer">
-            <img
-              src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/500/000000/external-mixer-radio-vitaliy-gorbachev-flat-vitaly-gorbachev.png"
-              alt="mixer"
-              className="service-icon"
-            />
+        </Link>
+        <Link className="service-link" to="/studio-listing">
+          <div className="service-container">
+            <div className="service-upperContainer">
+              <img
+                src="https://img.icons8.com/color/500/000000/teaching.png"
+                alt="teaching"
+                className="service-icon"
+              />
+            </div>
+            <div className="service-lowerContainer">
+              <p>Courses</p>
+            </div>
           </div>
-          <div className="service-lowerContainer">
-            <p>Mixing & Mastering</p>
-          </div>
-        </div>
-        <div className="service-container">
-          <div className="service-upperContainer">
-            <img
-              src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/500/000000/external-video-advertising-xnimrodx-lineal-color-xnimrodx-6.png"
-              alt="video"
-              className="service-icon"
-            />
-          </div>
-          <div className="service-lowerContainer">
-            <p>Videos</p>
-          </div>
-        </div>
-        <div className="service-container">
-          <div className="service-upperContainer">
-            <img
-              src="https://img.icons8.com/color/500/000000/teaching.png"
-              alt="teaching"
-              className="service-icon"
-            />
-          </div>
-          <div className="service-lowerContainer">
-            <p>Courses</p>
-          </div>
-        </div>
+        </Link>
       </div>
       {/* MUSIC STUDIOS */}
       <div className="studios">
         <h1 className="title">Music Studios</h1>
         <div className="studios-main-container">
-          <div className="studio-container" onClick={onClickMusicStudio}>
-            <div className="studio-upperContainer">
-              <img
-                className="studio-img"
-                src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                alt="Studio-1"
-              />
-            </div>
-            <div className="studio-lowerContainer">
-              <p className="studio-name">Studio 1</p>
-              <p className="studio-rating">⭐⭐⭐⭐</p>
-            </div>
-          </div>
-          <div className="studio-container" onClick={onClickMusicStudio}>
-            <div className="studio-upperContainer">
-              <img
-                className="studio-img"
-                src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                alt="Studio-1"
-              />
-            </div>
-            <div className="studio-lowerContainer">
-              <p className="studio-name">Studio 1</p>
-              <p className="studio-rating">⭐⭐⭐⭐</p>
-            </div>
-          </div>
-          <div className="studio-container" onClick={onClickMusicStudio}>
-            <div className="studio-upperContainer">
-              <img
-                className="studio-img"
-                src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                alt="Studio-1"
-              />
-            </div>
-            <div className="studio-lowerContainer">
-              <p className="studio-name">Studio 1</p>
-              <p className="studio-rating">⭐⭐⭐⭐</p>
-            </div>
-          </div>
+          {studios.map((studio, index) => (
+            <StudioContainer
+              image={studio.LocationImageLinks[0]}
+              name={studio.JAMRStudioName}
+              key={index}
+            />
+          ))}
         </div>
       </div>
     </div>

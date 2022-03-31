@@ -1,5 +1,6 @@
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Searchbar from "./components/Searchbar/Searchbar";
 import FilterBar from "./components/FilterBar/FilterBar";
 import Home from "./Pages/Home/Home";
@@ -9,14 +10,18 @@ import Payment from "./Pages/Payment/Payment";
 
 function App() {
   return (
-    <div className="app">
+    <div>
       <Navbar />
       <Searchbar />
-      {/* <Home /> */}
-      <StudioListing />
-      {/* <StudioDetails /> */}
       {/* <FilterBar /> */}
-      {/* <Payment /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="studio-listing" element={<StudioListing />} />
+          <Route path="studio-details" element={<StudioDetails />} />
+          <Route path="payment" element={<Payment />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
