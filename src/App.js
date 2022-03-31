@@ -12,8 +12,8 @@ function App() {
     <div className="app">
       <Navbar />
       <Searchbar />
-      <Home />
-      {/* <StudioListing /> */}
+      {/* <Home /> */}
+      <StudioListing />
       {/* <StudioDetails /> */}
       {/* <FilterBar /> */}
       {/* <Payment /> */}

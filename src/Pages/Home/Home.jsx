@@ -18,7 +18,7 @@ function Home(props) {
   }, [studios, studiosList]);
 
   const fetchStudios = async () => {
-    await fetch(`http://localhost:3001/studio/details?type=S&id=0}`, {
+    await fetch(`http://localhost:3000/studio/details?type=S&id=0}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function Home(props) {
   };
 
   const fetchStudioList = async () => {
-    await fetch(`http://localhost:3001/studio/details?type=L&id=0}`, {
+    await fetch(`http://localhost:3000/studio/details?type=L&id=0}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
