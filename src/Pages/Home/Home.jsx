@@ -62,7 +62,9 @@ function Home(props) {
   // console.log("====================================");
 
   const StudioContainer = (studio) => {
+    const id = studio.id;
     return (
+      // <Link className="studio-link" to="/studio-details" state={id}>
       <div
         className="studio-container"
         onClick={onClickMusicStudio}
@@ -76,6 +78,7 @@ function Home(props) {
           <p className="studio-rating">⭐⭐⭐⭐</p>
         </div>
       </div>
+      // </Link>
     );
   };
 

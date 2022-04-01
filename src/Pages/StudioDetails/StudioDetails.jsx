@@ -1,35 +1,80 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
-import { ScrollMenu } from "react-horizontal-scrolling-menu";
+import { useLocation } from "react-router-dom";
 
-function StudioDetails() {
-  const numOfSlots = [
-    {
-      id: 1,
-      name: "1",
-      selected: false,
-    },
-    {
-      id: 2,
-      name: "2",
-      selected: false,
-    },
-    {
-      id: 3,
-      name: "3",
-      selected: false,
-    },
-    {
-      id: 4,
-      name: "4",
-      selected: false,
-    },
-    {
-      id: 5,
-      name: "5",
-      selected: false,
-    },
+function StudioDetails(props) {
+  const [studioData, setStudioData] = useState();
+
+  const location = useLocation();
+  const studioId = location.state;
+  console.log("data", studioId);
+
+  useEffect(() => {
+    fetchStudioData();
+  }, []);
+
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   ];
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = months[date.getMonth()];
+  const day = days[date.getDay()];
+  const currentDate = date.getDate();
+  const today = `${day} ${currentDate} ${month}, ${year}`;
+  console.log("today", today);
+
+  // useEffect(() => {
+  //   console.log("==GET STUDIO DATA==", studioData);
+  // }, [studioData]);
+
+  const fetchStudioData = async () => {
+    await fetch(`http://localhost:3000/studio/details?type=D&id=2`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          setStudioData(data.data);
+          console.log("studioData ----->", data.data);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  console.log("studioData", studioData[0].JAMRStudioName);
 
   return (
     <div className="studioDetails">
@@ -55,13 +100,13 @@ function StudioDetails() {
 
           <div className="date-time-slots-container">
             <div className="date-time-container">
-              <p className="date">Tuesday 15 March, 2022</p>
+              <p className="date">{today}</p>
               <p className="time">4pm to 7pm (3hrs)</p>
             </div>
             <div className="date-container">
               <p className="date-title">Date</p>
               <div className="date-inner-container">
-                <p>Tuesday 15 March, 2022</p>
+                <p>{today}</p>
               </div>
             </div>
             <div className="time-duration-container">
@@ -78,15 +123,7 @@ function StudioDetails() {
                 </div>
               </div>
             </div>
-            <div className="slots-container">
-              <ScrollMenu
-                arrowLeft={<div style={{ fontSize: "30px" }}>{" < "}</div>}
-                arrowRight={<div style={{ fontSize: "30px" }}>{" > "}</div>}
-                data={numOfSlots.map((index) => (
-                  <div className="slot-circle"></div>
-                ))}
-              ></ScrollMenu>
-            </div>
+            <div className="slots-container"></div>
             <div className="book-now-btn">
               <p>Book Now</p>
             </div>
@@ -95,10 +132,13 @@ function StudioDetails() {
         <div className="studioDetails-right-container">
           <div className="studioDetails-info">
             <div className="studioDetails-info-title">
-              <h1 className="title">Studio Name</h1>
+              <h1 className="title">{studioData[0].JAMRStudioName}</h1>
             </div>
             <div className="studioDetails-info-address">
-              <p className="address">Church Road, Bandra</p>
+              <p className="address">
+                {studioData[0].Address}, {studioData[0].Locality},{" "}
+                {studioData[0].City}
+              </p>
             </div>
             <div className="studioDetails-rating-cost-container">
               <div className="studioDetails-rating">
@@ -109,7 +149,7 @@ function StudioDetails() {
                 <p className="rating">4.5</p>
               </div>
               <div className="studioDetails-cost">
-                <p className="cost">₹700/hr</p>
+                <p className="cost">₹{studioData[0].PricePerHourStudio}/hr</p>
               </div>
             </div>
             <p className="services-title">Services</p>
@@ -171,9 +211,7 @@ function StudioDetails() {
                 </div>
               </div>
               <div className="service-review-btn-container">
-                <div utton className="service-review-btn">
-                  Write a Review
-                </div>
+                <div className="service-review-btn">Write a Review</div>
               </div>
             </div>
             <p className="reviews-title">Reviews</p>

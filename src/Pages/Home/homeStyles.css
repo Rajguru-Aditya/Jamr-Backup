@@ -122,9 +122,15 @@
   justify-content: space-between;
 }
 
-.studio-container {
+.studio-link{
+  text-decoration: none;
+  color: #000;
   width: 500px;
   height: 50%;
+}
+
+
+.studio-container {
   display: flex;
   flex-direction: column;
   background-color: #eee;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import StudioData from "../../Data/StudioData";
+import { Link } from "react-router-dom";
 import "./styles.css";
 
-function StudioListing() {
+function StudioListing(props) {
   const [studiosList, setStudiosList] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function StudioListing() {
   }, [studiosList]);
 
   const fetchStudioList = async () => {
-    await fetch(`http://localhost:3000/studio/details?type=L&id=0}`, {
+    await fetch(`http://localhost:3000/studio/details?type=L&id=0`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -38,31 +38,43 @@ function StudioListing() {
   };
 
   const StudioContainer = (studio) => {
+    const id = studio.id;
     return (
-      <div className="studio" key={studio.key}>
-        <div className="upper-container">
-          <img className="studio-image" src={studio.image} alt={studio.name} />
-        </div>
-        <div className="lower-container">
-          <p id="studio-name" className="studio-text">
-            {studio.name}
-          </p>
-          <p id="studio-address" className="studio-text">
-            {studio.address}
-          </p>
-          <div className="bottom-container">
-            <p id="studio-cost" className="studio-text">
-              ₹{studio.price}/hr
+      <Link className="studio-link" to="/studio-details" state={id}>
+        <div
+          className="studio"
+          onClick={() => {
+            console.log(id);
+          }}
+        >
+          <div className="upper-container">
+            <img
+              className="studio-image"
+              src={studio.image}
+              alt={studio.name}
+            />
+          </div>
+          <div className="lower-container">
+            <p id="studio-name" className="studio-text">
+              {studio.name}
             </p>
-            <p id="studio-ratings" className="studio-text">
-              {"⭐".repeat(studio.ratings)}
+            <p id="studio-address" className="studio-text">
+              {studio.address}
             </p>
+            <div className="bottom-container">
+              <p id="studio-cost" className="studio-text">
+                ₹{studio.price}/hr
+              </p>
+              <p id="studio-ratings" className="studio-text">
+                {"⭐".repeat(studio.ratings)}
+              </p>
+            </div>
+          </div>
+          <div className="bookNow-btn">
+            <p className="bookNow-text">Book Now</p>
           </div>
         </div>
-        <div className="bookNow-btn">
-          <p className="bookNow-text">Book Now</p>
-        </div>
-      </div>
+      </Link>
     );
   };
 
@@ -83,13 +95,20 @@ function StudioListing() {
       </div>
       <div className="studios">
         {studiosList.map((studio, index) => (
+          // <Link
+          //   className="studio-link"
+          //   to={{ pathname: "/studio-details", data: studio.LocationId }}
+          // >
+          // {console.log(studio.LocationId)}
           <StudioContainer
+            id={studio.LocationId}
             name={studio.JAMRStudioName}
             address={studio.Locality}
             price={studio.PricePerHourStudio}
             image={studio.LocationImageLinks[1]}
             key={index}
           />
+          // </Link>
         ))}
       </div>
     </div>
