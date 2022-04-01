@@ -48,7 +48,6 @@ function Home(props) {
 
   const onClickMusicStudio = async (id) => {
     // fetchStudios();
-    setStudioId(id);
     console.log("id", id);
   };
 
@@ -64,21 +63,23 @@ function Home(props) {
   const StudioContainer = (studio) => {
     const id = studio.id;
     return (
-      // <Link className="studio-link" to="/studio-details" state={id}>
-      <div
-        className="studio-container"
-        onClick={onClickMusicStudio}
-        key={studio.key}
-      >
-        <div className="studio-upperContainer">
-          <img className="studio-img" src={studio.image} alt="Studio-1" />
+      <Link className="studio-link" to="/studio-details" state={id}>
+        <div
+          className="studio-container"
+          onClick={() => {
+            console.log(id);
+          }}
+          // key={studio.key}
+        >
+          <div className="studio-upperContainer">
+            <img className="studio-img" src={studio.image} alt="Studio-1" />
+          </div>
+          <div className="studio-lowerContainer">
+            <p className="studio-name">{studio.name}</p>
+            <p className="studio-rating">⭐⭐⭐⭐</p>
+          </div>
         </div>
-        <div className="studio-lowerContainer">
-          <p className="studio-name">{studio.name}</p>
-          <p className="studio-rating">⭐⭐⭐⭐</p>
-        </div>
-      </div>
-      // </Link>
+      </Link>
     );
   };
 
@@ -177,6 +178,7 @@ function Home(props) {
         <div className="studios-main-container">
           {studios.map((studio, index) => (
             <StudioContainer
+              id={studio.LocationId}
               image={studio.LocationImageLinks[0]}
               name={studio.JAMRStudioName}
               key={index}
