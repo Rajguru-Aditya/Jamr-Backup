@@ -11,15 +11,53 @@ function UserDashboard() {
   const BookingsContent = () => (
     <div className="content">
       <div className="content-left">
+        {/* Bookings */}
         <div className="bookings">
           <div className="bookings-header">
-            <div className="bookings-header-title">
-              <h1>Bookings</h1>
-            </div>
+            <h1 className="bookings-header-title">JAMR Studio Name</h1>
+            <h1 className="bookings-header-title">$0</h1>
           </div>
           <div className="bookings-body">
             <div className="bookings-body-item">
-              <div className="bookings-body-item-header"></div>
+              <h1 className="bookings-body-item-name">Order Number:</h1>
+              <h1 className="bookings-body-item-value">#73645976245</h1>
+            </div>
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Date:</h1>
+              <h1 className="bookings-body-item-value">March 30, 2022</h1>
+            </div>
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Time:</h1>
+              <h1 className="bookings-body-item-value">12pm</h1>
+            </div>
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Duration:</h1>
+              <h1 className="bookings-body-item-value">3 hours</h1>
+            </div>
+          </div>
+        </div>
+        {/* Bookings */}
+        <div className="bookings">
+          <div className="bookings-header">
+            <h1 className="bookings-header-title">JAMR Studio Name</h1>
+            <h1 className="bookings-header-title">$0</h1>
+          </div>
+          <div className="bookings-body">
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Order Number:</h1>
+              <h1 className="bookings-body-item-value">#73645976245</h1>
+            </div>
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Date:</h1>
+              <h1 className="bookings-body-item-value">March 30, 2022</h1>
+            </div>
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Time:</h1>
+              <h1 className="bookings-body-item-value">12pm</h1>
+            </div>
+            <div className="bookings-body-item">
+              <h1 className="bookings-body-item-name">Duration:</h1>
+              <h1 className="bookings-body-item-value">3 hours</h1>
             </div>
           </div>
         </div>
