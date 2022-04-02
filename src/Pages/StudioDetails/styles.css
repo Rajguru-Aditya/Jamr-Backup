@@ -149,6 +149,68 @@
   text-align: center;
 }
 
+.additional-packages-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.additional-packages-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  height: 400px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 2px 2px #ccc;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  position: relative;
+}
+
+.additional-packages-item:hover{
+  transform: scale(1.1);
+  box-shadow: 0px 4px 4px 4px #ccc;
+}
+
+.package-title{
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+  padding: 10px;
+  text-align: center;
+}
+
+.package-text{
+  font-size: 22px;
+  color: #000;
+  padding: 10px;
+}
+
+.package-included{
+  display: flex;
+  width: 220px;
+  height: 50px;
+  background-color: #29c57c;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 50px;
+  position: absolute;
+  bottom: -25px;
+}
+
+.package-included-text{
+  font-size: 16px;
+  color: #fff;
+  font-weight: bold;
+}
+
 .equipments-title {
   font-size: 30px;
   font-weight: bold;

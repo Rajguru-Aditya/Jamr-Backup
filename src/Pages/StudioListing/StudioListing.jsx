@@ -101,11 +101,11 @@ function StudioListing(props) {
           // >
           // {console.log(studio.LocationId)}
           <StudioContainer
-            id={studio.LocationId}
-            name={studio.JAMRStudioName}
-            address={studio.Locality}
-            price={studio.PricePerHourStudio}
-            image={studio.LocationImageLinks[1]}
+            id={studio.studio.LocationId}
+            name={studio.studio.JAMRStudioName}
+            address={studio.studio.Locality}
+            price={studio.studio.PricePerHourStudio}
+            image={studio.studio.LocationImageLinks[1]}
             key={index}
           />
           // </Link>

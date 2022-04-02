@@ -7,6 +7,8 @@ import { css } from "@emotion/react";
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
   const [loading, setLoading] = useState(true);
+  const [packageSelected, setPackageSelected] = useState(false);
+  const [packageName, setPackageName] = useState("");
 
   const location = useLocation();
   const studioId = location.state;
@@ -69,6 +71,11 @@ function StudioDetails(props) {
   //   console.log("==GET STUDIO DATA==", studioData);
   // }, [studioData]);
 
+  const onClickPackage = (title) => {
+    setPackageName(title);
+    setPackageSelected(!packageSelected);
+  };
+
   const fetchStudioData = async () => {
     await fetch(`http://localhost:3000/studio/details?type=D&id=${studioId}`, {
       method: "GET",
@@ -93,7 +100,7 @@ function StudioDetails(props) {
       });
   };
 
-  // console.log("studioData", studioData[0].JAMRStudioName);
+  // console.log("studioData", studioData[0].studio.JAMRStudioName);
 
   return (
     <div>
@@ -164,12 +171,14 @@ function StudioDetails(props) {
             <div className="studioDetails-right-container">
               <div className="studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">{studioData[0].JAMRStudioName}</h1>
+                  <h1 className="title">
+                    {studioData[0].studio.JAMRStudioName}
+                  </h1>
                 </div>
                 <div className="studioDetails-info-address">
                   <p className="address">
-                    {studioData[0].Address}, {studioData[0].Locality},{" "}
-                    {studioData[0].City}
+                    {studioData[0].studio.Address},{" "}
+                    {studioData[0].studio.Locality}, {studioData[0].studio.City}
                   </p>
                 </div>
                 <div className="studioDetails-rating-cost-container">
@@ -182,7 +191,7 @@ function StudioDetails(props) {
                   </div>
                   <div className="studioDetails-cost">
                     <p className="cost">
-                      ₹{studioData[0].PricePerHourStudio}/hr
+                      ₹{studioData[0].studio.PricePerHourStudio}/hr
                     </p>
                   </div>
                 </div>
@@ -207,6 +216,59 @@ function StudioDetails(props) {
                   <div className="studioDetails-service">
                     <div className="service-img-container"></div>
                     <p className="service-name">Dubbing</p>
+                  </div>
+                </div>
+                {/* Packages */}
+                <p className="equipments-title">Additional Packages</p>
+                <div className="additional-packages-container">
+                  <div
+                    className="additional-packages-item"
+                    onClick={() => {
+                      onClickPackage("Session Audio Engineer");
+                    }}
+                  >
+                    <p className="package-title">Session Audio Engineer</p>
+                    <p className="package-text">
+                      This studio requires and includes an in-house Engineer in
+                      each booking.
+                    </p>
+                    {packageName === "Session Audio Engineer" &&
+                    packageSelected ? (
+                      <div className="package-included">
+                        <img
+                          alt="tick mark"
+                          src="https://img.icons8.com/external-tal-revivo-color-tal-revivo/30/ffffff/external-checkbox-tick-mark-accept-your-checklist-queries-basic-color-tal-revivo.png"
+                        />
+                        <p className="package-included-text">
+                          Package Included
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
+                  <div
+                    className="additional-packages-item"
+                    onClick={() => {
+                      onClickPackage("Mixing/Mastering Services");
+                    }}
+                  >
+                    <p className="package-title">Mixing/Mastering Services</p>
+                    <p className="package-text">
+                      Looking for help with mixing or mastering? This studio
+                      offers additional services that you can add to your studio
+                      booking.
+                    </p>
+                    {packageName === "Mixing/Mastering Services" &&
+                    packageSelected ? (
+                      <div className="package-included">
+                        <img
+                          alt="tick mark"
+                          src="https://img.icons8.com/external-tal-revivo-color-tal-revivo/30/ffffff/external-checkbox-tick-mark-accept-your-checklist-queries-basic-color-tal-revivo.png"
+                        />
+                        <p className="package-included-text">
+                          Package Included
+                        </p>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
                 <p className="equipments-title">Equipments</p>
