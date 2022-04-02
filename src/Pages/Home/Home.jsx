@@ -178,9 +178,9 @@ function Home(props) {
         <div className="studios-main-container">
           {studios.map((studio, index) => (
             <StudioContainer
-              id={studio.LocationId}
-              image={studio.LocationImageLinks[0]}
-              name={studio.JAMRStudioName}
+              id={studio.studio.LocationId}
+              image={studio.studio.LocationImageLinks[0]}
+              name={studio.studio.JAMRStudioName}
               key={index}
             />
           ))}

@@ -1,0 +1,125 @@
+.user-dashboard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-image{
+    width: 100%;
+    height: 100%;
+}
+
+.user-dashboard-navbar{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+}
+
+.navbar-item-container{
+    background:linear-gradient(to right, #FF782C 0%, #FF782C 33%, #F1356A 66%, #F1356A 100%);
+    box-shadow: 0 3px 3px 3px #DDD;
+    border-radius: 25px;
+    padding: 5px;
+}
+
+.navbar-item{
+    text-decoration: none;
+    display: flex;
+    color: #000;
+    transition: all 0.5s ease-in-out;
+    background-color: #fff;
+    width: 200px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.navbar-item:hover{
+    color: #f9772b;
+}
+
+.navbar-text{
+    font-size: 24px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.navbar-item-selected{
+    text-decoration: none;
+    display: flex;
+    color: #f9772b;
+    transition: all 0.5s ease-in-out;
+    background-color: #fff;
+    width: 200px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 100px;
+}
+
+.content-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    background-color: #ccc;
+    height: 100px;
+}
+
+.content-right{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    background-color: #FF782C;
+    height: 200px;
+}
+
+.content-right-first{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.content-right-last{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.bookings-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.bookings-subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}

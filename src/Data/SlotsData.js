@@ -1,0 +1,88 @@
+const SlotsData = [
+  {
+    id: 1,
+    start: 1,
+    end: 2,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 2,
+    start: 3,
+    end: 4,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 3,
+    start: 5,
+    end: 6,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 4,
+    start: 7,
+    end: 8,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 5,
+    start: 9,
+    end: 10,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 6,
+    start: 11,
+    end: 12,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 7,
+    start: 13,
+    end: 14,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 8,
+    start: 15,
+    end: 16,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 9,
+    start: 17,
+    end: 18,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 10,
+    start: 19,
+    end: 20,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 11,
+    start: 21,
+    end: 22,
+    selected: false,
+    booked: false,
+  },
+  {
+    id: 12,
+    start: 23,
+    end: 24,
+    selected: false,
+    booked: false,
+  },
+];
+
+export default SlotsData;

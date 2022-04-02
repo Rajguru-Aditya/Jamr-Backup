@@ -2,23 +2,28 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useLocation } from "react-router-dom";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import { css } from "@emotion/react";
+import {
+  CarouselProvider,
+  Slider,
+  Slide,
+  ButtonBack,
+  ButtonNext,
+} from "pure-react-carousel";
+import SlotsData from "../../Data/SlotsData";
 
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
   const [loading, setLoading] = useState(true);
   const [packageSelected, setPackageSelected] = useState(false);
   const [packageName, setPackageName] = useState("");
+  const [selectedSlots, setSelectedSlots] = useState([]);
 
   const location = useLocation();
   const studioId = location.state;
   console.log("data", studioId);
-
-  const override = css`
-    display: block;
-    margin: 0 auto;
-  `;
   const color = "#FF782C";
+
+  // Horizontal Scroll Menu
 
   useEffect(() => {
     fetchStudioData();
@@ -67,10 +72,6 @@ function StudioDetails(props) {
   const today = `${day} ${currentDate} ${month}, ${year}`;
   console.log("today", today);
 
-  // useEffect(() => {
-  //   console.log("==GET STUDIO DATA==", studioData);
-  // }, [studioData]);
-
   const onClickPackage = (title) => {
     setPackageName(title);
     setPackageSelected(!packageSelected);
@@ -101,6 +102,15 @@ function StudioDetails(props) {
   };
 
   // console.log("studioData", studioData[0].studio.JAMRStudioName);
+
+  const slotClicked = (slot) => {
+    if (selectedSlots.includes(slot)) {
+      setSelectedSlots(selectedSlots.filter((item) => item !== slot));
+    } else {
+      setSelectedSlots([...selectedSlots, slot]);
+    }
+  };
+  console.log("selectedSlots", selectedSlots);
 
   return (
     <div>
@@ -162,7 +172,31 @@ function StudioDetails(props) {
                     </div>
                   </div>
                 </div>
-                <div className="slots-container"></div>
+                {/* SLOTS */}
+                <div className="slots-container">
+                  <div className="slots-inner-container">
+                    {SlotsData.map((slot, index) => (
+                      <div
+                        onClick={() => {
+                          slotClicked(slot.id);
+                        }}
+                        className="slot-items"
+                        key={index}
+                      >
+                        <div
+                          className={
+                            selectedSlots.includes(slot.id)
+                              ? "selected-slot-circle"
+                              : "slot-circle"
+                          }
+                        ></div>
+                        <p>
+                          {slot.start}:00 - {slot.end}:00
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <div className="book-now-btn">
                   <p>Book Now</p>
                 </div>

@@ -7,6 +7,7 @@ import Home from "./Pages/Home/Home";
 import StudioListing from "./Pages/StudioListing/StudioListing";
 import StudioDetails from "./Pages/StudioDetails/StudioDetails";
 import Payment from "./Pages/Payment/Payment";
+import UserDashboard from "./Pages/UserDashboard/UserDashboard";
 
 function App() {
   return (
@@ -16,10 +17,11 @@ function App() {
       {/* <FilterBar /> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<UserDashboard />} />
           <Route path="studio-listing" element={<StudioListing />} />
           <Route path="studio-details" element={<StudioDetails />} />
           <Route path="payment" element={<Payment />} />
+          <Route path="UserDashboard" element={<UserDashboard />} />
         </Routes>
       </BrowserRouter>
     </div>
