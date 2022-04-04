@@ -12,7 +12,7 @@
   /* position: relative; */
 }
 
-.listing-Page-Vector {
+.listing-page-vector {
   width: 50%;
   max-width: 600px;
   height: auto;
@@ -37,8 +37,7 @@
   justify-content: space-evenly;
   width: 100%;
   height: 100%;
-  padding: 50px 0;
-  margin: 0;
+  margin-top: 50px;
 }
 
 .studio {
@@ -145,4 +144,29 @@
 #studio-ratings {
   font-size: 18px;
   color: #000;
+}
+
+@media screen and (max-width: 800px) {
+
+  .studioListing-image {
+    height: 200px;
+  }
+
+  .header {
+    font-size: 30px;
+    color: #000;
+    text-transform: uppercase;
+  }
+
+  .wavy-orange, .listing-page-vector {
+    display: none;
+  }
+
+  .studio-link{
+    padding: 20px;
+  }
+
+  .studio{
+    width: 100%;
+  }
 }

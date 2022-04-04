@@ -24,3 +24,12 @@
   background-color: #fff;
   padding: 0 10px;
 }
+
+@media screen and (max-width: 700px) {
+  .searchbar {
+    align-items: center;
+    justify-content: center;
+    left: 15px;
+    width: 300px;
+  }
+}

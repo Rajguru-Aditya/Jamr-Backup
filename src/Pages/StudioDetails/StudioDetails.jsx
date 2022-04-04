@@ -13,6 +13,9 @@ import SlotsData from "../../Data/SlotsData";
 
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
+  const [equipmentData, setEquipmentData] = useState();
+  const equipments = [];
+  const [equipmentName, setEquipmentName] = useState();
   const [loading, setLoading] = useState(true);
   const [packageSelected, setPackageSelected] = useState(false);
   const [packageName, setPackageName] = useState("");
@@ -31,6 +34,10 @@ function StudioDetails(props) {
 
   useEffect(() => {
     console.log("==GET STUDIO DATA==", studioData);
+    console.log("==GET EQUIPMENT DATA==", equipmentName);
+    setTimeout(() => {
+      getEquipment();
+    }, 2000);
   }, [studioData]);
 
   useEffect(() => {
@@ -91,6 +98,7 @@ function StudioDetails(props) {
       .then((data) => {
         if (!data.isError) {
           setStudioData(data.data);
+          setEquipmentData(data.data[0].equipment);
           console.log("studioData ----->", data.data);
         } else {
           console.log("Failed", data.isError);
@@ -111,6 +119,23 @@ function StudioDetails(props) {
     }
   };
   console.log("selectedSlots", selectedSlots);
+
+  const Equipments = (name, desc) => {
+    return (
+      <div className="equipment">
+        <p className="bulletpoint">·</p>
+        <p className="equipment-name">{name}</p>
+        <p className="equipment-name">{desc}</p>
+      </div>
+    );
+  };
+
+  const getEquipment = () => {
+    Object.keys(equipmentData).map((key) => {
+      return equipments.push(key);
+    });
+    setEquipmentName([...equipments]);
+  };
 
   return (
     <div>
@@ -205,14 +230,12 @@ function StudioDetails(props) {
             <div className="studioDetails-right-container">
               <div className="studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">
-                    {studioData[0].studio.JAMRStudioName}
-                  </h1>
+                  <h1 className="title">{studioData[0].studio.studioName}</h1>
                 </div>
                 <div className="studioDetails-info-address">
                   <p className="address">
-                    {studioData[0].studio.Address},{" "}
-                    {studioData[0].studio.Locality}, {studioData[0].studio.City}
+                    {studioData[0].studio.address},{" "}
+                    {studioData[0].studio.locality}, {studioData[0].studio.city}
                   </p>
                 </div>
                 <div className="studioDetails-rating-cost-container">
@@ -225,7 +248,7 @@ function StudioDetails(props) {
                   </div>
                   <div className="studioDetails-cost">
                     <p className="cost">
-                      ₹{studioData[0].studio.PricePerHourStudio}/hr
+                      ₹{studioData[0].studio.studioPrice}/hr
                     </p>
                   </div>
                 </div>

@@ -89,7 +89,7 @@ function StudioListing(props) {
         <img
           src="https://i.ibb.co/p2ZTCq0/listing-Page-Vector.png"
           alt="listing-Page-Vector"
-          className="listing-Page-Vector"
+          className="listing-page-vector"
         ></img>
         <h1 className="header">Music Studios</h1>
       </div>
@@ -101,11 +101,11 @@ function StudioListing(props) {
           // >
           // {console.log(studio.LocationId)}
           <StudioContainer
-            id={studio.studio.LocationId}
-            name={studio.studio.JAMRStudioName}
-            address={studio.studio.Locality}
-            price={studio.studio.PricePerHourStudio}
-            image={studio.studio.LocationImageLinks[1]}
+            id={studio.studio.locationId}
+            name={studio.studio.studioName}
+            address={studio.studio.locality}
+            price={studio.studio.studioPrice}
+            image={studio.studio.imageLocationLinks[1]}
             key={index}
           />
           // </Link>
