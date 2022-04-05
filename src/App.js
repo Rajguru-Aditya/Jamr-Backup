@@ -17,7 +17,7 @@ function App() {
       {/* <FilterBar /> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<UserDashboard />} />
+          <Route path="/" element={<Home />} />
           <Route path="studio-listing" element={<StudioListing />} />
           <Route path="studio-details" element={<StudioDetails />} />
           <Route path="payment" element={<Payment />} />

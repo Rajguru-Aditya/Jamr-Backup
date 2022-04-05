@@ -370,6 +370,11 @@
   border-radius: 20px;
   padding: 0 20px;
   box-shadow: 0px 2px 2px #555;
+  cursor: pointer;
+}
+
+.calendar{
+  margin-top: 50px;
 }
 
 .time-duration-container {
@@ -415,6 +420,7 @@
   display: flex;
   justify-content: center;
   box-shadow: -2px 2px 2px #555;
+  cursor: pointer;
 }
 
 .slot-circle {
@@ -423,6 +429,7 @@
   border-radius: 50%;
   border: 2px solid #ff782c;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .selected-slot-circle {
@@ -432,6 +439,7 @@
   border: 2px solid #ff782c;
   background-color: #ff782c;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .slots-container {

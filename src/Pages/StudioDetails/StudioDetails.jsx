@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import {
-  CarouselProvider,
-  Slider,
-  Slide,
-  ButtonBack,
-  ButtonNext,
-} from "pure-react-carousel";
 import SlotsData from "../../Data/SlotsData";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import moment from "moment";
 
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
@@ -20,6 +16,14 @@ function StudioDetails(props) {
   const [packageSelected, setPackageSelected] = useState(false);
   const [packageName, setPackageName] = useState("");
   const [selectedSlots, setSelectedSlots] = useState([]);
+  const [dateClicked, setDateClicked] = useState(false);
+  const [dateState, setDateState] = useState(new Date());
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+  const changeDate = (date) => {
+    setDateState(date);
+  };
 
   const location = useLocation();
   const studioId = location.state;
@@ -45,6 +49,10 @@ function StudioDetails(props) {
       setLoading(false);
     }, 2000);
   }, []);
+
+  useEffect(() => {
+    getStartTime();
+  }, [selectedSlots]);
 
   const days = [
     "Sunday",
@@ -77,7 +85,7 @@ function StudioDetails(props) {
   const day = days[date.getDay()];
   const currentDate = date.getDate();
   const today = `${day} ${currentDate} ${month}, ${year}`;
-  console.log("today", today);
+  console.log("today", date.toISOString());
 
   const onClickPackage = (title) => {
     setPackageName(title);
@@ -119,15 +127,29 @@ function StudioDetails(props) {
     }
   };
   console.log("selectedSlots", selectedSlots);
+  console.log("selectedSlotsTIME", startTime, endTime);
 
-  const Equipments = (name, desc) => {
-    return (
-      <div className="equipment">
-        <p className="bulletpoint">·</p>
-        <p className="equipment-name">{name}</p>
-        <p className="equipment-name">{desc}</p>
-      </div>
-    );
+  const getStartTime = () => {
+    if (!selectedSlots.length) {
+      return;
+    } else {
+      selectedSlots.sort((a, b) => a - b);
+      let startT = SlotsData[selectedSlots[0] - 1].start;
+      let endT =
+        SlotsData[
+          selectedSlots[
+            selectedSlots.length > 1
+              ? selectedSlots.length - 2
+              : selectedSlots.length - 1
+          ]
+        ].end;
+      setStartTime(startT);
+      setEndTime(endT);
+    }
+  };
+
+  const onDateClicked = () => {
+    setDateClicked(!dateClicked);
   };
 
   const getEquipment = () => {
@@ -135,6 +157,26 @@ function StudioDetails(props) {
       return equipments.push(key);
     });
     setEquipmentName([...equipments]);
+  };
+
+  let navigate = useNavigate();
+
+  const proceedBooking = () => {
+    const bookingData = {
+      studioId: studioId,
+      bookingDate: dateState,
+      selectedSlots: selectedSlots,
+      clientId: 5,
+      totalPrice: selectedSlots.length * studioData[0].studio.studioPrice,
+      pricePerHour: studioData[0].studio.studioPrice,
+      startTime: startTime,
+      endTime: endTime,
+      studioName: studioData[0].studio.studioName,
+      studioAddress:
+        studioData[0].studio.locality + " , " + studioData[0].studio.city,
+    };
+    console.log("bookingData", bookingData);
+    navigate("/Payment", { state: { bookingData: bookingData } });
   };
 
   return (
@@ -179,21 +221,32 @@ function StudioDetails(props) {
                 </div>
                 <div className="date-container">
                   <p className="date-title">Date</p>
-                  <div className="date-inner-container">
-                    <p>{today}</p>
+                  <div onClick={onDateClicked} className="date-inner-container">
+                    <p>
+                      {dateState
+                        ? moment(dateState).format("MMMM Do YYYY")
+                        : today}
+                    </p>
                   </div>
+                  {dateClicked ? (
+                    <Calendar
+                      value={dateState}
+                      onChange={changeDate}
+                      className="calendar"
+                    />
+                  ) : null}
                 </div>
                 <div className="time-duration-container">
                   <div className="time-container">
                     <p className="time-title">Start Time</p>
                     <div className="time-inner-container">
-                      <p>16:00</p>
+                      <p>{startTime ? startTime + ":00" : "00:00"}</p>
                     </div>
                   </div>
                   <div className="duration-container">
                     <p className="duration-title">Duration</p>
                     <div className="duration-inner-container">
-                      <p>3 hrs</p>
+                      <p>{selectedSlots.length} hrs</p>
                     </div>
                   </div>
                 </div>
@@ -222,7 +275,7 @@ function StudioDetails(props) {
                     ))}
                   </div>
                 </div>
-                <div className="book-now-btn">
+                <div onClick={proceedBooking} className="book-now-btn">
                   <p>Book Now</p>
                 </div>
               </div>

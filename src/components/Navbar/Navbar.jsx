@@ -20,10 +20,10 @@ function Navbar() {
   return (
     <div className="navbar">
       <img
-        src="https://icecube-eu-406.icedrive.io/download?p=MOgQ4PP4m4gzZoxQDZ2axDk_V3gXyAuuWGkP1YMaFsZ0GuqWAWXHn3UnhFnzNjQ5V148gDC2InBXR5MHtqRIh0VsQUZUHDCX5DqG.mLClAE267fnDR_Nex_mzWAGd.JgCkJpn1osNW.bugFG5_gpauLZ8x9QGeviNmkQBd5flUOMlF4SaFUcnLCCEBnqB9dKzlvtTbQ211U75Ml3Mza70A--"
+        src="https://i.ibb.co/TP8VqHk/Whats-App-Image-2022-02-01-at-21-17-1.png"
         alt="jamr-logo"
         className="jamr-logo"
-      ></img>
+      />
       {(toggleMenu || screenWidth > 900) && (
         <div className="navbar-items">
           <div className="location">
