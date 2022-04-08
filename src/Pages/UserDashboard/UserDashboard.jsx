@@ -1,11 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 function UserDashboard() {
   const [navItemName, setNavItemName] = useState("Bookings");
+  const [referralCode, setReferralCode] = useState("");
+  const [getReferralData, setReferralData] = useState("");
+  const [loading, setLoading] = useState(true);
+  const color = "#FF782C";
 
   const onClickNavItem = (name) => {
     setNavItemName(name);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    fetchReferralCode();
+  }, []);
+
+  useEffect(() => {
+    setReferralCode(getReferralData[0]?.ReferralCode);
+  }, [getReferralData]);
+
+  const fetchReferralCode = async () => {
+    await fetch(`http://localhost:3000/referral/2`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          setReferralData(data.data);
+          console.log("REFERRALCODE ----->", data.data);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const BookingsContent = () => (
@@ -80,6 +123,10 @@ function UserDashboard() {
       <div className="promotion-content-container">
         <div className="promotion-left">
           <h1 className="promotion-title">Refer and get FREE services</h1>
+          <div className="referral-code-container">
+            <p className="referral-code-text">Your Code: </p>
+            <p className="referral-code">{referralCode ? referralCode : ""}</p>
+          </div>
           <p className="promotion-text">
             Invite your friends to Jamr. They get instant ₹100 off. You win upto
             ₹5000 in rewards.
@@ -97,9 +144,9 @@ function UserDashboard() {
         </div>
         <div className="promotion-right">
           <img
-            src="https://snowball-02.icedrive.io/?p=Am4cDCzceRLLmklX86HJzknFnDIqQbmaYjl8U0LMExLXVJEsmjW.k5NrutZEThpse0cHxUkzoqy6vOwi6KqlGQ2qgBNIuB1gPjp54kqdTNLy.HVGBEnC59p5IPMlUJnq6MYDZ7Ix5.Nlw5jZE8uLEw--&w=1024&h=1024&m=cropped"
-            alt="promotion"
             className="promotion-img"
+            src="https://i.ibb.co/9cj4bTR/Screenshot-346-1.png"
+            alt="promotion"
           />
         </div>
       </div>
@@ -112,9 +159,10 @@ function UserDashboard() {
         <div className="promotion-data">
           <div className="promotion-data-item">
             <img
-              src="https://icecube-eu-308.icedrive.io/download?p=MOgQ4PP4m4gzZoxQDZ2axDk_V3gXyAuuWGkP1YMaFsYAOf0CzZ.X4aTtIf2CwYRRV148gDC2InBXR5MHtqRIh0VsQUZUHDCX5DqG.mLClAH1_ienuzugF3UvV.OJyDRB3lyrScklH16q0W1j1Wdn61AO05R9qqymOrHISjlt44p7mPM5HZtf.Ru3Ygv7XzuY"
-              alt="icon"
               className="promotion-data-icon"
+              src="https://i.ibb.co/QJ0NXCq/Frame.png"
+              alt="Frame"
+              border="0"
             />
             <p className="promotion-data-text">
               Invite all friends even if they have tried us. You will get
@@ -123,10 +171,11 @@ function UserDashboard() {
           </div>
           <div className="promotion-data-item">
             <img
-              src="https://icecube-eu-308.icedrive.io/download?p=MOgQ4PP4m4gzZoxQDZ2axDk_V3gXyAuuWGkP1YMaFsbdaBQWLtZQqgujnZ9IA8HpV148gDC2InBXR5MHtqRIh0VsQUZUHDCX5DqG.mLClAFCbn6Ecr9LOWesyNNkT2iJFpp.fqmKcWEZbk2faNDGQ38HKTMjEvtCYhTFhuLQ9uP9dpk6za4G7cC.KR77u1MNzlvtTbQ211U75Ml3Mza70A--"
-              alt="icon"
               className="promotion-data-icon"
-            />
+              src="https://i.ibb.co/6wPsc4S/Group-45.png"
+              alt="Group-45"
+              border="0"
+            ></img>
             <p className="promotion-data-text">
               Upon inviting, we’ll give them rewards for the services they
               havent tried yet.
@@ -134,9 +183,10 @@ function UserDashboard() {
           </div>
           <div className="promotion-data-item">
             <img
-              src="https://icecube-eu-306.icedrive.io/download?p=MOgQ4PP4m4gzZoxQDZ2axDk_V3gXyAuuWGkP1YMaFsZajqXrc_E1s_B6P2mk5weDV148gDC2InBXR5MHtqRIh0VsQUZUHDCX5DqG.mLClAFSlgP.FMIkDulFjlVPpmtEgehrBuVKwevjWKwv69wISeDo_QL1sKLO.kwtNQu5bm0JJ0Oep20J76GTlCxwRtit"
-              alt="icon"
               className="promotion-data-icon"
+              src="https://i.ibb.co/W2w3P0d/Vector.png"
+              alt="Vector"
+              border="0"
             />
             <p className="promotion-data-text">
               For every successful signup, you can win upto ₹5000, and minimum
@@ -176,79 +226,96 @@ function UserDashboard() {
   };
 
   return (
-    <div className="user-dashboard">
-      <div className="banner-image">
-        <img
-          src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
-          alt="wavy-Orange"
-          className="wavy-orange"
-        ></img>
-      </div>
-      <div className="user-dashboard-navbar">
-        <div
-          onClick={() => {
-            onClickNavItem("Bookings");
-          }}
-          className="navbar-item-container"
-        >
-          <div
-            className={
-              navItemName === "Bookings"
-                ? "navbar-item-selected"
-                : "navbar-item"
-            }
-          >
-            <p className="navbar-text">Bookings</p>
-          </div>
+    <div className="container">
+      {loading ? (
+        <div className="loader">
+          <ScaleLoader
+            color={color}
+            loading={loading}
+            height={100}
+            width={20}
+            radius={100}
+            margin={10}
+          />
         </div>
-        <div
-          onClick={() => {
-            onClickNavItem("Promotions");
-          }}
-          className="navbar-item-container"
-        >
-          <div
-            className={
-              navItemName === "Promotions"
-                ? "navbar-item-selected"
-                : "navbar-item"
-            }
-          >
-            <p className="navbar-text">Promotions</p>
+      ) : (
+        <div className="user-dashboard">
+          <div className="banner-image">
+            <img
+              src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
+              alt="wavy-Orange"
+              className="wavy-orange"
+            ></img>
           </div>
-        </div>
-        <div
-          onClick={() => {
-            onClickNavItem("Projects");
-          }}
-          className="navbar-item-container"
-        >
-          <div
-            className={
-              navItemName === "Projects"
-                ? "navbar-item-selected"
-                : "navbar-item"
-            }
-          >
-            <p className="navbar-text">Projects</p>
+          <div className="user-dashboard-navbar">
+            <div
+              onClick={() => {
+                onClickNavItem("Bookings");
+              }}
+              className="navbar-item-container"
+            >
+              <div
+                className={
+                  navItemName === "Bookings"
+                    ? "navbar-item-selected"
+                    : "navbar-item"
+                }
+              >
+                <p className="navbar-text">Bookings</p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                onClickNavItem("Promotions");
+              }}
+              className="navbar-item-container"
+            >
+              <div
+                className={
+                  navItemName === "Promotions"
+                    ? "navbar-item-selected"
+                    : "navbar-item"
+                }
+              >
+                <p className="navbar-text">Promotions</p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                onClickNavItem("Projects");
+              }}
+              className="navbar-item-container"
+            >
+              <div
+                className={
+                  navItemName === "Projects"
+                    ? "navbar-item-selected"
+                    : "navbar-item"
+                }
+              >
+                <p className="navbar-text">Projects</p>
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                onClickNavItem("Profile");
+              }}
+              className="navbar-item-container"
+            >
+              <div
+                className={
+                  navItemName === "Profile"
+                    ? "navbar-item-selected"
+                    : "navbar-item"
+                }
+              >
+                <p className="navbar-text">Profile</p>
+              </div>
+            </div>
           </div>
+          {DisplayContent()}
         </div>
-        <div
-          onClick={() => {
-            onClickNavItem("Profile");
-          }}
-          className="navbar-item-container"
-        >
-          <div
-            className={
-              navItemName === "Profile" ? "navbar-item-selected" : "navbar-item"
-            }
-          >
-            <p className="navbar-text">Profile</p>
-          </div>
-        </div>
-      </div>
-      {DisplayContent()}
+      )}
     </div>
   );
 }
