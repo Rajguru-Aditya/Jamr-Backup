@@ -61,6 +61,7 @@ function Login() {
           setUserExists(true);
         } else {
           console.log("Failed");
+          setUserExists(false);
         }
       })
       .catch((error) => {
@@ -80,6 +81,15 @@ function Login() {
           const user = result.user;
           console.log(user + "signed in");
           alert("User signed in successfully");
+          if (userExists) {
+            // User exists
+            // Redirect to home page
+            window.location.href = "/";
+          } else {
+            // User does not exist
+            // Redirect to signup page
+            alert("User does not exist");
+          }
           // ...
         })
         .catch((error) => {

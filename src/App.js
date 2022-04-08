@@ -18,12 +18,12 @@ function App() {
       {/* <FilterBar /> */}
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Home />} />
           <Route path="studio-listing" element={<StudioListing />} />
           <Route path="studio-details" element={<StudioDetails />} />
           <Route path="payment" element={<Payment />} />
           <Route path="UserDashboard" element={<UserDashboard />} />
-          <Route path="UserDashboard" element={<Login />} />
+          <Route path="Login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
