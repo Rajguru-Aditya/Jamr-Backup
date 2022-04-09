@@ -192,6 +192,13 @@ function Login() {
             Please enter your Mobile number to Login/Signup
           </p>
           <div className="inputs">
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="text"
+                placeholder="Full Name"
+              />
+            </div>
             <div className="mobile-number">
               <div className="country-code">
                 <img
@@ -209,31 +216,42 @@ function Login() {
                 onChange={(e) => setPhone(e.target.value)}
                 maxLength="10"
               />
-              <button onClick={onPressSendOtp} className="send-otp-btn">
+              {/* <button onClick={onPressSendOtp} className="send-otp-btn">
                 Send OTP
-              </button>
+              </button> */}
             </div>
-            <div className="mobile-otp">
-              <div className="country-code">
-                <h1>OTP</h1>
-              </div>
+            <div className="text-input-container">
               <input
-                className="mobile-otp-input"
+                className="text-input"
                 type="text"
-                placeholder="Mobile Number"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                maxLength="6"
+                placeholder="Create Username"
+              />
+            </div>
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="text"
+                placeholder="Password"
+              />
+            </div>
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="text"
+                placeholder="Confirm Password"
+              />
+            </div>
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="text"
+                placeholder="Email Address"
               />
             </div>
           </div>
           <div className="login-actions">
-            <div className="text-container">
-              <p className="login-with">Login with</p>
-              <p className="username-pass">Username and password</p>
-            </div>
             <button className="login-page-btn" onClick={verifyOtp}>
-              Login
+              Register
             </button>
           </div>
         </form>
