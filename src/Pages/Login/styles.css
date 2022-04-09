@@ -19,10 +19,15 @@
 .login-nav-item{
     margin: 50px;
     cursor: pointer;
+}
+
+.login-nav-item-selected{
+    margin: 50px;
+    cursor: pointer;
     border-bottom: 5px solid #FF782C;
 }
 
-.login-nav-item p{
+.login-nav-text{
     margin: 0;
     padding-bottom: 10px;
     font-size: 28px;
