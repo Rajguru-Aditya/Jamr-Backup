@@ -13,6 +13,16 @@ function Login() {
   const [userExists, setUserExists] = useState(false);
   const [navItem, setNavItem] = useState("login");
 
+  // STATES FOR REGISTRASTION
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+    username: "",
+  });
+
   const phoneNumber = `+91${phone}`;
   console.log(phoneNumber);
 
@@ -110,6 +120,63 @@ function Login() {
     }
   };
 
+  const onClickRegister = (e) => {
+    e.preventDefault();
+    if (
+      userDetails.name &&
+      userDetails.email &&
+      userDetails.password &&
+      userDetails.confirmPassword &&
+      userDetails.phone &&
+      userDetails.username
+    ) {
+      if (userDetails.password === userDetails.confirmPassword) {
+        // Register user
+        console.log("====================================");
+        console.log("User details", userDetails);
+        console.log("====================================");
+        registerUser();
+      }
+    } else {
+      alert("Please fill all the fields");
+    }
+  };
+
+  const registerUser = () => {
+    fetch("http://localhost:3000/user/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        full_name: userDetails.name,
+        username: userDetails.username,
+        password: userDetails.password,
+        mobile: userDetails.phone,
+        email: userDetails.email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        // console.log(
+        //   "POST Response",
+        //   "Response Body -> " + JSON.stringify(responseData.data)
+        // );
+        // setUserId(responseData.data.userId);
+        if (!responseData.isError) {
+          // props.navigation.navigate("Home");
+          alert("Registration Successful");
+          window.location.href = "/";
+        } else {
+          alert("Something went wrong", responseData.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const loginForm = () => (
     <div className="login-container">
       <div className="login-left">
@@ -197,6 +264,10 @@ function Login() {
                 className="text-input"
                 type="text"
                 placeholder="Full Name"
+                value={userDetails.name}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, name: e.target.value })
+                }
               />
             </div>
             <div className="mobile-number">
@@ -212,33 +283,47 @@ function Login() {
                 className="mobile-number-input"
                 type="text"
                 placeholder="Mobile Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                value={userDetails.phone}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, phone: e.target.value })
+                }
                 maxLength="10"
               />
-              {/* <button onClick={onPressSendOtp} className="send-otp-btn">
-                Send OTP
-              </button> */}
             </div>
             <div className="text-input-container">
               <input
                 className="text-input"
                 type="text"
                 placeholder="Create Username"
+                value={userDetails.username}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, username: e.target.value })
+                }
               />
             </div>
             <div className="text-input-container">
               <input
                 className="text-input"
-                type="text"
+                type="password"
                 placeholder="Password"
+                value={userDetails.password}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, password: e.target.value })
+                }
               />
             </div>
             <div className="text-input-container">
               <input
                 className="text-input"
-                type="text"
+                type="password"
                 placeholder="Confirm Password"
+                value={userDetails.confirmPassword}
+                onChange={(e) =>
+                  setUserDetails({
+                    ...userDetails,
+                    confirmPassword: e.target.value,
+                  })
+                }
               />
             </div>
             <div className="text-input-container">
@@ -246,11 +331,15 @@ function Login() {
                 className="text-input"
                 type="text"
                 placeholder="Email Address"
+                value={userDetails.email}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, email: e.target.value })
+                }
               />
             </div>
           </div>
           <div className="login-actions">
-            <button className="login-page-btn" onClick={verifyOtp}>
+            <button className="login-page-btn" onClick={onClickRegister}>
               Register
             </button>
           </div>
