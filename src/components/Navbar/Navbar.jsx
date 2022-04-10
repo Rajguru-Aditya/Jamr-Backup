@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./navbar.css";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import UserDetailsContext from "../../UserDetailsContext";
 
 function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const navigate = useNavigate();
+  const { userDetails } = useContext(UserDetailsContext);
 
   const menuClicked = () => {
     setToggleMenu(!toggleMenu);
@@ -16,6 +21,10 @@ function Navbar() {
 
     window.addEventListener("resize", changeWidth);
   }, []);
+
+  const onClickLogin = () => {
+    navigate("/Login");
+  };
 
   return (
     <div className="navbar">
@@ -45,9 +54,15 @@ function Navbar() {
           <div className="faq">
             <p className="faq-text"> FAQs </p>
           </div>
-          <div className="login-btn">
-            <p className="login-btn-text"> Login / Register </p>
-          </div>
+          {userDetails.userId ? (
+            <div className="nav-bookings">
+              <p className="nav-bookings-text"> Bookings </p>
+            </div>
+          ) : (
+            <div className="login-btn" onClick={onClickLogin}>
+              <p className="login-btn-text"> Login / Register </p>
+            </div>
+          )}
         </div>
       )}
       <img
