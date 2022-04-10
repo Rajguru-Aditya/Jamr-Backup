@@ -1,6 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserDetailsProvider } from "./UserDetailsContext";
 import Searchbar from "./components/Searchbar/Searchbar";
 import FilterBar from "./components/FilterBar/FilterBar";
 import Home from "./Pages/Home/Home";
@@ -9,7 +10,6 @@ import StudioDetails from "./Pages/StudioDetails/StudioDetails";
 import Payment from "./Pages/Payment/Payment";
 import UserDashboard from "./Pages/UserDashboard/UserDashboard";
 import Login from "./Pages/Login/Login";
-import { UserDetailsProvider } from "./UserDetailsContext";
 
 function App() {
   return (

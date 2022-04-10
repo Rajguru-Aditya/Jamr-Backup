@@ -1,0 +1,119 @@
+.content-bookings{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 100px 0;
+}
+
+.content-promotions{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    margin: 100px 0;
+    align-items: center;
+}
+
+.content-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.bookings{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin-bottom: 50px;
+    border: 2px solid #000;
+    border-radius: 50px;
+    box-shadow: 0 3px 3px 3px #ccc;
+}
+
+.bookings-header{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 2px solid #000;
+}
+
+.bookings-header-title{
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bookings-body{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.bookings-body-item{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bookings-body-item-name{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bookings-body-item-value{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.content-right{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    background-color: #FF782C;
+    height: 200px;
+}
+
+.content-right-first{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.content-right-last{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.bookings-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.bookings-subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
