@@ -22,6 +22,7 @@
     justify-content: space-between;
     width: 80%;
     overflow: auto;
+    padding-bottom: 50px;
 }
 
 .navbar-item-container{

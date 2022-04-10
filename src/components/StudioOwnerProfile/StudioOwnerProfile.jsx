@@ -1,4 +1,5 @@
 import React from "react";
+import ChartData from "../ChartData/ChartData";
 import "./styles.css";
 
 function StudioOwnerProfile() {
@@ -89,6 +90,12 @@ function StudioOwnerProfile() {
             <div className="text-item">
               <p>Balance Breakdown</p>
             </div>
+          </div>
+          <div className="chart">
+            <ChartData />
+          </div>
+          <div className="chart">
+            <ChartData />
           </div>
           <div className="withdraw-btn-and-cost">
             <div className="withdraw-btn">
