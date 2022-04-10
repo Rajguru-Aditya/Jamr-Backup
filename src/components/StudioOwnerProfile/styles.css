@@ -221,3 +221,132 @@
     padding: 0px;
     margin: 20px 0 0 0;
 }
+
+.profile-bottom-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-bottom-top-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+}
+
+.profile-dates-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    white-space: nowrap;
+    padding: 20px;
+}
+
+.profile-dates-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width:200px;
+    height: 200px;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    margin: 20px 10px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profile-dates-item-text{
+    font-size: 54px;
+    font-weight: bold;
+    color: #000;
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-bottom-bottom-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    margin-top: 100px;
+    border-radius: 50px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    padding: 50px;
+}
+
+.profile-bottom-header-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* align-items: center; */
+    width: 100%;
+}
+
+.profile-avg-ratings{
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+}
+
+.show-all-ratings{
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+}
+
+.profile-rating-items{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.profile-reviewer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-ratings{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-review{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-review-text{
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+}

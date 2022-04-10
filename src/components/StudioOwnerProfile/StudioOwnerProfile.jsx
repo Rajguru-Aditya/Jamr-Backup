@@ -1,15 +1,24 @@
-import React from "react";
+import moment from "moment";
+import React, { useState } from "react";
 import ChartData from "../ChartData/ChartData";
 import "./styles.css";
 
 function StudioOwnerProfile() {
+  const dates = [];
+
+  for (let i = 0; i < 10; i++) {
+    const getDate = moment().add(i, "d").toDate();
+    const currentDate = getDate.getDate();
+    dates.push(currentDate);
+  }
+
   return (
     <div className="profile-container">
       <div className="profile-top-container">
         <header className="user-details">
           <div className="user-image-container">
             <img
-              src="https://images.unsplash.com/photo-1562572159-4efc207f5aff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80"
+              src="https://images.unsplash.com/photo-1560727749-cc261b23794c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
               alt="user"
               className="user-image"
             />
@@ -35,7 +44,7 @@ function StudioOwnerProfile() {
             <div className="text-with-icon">
               <img
                 src="https://img.icons8.com/material-outlined/34/FF782C/clock--v1.png"
-                alt="clocl"
+                alt="clock"
               />
               <p className="data-container-subtext">Upcoming Orders</p>
             </div>
@@ -103,6 +112,39 @@ function StudioOwnerProfile() {
             </div>
             <div className="withdraw-cost">
               <p className="withdraw-cost-text">₹2567</p>
+            </div>
+          </div>
+        </div>
+        <div className="profile-bottom-container">
+          <div className="profile-bottom-top-container">
+            <h1>Upcoming Orders</h1>
+            <div className="profile-dates-container">
+              {dates.map((date, index) => (
+                <div key={index} className="profile-dates-item">
+                  <p className="profile-dates-item-text">{date}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="profile-bottom-bottom-container">
+            <div className="profile-bottom-header-container">
+              <h1 className="profile-bottom-header">Recent Reviews</h1>
+              <div className="profile-avg-ratings-container">
+                <h1 className="profile-bottom-header">Average Ratings</h1>
+                <p className="profile-avg-ratings">⭐⭐⭐⭐⭐ 5/5</p>
+                <p className="show-all-ratings">Show All</p>
+              </div>
+            </div>
+            <div className="profile-rating-items">
+              <div className="profile-reviewer">
+                <p className="profile-review-text">Reviewer</p>
+              </div>
+              <div className="profile-ratings">
+                <p className="profile-review-text">Ratings</p>
+              </div>
+              <div className="profile-review">
+                <p className="profile-review-text">Review</p>
+              </div>
             </div>
           </div>
         </div>
