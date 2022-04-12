@@ -48,12 +48,17 @@ function Login() {
     );
   };
 
-  const onPressSendOtp = () => {
+  const onPressSendOtp = (e) => {
+    e.preventDefault();
     if (phone.length === 10) {
       authenticateUserWithPhone(phone);
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
-      signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
+      signInWithPhoneNumber(
+        authentication,
+        phoneNumber,
+        window.recaptchaVerifier
+      )
         .then((confirmationResult) => {
           // SMS sent. Prompt user to type the code from the message.
           window.confirmationResult = confirmationResult;
