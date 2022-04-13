@@ -105,7 +105,7 @@ function StudioListing(props) {
             name={studio.studio.studioName}
             address={studio.studio.locality}
             price={studio.studio.studioPrice}
-            image={studio.studio.imageLocationLinks[1]}
+            image={studio.studio.imageLocationLinks[0]}
             key={index}
           />
           // </Link>

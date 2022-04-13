@@ -106,7 +106,7 @@ function StudioDetails(props) {
       .then((data) => {
         if (!data.isError) {
           setStudioData(data.data);
-          setEquipmentData(data.data[0].equipment);
+          setEquipmentData(data.data[0]?.equipment);
           console.log("studioData ----->", data.data);
         } else {
           console.log("Failed", data.isError);
@@ -283,12 +283,15 @@ function StudioDetails(props) {
             <div className="studioDetails-right-container">
               <div className="studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">{studioData[0].studio.studioName}</h1>
+                  <h1 className="title">
+                    {studioData ? studioData[0].studio.studioName : null}
+                  </h1>
                 </div>
                 <div className="studioDetails-info-address">
                   <p className="address">
-                    {studioData[0].studio.address},{" "}
-                    {studioData[0].studio.locality}, {studioData[0].studio.city}
+                    {studioData ? studioData[0]?.studio.address : null},{" "}
+                    {studioData ? studioData[0]?.studio.locality : null},{" "}
+                    {studioData ? studioData[0]?.studio.city : null}
                   </p>
                 </div>
                 <div className="studioDetails-rating-cost-container">
@@ -301,7 +304,8 @@ function StudioDetails(props) {
                   </div>
                   <div className="studioDetails-cost">
                     <p className="cost">
-                      ₹{studioData[0].studio.studioPrice}/hr
+                      ₹{studioData ? studioData[0]?.studio.studioPrice : null}
+                      /hr
                     </p>
                   </div>
                 </div>

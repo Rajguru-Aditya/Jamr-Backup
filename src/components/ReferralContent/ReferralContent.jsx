@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
+import { useContext } from "react";
+import UserDetailsContext from "../../UserDetailsContext";
 
 function ReferralContent() {
   const [referralCode, setReferralCode] = useState("");
   const [getReferralData, setReferralData] = useState("");
+  const { ids } = useContext(UserDetailsContext);
+
+  console.log(ids.userId);
 
   useEffect(() => {
     fetchReferralCode();
@@ -14,13 +19,16 @@ function ReferralContent() {
   }, [getReferralData]);
 
   const fetchReferralCode = async () => {
-    await fetch(`http://localhost:3000/referral/2`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
+    await fetch(
+      `http://localhost:3000/referral/${ids.userId ? ids.userId : 0}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })

@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import "./styles.css";
 import { authentication } from "../../config";
+import { useNavigate } from "react-router-dom";
 import {
   PhoneAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
+import { useContext } from "react";
+import UserDetailsContext from "../../UserDetailsContext";
 
 function Login() {
+  let navigate = useNavigate();
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [navItem, setNavItem] = useState("login");
-
+  const { setIds } = useContext(UserDetailsContext);
   // STATES FOR REGISTRASTION
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -110,7 +114,7 @@ function Login() {
           if (userExists) {
             // User exists
             // Redirect to home page
-            window.location.href = "/";
+            navigate("/");
           } else {
             // User does not exist
             // Redirect to signup page
@@ -164,15 +168,18 @@ function Login() {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        // console.log(
-        //   "POST Response",
-        //   "Response Body -> " + JSON.stringify(responseData.data)
-        // );
-        // setUserId(responseData.data.userId);
+        console.log(
+          "POST Response",
+          "Response Body -> " + JSON.stringify(responseData.data.UserId)
+        );
+        // setResponseData(responseData.data.UserId);
         if (!responseData.isError) {
           // props.navigation.navigate("Home");
           alert("Registration Successful");
-          window.location.href = "/";
+          setIds({
+            userId: responseData.data.UserId,
+          });
+          navigate("/");
         } else {
           alert("Something went wrong", responseData.message);
         }

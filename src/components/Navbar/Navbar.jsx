@@ -8,7 +8,9 @@ function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
-  const { userDetails } = useContext(UserDetailsContext);
+  const { ids } = useContext(UserDetailsContext);
+
+  console.log(ids.userId);
 
   const menuClicked = () => {
     setToggleMenu(!toggleMenu);
@@ -54,7 +56,7 @@ function Navbar() {
           <div className="faq">
             <p className="faq-text"> FAQs </p>
           </div>
-          {userDetails.userId ? (
+          {ids.userId ? (
             <div className="nav-bookings">
               <p className="nav-bookings-text"> Bookings </p>
             </div>
