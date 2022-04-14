@@ -10,11 +10,13 @@ function StudioListing(props) {
   }, []);
 
   useEffect(() => {
+    console.log( process.env)
     console.log("==GET DATA List==", studiosList);
+    
   }, [studiosList]);
 
   const fetchStudioList = async () => {
-    await fetch(`http://localhost:3000/studio/details?type=L&id=0`, {
+    await fetch(`http://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

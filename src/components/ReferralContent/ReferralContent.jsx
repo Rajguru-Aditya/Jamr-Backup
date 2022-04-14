@@ -20,7 +20,7 @@ function ReferralContent() {
 
   const fetchReferralCode = async () => {
     await fetch(
-      `http://localhost:3000/referral/${ids.userId ? ids.userId : 0}`,
+      `http://${process.env.REACT_APP_DOMAIN}/referral/${ids.userId ? ids.userId : 0}`,
       {
         method: "GET",
         headers: {
