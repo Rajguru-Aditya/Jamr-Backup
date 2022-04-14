@@ -16,7 +16,7 @@ function StudioListing(props) {
   }, [studiosList]);
 
   const fetchStudioList = async () => {
-    await fetch(`http://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -79,7 +79,7 @@ function Login() {
   };
 
   const authenticateUserWithPhone = (userPhone) => {
-    fetch(`http://${process.env.REACT_APP_DOMAIN}/user/exists?identify=${userPhone}`, {
+    fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/exists?identify=${userPhone}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -153,7 +153,7 @@ function Login() {
   };
 
   const registerUser = () => {
-    fetch(`http://${process.env.REACT_APP_DOMAIN}/user/`, {
+    fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/`, {
       method: "POST",
       headers: {
         Accept: "application/json",

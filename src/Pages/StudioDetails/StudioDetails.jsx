@@ -93,7 +93,7 @@ function StudioDetails(props) {
   };
 
   const fetchStudioData = async () => {
-    await fetch(`http://${process.env.DOMAIN}/studio/details?type=D&id=${studioId}`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.DOMAIN}/studio/details?type=D&id=${studioId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
