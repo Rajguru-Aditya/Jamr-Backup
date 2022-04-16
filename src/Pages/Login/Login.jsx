@@ -10,6 +10,7 @@ import {
 import { useContext } from "react";
 import UserDetailsContext from "../../UserDetailsContext";
 
+
 function Login() {
   let navigate = useNavigate();
   const [phone, setPhone] = useState("");
@@ -78,7 +79,7 @@ function Login() {
   };
 
   const authenticateUserWithPhone = (userPhone) => {
-    fetch(`http://localhost:3000/user/exists?identify=${userPhone}`, {
+    fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/exists?identify=${userPhone}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -152,7 +153,7 @@ function Login() {
   };
 
   const registerUser = () => {
-    fetch("http://localhost:3000/user/", {
+    fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/`, {
       method: "POST",
       headers: {
         Accept: "application/json",

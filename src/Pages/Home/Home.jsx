@@ -18,7 +18,7 @@ function Home(props) {
   }, [studios, studiosList]);
 
   const fetchStudios = async () => {
-    await fetch(`http://localhost:3000/studio/details?type=S&id=0}`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=S&id=0}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
