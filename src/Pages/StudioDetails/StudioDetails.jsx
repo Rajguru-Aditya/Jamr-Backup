@@ -93,7 +93,7 @@ function StudioDetails(props) {
   };
 
   const fetchStudioData = async () => {
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.DOMAIN}/studio/details?type=D&id=${studioId}`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${studioId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +105,8 @@ function StudioDetails(props) {
       })
       .then((data) => {
         if (!data.isError) {
-          setStudioData(data.data);
+          console.log(data.data[0])
+          setStudioData(data.data[0]?.studio);
           setEquipmentData(data.data[0]?.equipment);
           console.log("studioData ----->", data.data);
         } else {
@@ -167,7 +168,7 @@ function StudioDetails(props) {
       bookingDate: dateState,
       selectedSlots: selectedSlots,
       clientId: 5,
-      totalPrice: selectedSlots.length * studioData[0].studio.studioPrice,
+      totalPrice: selectedSlots.length * studioData[0]?.studio?.studioPrice,
       pricePerHour: studioData[0].studio.studioPrice,
       startTime: startTime,
       endTime: endTime,
