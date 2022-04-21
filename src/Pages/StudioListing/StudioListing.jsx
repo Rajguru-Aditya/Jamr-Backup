@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
+import UserDetailsContext from "../../UserDetailsContext";
 
 function StudioListing(props) {
   const [studiosList, setStudiosList] = useState([]);
+  const { setIds } = useContext(UserDetailsContext);
 
   useEffect(() => {
     fetchStudioList();
@@ -15,8 +17,11 @@ function StudioListing(props) {
     
   }, [studiosList]);
 
+  //PRODUCTION
   const fetchStudioList = async () => {
     await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
+      //TESTIN
+      // await fetch(`http://localhost:3000/studio/details/?type=L`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,11 +47,14 @@ function StudioListing(props) {
   const StudioContainer = (studio) => {
     const id = studio.id;
     return (
-      <Link className="studio-link" to="/studio-details" state={id}>
+      <Link className="studio-link" to="/studio-details">
         <div
           className="studio"
           onClick={() => {
-            console.log(id);
+            console.log("id", id);
+            setIds({
+              studioId: id,
+            });
           }}
         >
           <div className="upper-container">
