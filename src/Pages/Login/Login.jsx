@@ -3,7 +3,6 @@ import "./styles.css";
 import { authentication } from "../../config";
 import { useNavigate } from "react-router-dom";
 import {
-  PhoneAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
@@ -58,7 +57,7 @@ function Login() {
     if (phone.length === 10) {
       authenticateUserWithPhone(phone);
       generateRecaptcha();
-      let appVerifier = window.recaptchaVerifier;
+      // let appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(
         authentication,
         phoneNumber,

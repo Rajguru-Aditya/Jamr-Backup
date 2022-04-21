@@ -18,7 +18,8 @@ function Home(props) {
   }, [studios, studiosList]);
 
   const fetchStudios = async () => {
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=S&id=0}`, {
+    // await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=S&id=0}`, {
+      await fetch(`http://localhost:3000/studio/details/?type=L`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -174,9 +175,13 @@ function Home(props) {
       </div>
       {/* MUSIC STUDIOS */}
       <div className="studios">
+        <div className="studios-title-container">
+
         <h1 className="title">Music Studios</h1>
+        <h1 className="subtitle">Top Picks 🔥</h1>
+        </div>
         <div className="studios-main-container">
-          {studios.map((studio, index) => (
+          {studios.slice(0,3).map((studio, index) => (
             <StudioContainer
               id={studio.studio.locationId}
               image={studio.studio.imageLocationLinks[0]}

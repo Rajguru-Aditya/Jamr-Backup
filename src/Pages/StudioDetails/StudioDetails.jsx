@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import ScaleLoader from "react-spinners/ScaleLoader";
@@ -6,6 +6,7 @@ import SlotsData from "../../Data/SlotsData";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import UserDetailsContext from "../../UserDetailsContext";
 
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
@@ -20,14 +21,15 @@ function StudioDetails(props) {
   const [dateState, setDateState] = useState(new Date());
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const { ids } = useContext(UserDetailsContext);
+  const studioId = ids.studioId;
+
+  console.log("studioId ->", studioId);
 
   const changeDate = (date) => {
     setDateState(date);
   };
 
-  const location = useLocation();
-  const studioId = location.state;
-  console.log("data", studioId);
   const color = "#FF782C";
 
   // Horizontal Scroll Menu
@@ -39,9 +41,9 @@ function StudioDetails(props) {
   useEffect(() => {
     console.log("==GET STUDIO DATA==", studioData);
     console.log("==GET EQUIPMENT DATA==", equipmentName);
-    setTimeout(() => {
-      getEquipment();
-    }, 2000);
+    // setTimeout(() => {
+    //   getEquipment();
+    // }, 2000);
   }, [studioData]);
 
   useEffect(() => {
@@ -93,7 +95,8 @@ function StudioDetails(props) {
   };
 
   const fetchStudioData = async () => {
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${studioId}`, {
+    // await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${getId}`, {
+      await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -105,10 +108,12 @@ function StudioDetails(props) {
       })
       .then((data) => {
         if (!data.isError) {
-          console.log(data.data[0])
-          setStudioData(data.data[0]?.studio);
-          setEquipmentData(data.data[0]?.equipment);
+          console.log("=========>",data.data[0])
+          console.log("STUDIO DATA=========>",data.data[0].studio)
+          setStudioData(data.data[0].studio);
+          setEquipmentData(data.data[0].equipment);
           console.log("studioData ----->", data.data);
+          console.log("Studio Data in states ----->", studioData);
         } else {
           console.log("Failed", data.isError);
         }
@@ -153,12 +158,12 @@ function StudioDetails(props) {
     setDateClicked(!dateClicked);
   };
 
-  const getEquipment = () => {
-    Object.keys(equipmentData).map((key) => {
-      return equipments.push(key);
-    });
-    setEquipmentName([...equipments]);
-  };
+  // const getEquipment = () => {
+  //   Object.keys(equipmentData).map((key) => {
+  //     return equipments.push(key);
+  //   });
+  //   setEquipmentName([...equipments]);
+  // };
 
   let navigate = useNavigate();
 
@@ -179,6 +184,8 @@ function StudioDetails(props) {
     console.log("bookingData", bookingData);
     navigate("/Payment", { state: { bookingData: bookingData } });
   };
+
+  console.log("Studio Name", studioData ? studioData[0] : null);
 
   return (
     <div>
@@ -285,14 +292,14 @@ function StudioDetails(props) {
               <div className="studioDetails-info">
                 <div className="studioDetails-info-title">
                   <h1 className="title">
-                    {studioData ? studioData[0].studio.studioName : null}
+                    {studioData ? studioData.studioName : null}
                   </h1>
                 </div>
                 <div className="studioDetails-info-address">
                   <p className="address">
-                    {studioData ? studioData[0]?.studio.address : null},{" "}
-                    {studioData ? studioData[0]?.studio.locality : null},{" "}
-                    {studioData ? studioData[0]?.studio.city : null}
+                    {studioData ? studioData.address : null},{" "}
+                    {studioData ? studioData.locality : null},{" "}
+                    {studioData ? studioData.city : null}
                   </p>
                 </div>
                 <div className="studioDetails-rating-cost-container">
