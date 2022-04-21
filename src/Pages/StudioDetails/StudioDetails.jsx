@@ -95,8 +95,10 @@ function StudioDetails(props) {
   };
 
   const fetchStudioData = async () => {
-    // await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${getId}`, {
-      await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
+    //Production
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${studioId}`, {
+      //Testing
+      // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -17,9 +17,11 @@ function StudioListing(props) {
     
   }, [studiosList]);
 
+  //PRODUCTION
   const fetchStudioList = async () => {
-    // await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
-      await fetch(`http://localhost:3000/studio/details/?type=L`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
+      //TESTIN
+      // await fetch(`http://localhost:3000/studio/details/?type=L`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
