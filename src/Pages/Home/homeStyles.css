@@ -7,22 +7,32 @@
   background-color: #fff;
 }
 
+.title-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .title {
   font-size: 2rem;
   font-weight: bold;
   color: #000;
-  margin-bottom: 1rem;
-  margin-top: 3rem;
-  width: 100%;
+  /* width: 100%; */
+  margin-right: 3rem;
 }
 
 .subtitle{
   font-size: 1.5rem;
   font-weight: bold;
   color: #000;
-  margin-bottom: 1rem;
-  margin-top: 3rem;
-  width: 100%;
+  /* width: 100%; */
+}
+
+.sideText{
+  font-size: 1.5rem;
+  font-weight: lighter;
+  color: #000;
 }
 
 .banner {
@@ -58,13 +68,13 @@
 }
 
 .service-container {
-  width: 200px;
-  height: 250px;
+  width: 250px;
+  height: 300px;
   display: flex;
   flex-direction: column;
-  background-color: #eee;
+  /* background-color: #eee;
   border-radius: 30px;
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2); */
   margin-bottom: 50px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
@@ -84,19 +94,20 @@
 
 .service-upperContainer {
   width: 100%;
+  height: 100%;
   display: flex;
   flex: 0.8;
   flex-direction: column;
-  background-color: #fff;
+  /* background-color: #fff;
   border-radius: 30px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
   align-items: center;
   justify-content: center;
 }
 
 .service-icon {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 }
 
 .service-lowerContainer {
@@ -131,7 +142,6 @@
   align-items: center;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 10px;
   margin-bottom: 50px;
 }
 
@@ -139,8 +149,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
-  width: 80%;
+  justify-content: space-between;
+  width: 90%;
 }
 
 .studio-link{
@@ -156,7 +166,7 @@
   border-radius: 30px;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
-  height: 200px;
+  height: 400px;
   width: 300px;
 }
 
@@ -178,6 +188,7 @@
   width: 100%;
   border-radius: 30px;
   height: 100%;
+  object-fit: cover;
 }
 
 .studio-lowerContainer {
