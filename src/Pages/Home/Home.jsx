@@ -90,16 +90,17 @@ function Home(props) {
     <div className="home">
       {/* Banner Image */}
       <div className="banner">
-        <img
+        {/* <img
           src="https://i.ibb.co/DbzFf5y/Orange-Rectangle.png"
           alt="Orange-Rectangle"
           className="banner-bg"
-        />
-        <img
+        /> */}
+        <img src="https://i.ibb.co/yVnjNLr/Rectangle-Orange.png" alt="Rectangle-Orange" className="banner-bg"/>
+        {/* <img
           src="https://i.ibb.co/sHHJ1h1/Login-BGHigher-Res.png"
           alt="Login-BGHigher-Res"
           className="banner-img"
-        ></img>
+        ></img> */}
       </div>
 
       {/* Services */}
@@ -107,11 +108,12 @@ function Home(props) {
         <Link className="service-link" to="/studio-listing">
           <div onClick={onClickStudioList} className="service-container">
             <div className="service-upperContainer">
-              <img
+              {/* <img
                 src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
                 alt="headphone"
                 className="service-icon"
-              />
+              /> */}
+              <img src="https://i.ibb.co/h16KyH9/vector1.png" className="service-icon" alt="vector1" />
             </div>
             <div className="service-lowerContainer">
               <p>Music Studios</p>
@@ -121,11 +123,12 @@ function Home(props) {
         <Link className="service-link" to="/studio-listing">
           <div className="service-container">
             <div className="service-upperContainer">
-              <img
+              {/* <img
                 src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/500/000000/external-guitar-stay-home-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
                 alt="guitar"
                 className="service-icon"
-              />
+              /> */}
+              <img src="https://i.ibb.co/b67hL01/vector2.png" alt="vector2" className="service-icon"/>
             </div>
             <div className="service-lowerContainer">
               <p>Jam Pads</p>
@@ -135,18 +138,19 @@ function Home(props) {
         <Link className="service-link" to="/studio-listing">
           <div className="service-container">
             <div className="service-upperContainer">
-              <img
+              {/* <img
                 src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/500/000000/external-mixer-radio-vitaliy-gorbachev-flat-vitaly-gorbachev.png"
                 alt="mixer"
                 className="service-icon"
-              />
+              /> */}
+              <img src="https://i.ibb.co/dBbyZH2/vector3.png" alt="vector3" className="service-icon"/>
             </div>
             <div className="service-lowerContainer">
               <p>Mixing & Mastering</p>
             </div>
           </div>
         </Link>
-        <Link className="service-link" to="/studio-listing">
+        {/* <Link className="service-link" to="/studio-listing">
           <div className="service-container">
             <div className="service-upperContainer">
               <img
@@ -173,14 +177,16 @@ function Home(props) {
               <p>Courses</p>
             </div>
           </div>
-        </Link>
+        </Link> */}
       </div>
       {/* MUSIC STUDIOS */}
       <div className="studios">
         <div className="studios-title-container">
-
-        <h1 className="title">Music Studios</h1>
-        <h1 className="subtitle">Top Picks 🔥</h1>
+        <div className="title-container">
+          <h1 className="title">Music Studios</h1>
+          <h1 className="subtitle">Top Picks 🔥</h1>
+        </div>
+        <h1 className="sideText">View More</h1>
         </div>
         <div className="studios-main-container">
           {studios.slice(0,3).map((studio, index) => (

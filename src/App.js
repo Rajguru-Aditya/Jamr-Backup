@@ -14,7 +14,7 @@ import Login from "./Pages/Login/Login";
 function App() {
   return (
     <div>
-      {/* <Searchbar /> */}
+      <Searchbar />
       {/* <FilterBar /> */}
       <UserDetailsProvider>
         <BrowserRouter>
