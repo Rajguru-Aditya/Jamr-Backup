@@ -314,7 +314,7 @@ function StudioDetails(props) {
                   </div>
                   <div className="studioDetails-cost">
                     <p className="cost">
-                      ₹{studioData ? studioData[0]?.studio.studioPrice : null}
+                      ₹{studioData ? studioData.studioPrice : null}
                       /hr
                     </p>
                   </div>

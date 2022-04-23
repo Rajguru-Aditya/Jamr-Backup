@@ -94,7 +94,7 @@ function StudioListing(props) {
         <img
           src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
           alt="wavy-Orange"
-          className="wavy-orange"
+          className="wavy-orange-vector"
         ></img>
         <img
           src="https://i.ibb.co/p2ZTCq0/listing-Page-Vector.png"

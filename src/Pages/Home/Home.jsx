@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./homeStyles.css";
+import UserDetailsContext from "../../UserDetailsContext";
 
 function Home(props) {
   const [studios, setStudios] = useState([]);
   const [studiosList, setStudiosList] = useState([]);
   const [studioNames, setStudiosNames] = useState([]);
   const [studioId, setStudioId] = useState(null);
+  const { setIds } = useContext(UserDetailsContext);
 
   useEffect(() => {
     fetchStudios();
@@ -70,6 +72,9 @@ function Home(props) {
         <div
           className="studio-container"
           onClick={() => {
+            setIds({
+              studioId: id,
+            });
             console.log(id);
           }}
           // key={studio.key}
@@ -181,12 +186,20 @@ function Home(props) {
       </div>
       {/* MUSIC STUDIOS */}
       <div className="studios">
+        <div className="studio-title-main-container">
+
         <div className="studios-title-container">
-        <div className="title-container">
-          <h1 className="title">Music Studios</h1>
-          <h1 className="subtitle">Top Picks 🔥</h1>
+          <div className="title-container">
+            <h1 className="title">Music Studios</h1>
+            <h1 className="subtitle">Top Picks 🔥</h1>
+          </div>
+          <div>
+          <Link className="service-link" to="/studio-listing">
+
+            <h1 className="sideText">View More</h1>
+          </Link>
+          </div>
         </div>
-        <h1 className="sideText">View More</h1>
         </div>
         <div className="studios-main-container">
           {studios.slice(0,3).map((studio, index) => (
