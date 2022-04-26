@@ -11,6 +11,7 @@ function Home(props) {
   const { setIds } = useContext(UserDetailsContext);
 
   useEffect(() => {
+    document.title = "Jamr | Home";
     fetchStudios();
   }, []);
 

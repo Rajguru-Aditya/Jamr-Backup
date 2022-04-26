@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { authentication } from "../../config";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,10 @@ function Login() {
     phone: "",
     username: "",
   });
+
+  useEffect(() => {
+    document.title = "Jamr | Login";
+  }, []);
 
   const phoneNumber = `+91${phone}`;
   console.log(phoneNumber);

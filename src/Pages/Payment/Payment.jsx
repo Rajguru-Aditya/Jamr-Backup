@@ -14,6 +14,7 @@ function Payment() {
   const location = useLocation();
 
   useEffect(() => {
+    document.title = "Jamr | Payment";
     setTimeout(() => {
       setLoading(false);
     }, 2000);
