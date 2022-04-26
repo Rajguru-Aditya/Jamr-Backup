@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./styles.css";
 import moment from "moment";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import BookingDetailsContext from "../../BookingDetailsContext";
 
 function Payment() {
   const [pressed, setPressed] = useState(false);
-  const [getBookingData, setBookingData] = useState();
   const [loading, setLoading] = useState(true);
+  const { details } = useContext(BookingDetailsContext);
   const color = "#FF782C";
 
   const location = useLocation();
-
-  useEffect(() => {
-    const { bookingData } = location.state;
-    setBookingData(bookingData);
-  }, [location]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -23,7 +19,6 @@ function Payment() {
     }, 2000);
   }, []);
 
-  console.log("BOOKING DATA", getBookingData);
 
   const PromoCode = () => (
     <div className="promotional-code">
@@ -106,25 +101,25 @@ function Payment() {
             <div className="payment-studioDetails-right-container">
               <div className="payment-studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">{getBookingData.studioName}</h1>
+                  <h1 className="title">{details.studioName}</h1>
                 </div>
                 <div className="studioDetails-info-address">
-                  <p className="address">{getBookingData.studioAddress}</p>
+                  <p className="address">{details.studioAddress}</p>
                 </div>
               </div>
               <div className="date-time-container">
                 <p className="date">
-                  {moment(getBookingData.bookingDate).format("MMMM Do YYYY")}
+                  {moment(details.bookingDate).format("MMMM Do YYYY")}
                 </p>
                 <p className="time">
-                  {getBookingData.startTime}pm to {getBookingData.endTime}pm
+                  {details.startTime}pm to {details.endTime}pm
                 </p>
               </div>
               <div className="payment-breakdown-container">
                 <p className="subtitle">Payment Breakdown</p>
                 <div className="cost-container">
                   <p className="title">Total</p>
-                  <p className="title">₹{getBookingData.totalPrice}</p>
+                  <p className="title">₹{details.totalPrice}</p>
                 </div>
               </div>
               <div
