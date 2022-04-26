@@ -7,6 +7,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import UserDetailsContext from "../../UserDetailsContext";
+import BookingDetailsContext from "../../BookingDetailsContext";
 
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
@@ -23,6 +24,7 @@ function StudioDetails(props) {
   const [endTime, setEndTime] = useState("");
   const { ids } = useContext(UserDetailsContext);
   const studioId = ids.studioId;
+  const { setDetails } = useContext(BookingDetailsContext);
 
   console.log("studioId ->", studioId);
 
@@ -170,24 +172,20 @@ function StudioDetails(props) {
   let navigate = useNavigate();
 
   const proceedBooking = () => {
-    const bookingData = {
-      studioId: studioId,
-      bookingDate: dateState,
-      selectedSlots: selectedSlots,
-      clientId: 5,
-      totalPrice: selectedSlots.length * studioData[0]?.studio?.studioPrice,
-      pricePerHour: studioData[0].studio.studioPrice,
-      startTime: startTime,
-      endTime: endTime,
-      studioName: studioData[0].studio.studioName,
-      studioAddress:
-        studioData[0].studio.locality + " , " + studioData[0].studio.city,
-    };
-    console.log("bookingData", bookingData);
-    navigate("/Payment", { state: { bookingData: bookingData } });
+    setDetails.studioId( studioId);
+    setDetails.bookingDate( dateState);
+    setDetails.selectedSlots( selectedSlots);
+    setDetails.clientId( 5);
+    setDetails.totalPrice( selectedSlots.length * studioData.studioPrice);
+    setDetails.pricePerHour( studioData.studioPrice);
+    setDetails.startTime( startTime);
+    setDetails.endTime( endTime);
+    setDetails.studioName( studioData.studioName);
+    setDetails.studioAddress(studioData.locality + " , " + studioData.city);
+    navigate("/Payment");
   };
 
-  console.log("Studio Name", studioData ? studioData[0] : null);
+  console.log("Studio Name", studioData ? studioData : null);
 
   return (
     <div>
