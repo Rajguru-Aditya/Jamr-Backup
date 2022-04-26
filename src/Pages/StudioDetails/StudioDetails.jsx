@@ -172,18 +172,17 @@ function StudioDetails(props) {
   let navigate = useNavigate();
 
   const proceedBooking = () => {
-    setDetails.studioId( studioId);
-    setDetails.bookingDate( dateState);
-    setDetails.selectedSlots( selectedSlots);
-    setDetails.clientId( 5);
-    setDetails.totalPrice( selectedSlots.length * studioData.studioPrice);
-    setDetails.pricePerHour( studioData.studioPrice);
-    setDetails.startTime( startTime);
-    setDetails.endTime( endTime);
-    setDetails.studioName( studioData.studioName);
-    setDetails.studioAddress(studioData.locality + " , " + studioData.city);
-    navigate("/Payment");
+    setDetails({bookingDate: dateState,
+    selectedSlots: selectedSlots,
+    totalPrice: selectedSlots.length * studioData.studioPrice,
+    pricePerHour: studioData.studioPrice,
+    startTime: startTime,
+    endTime: endTime,
+    studioName: studioData.studioName,
+    studioAddress: studioData.locality + " , " + studioData.city,})
+    navigate("/Payment")
   };
+  console.log(dateState.toISOString());
 
   console.log("Studio Name", studioData ? studioData : null);
 

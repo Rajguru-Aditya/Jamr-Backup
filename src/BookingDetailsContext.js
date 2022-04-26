@@ -6,12 +6,11 @@ export function BookingDetailsProvider({ children }) {
   const [details, setDetails] = useState({
     bookingDate: "",
       selectedSlots: [],
-      clientId: 0,
       totalPrice: 0,
       pricePerHour:   0,
-      startTime:  "",
-      endTime:  "",
-      studioName:     "",
+      startTime:  0,
+      endTime:  0,
+      studioName: "",
       studioAddress:"",
   });
   return (
