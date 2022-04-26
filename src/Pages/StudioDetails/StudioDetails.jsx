@@ -37,6 +37,7 @@ function StudioDetails(props) {
   // Horizontal Scroll Menu
 
   useEffect(() => {
+    document.title = "Jamr | Studio Details";
     fetchStudioData();
   }, []);
 

@@ -8,6 +8,7 @@ function StudioListing(props) {
   const { setIds } = useContext(UserDetailsContext);
 
   useEffect(() => {
+    document.title = "Jamr | Studios";
     fetchStudioList();
   }, []);
 
