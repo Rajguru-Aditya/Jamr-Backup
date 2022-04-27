@@ -11,6 +11,7 @@
 .jamr-logo {
   height: 5em;
   margin-left: 80px;
+  cursor: pointer;
 }
 
 .navbar-items {

@@ -19,8 +19,8 @@
   /* position: relative; */
 }
 
-.wavy-orange {
-  height: 45vh;
+.wavy-orange-details {
+  height: 60vh;
   width: 100%;
   background-position: right bottom;
   animation: wavy-orange-animation 1.5s infinite;

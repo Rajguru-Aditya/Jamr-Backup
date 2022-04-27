@@ -34,6 +34,9 @@ function Navbar() {
         src="https://i.ibb.co/TP8VqHk/Whats-App-Image-2022-02-01-at-21-17-1.png"
         alt="jamr-logo"
         className="jamr-logo"
+        onClick={() => {
+          navigate("/");
+        }}
       />
       {(toggleMenu || screenWidth > 900) && (
         <div className="navbar-items">

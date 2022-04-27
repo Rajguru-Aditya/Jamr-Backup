@@ -220,7 +220,7 @@ function StudioDetails(props) {
             <img
               src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
               alt="wavy-Orange"
-              className="wavy-orange"
+              className="wavy-orange-details"
             ></img>
             <img
               src="https://i.ibb.co/2FdvSgs/Studio-Details-Img.png"
