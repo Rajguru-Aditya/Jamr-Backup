@@ -23,14 +23,28 @@ function StudioDetails(props) {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const { ids } = useContext(UserDetailsContext);
-  const studioId = ids.studioId;
+  // const studioId = ids.studioId;
+  
   const { setDetails } = useContext(BookingDetailsContext);
 
-  console.log("studioId ->", studioId);
+  // console.log("studioId ->", studioId);
 
   const changeDate = (date) => {
     setDateState(date);
   };
+
+  useEffect(() => {
+    if(window.localStorage.getItem("studioId") === null || window.localStorage.getItem("studioId") === undefined || window.localStorage.getItem("studioId") === ""){
+        window.localStorage.setItem("studioId", ids.studioId);
+    } else {
+      if( ids.studioId !== "" && window.localStorage.getItem("studioId") !== ids.studioId){
+        window.localStorage.setItem("studioId", ids.studioId);
+      }
+    }
+  }, []);
+
+  console.log("LOCALSTORAGE", window.localStorage.getItem("studioId"));
+  
 
   const color = "#FF782C";
 
@@ -99,7 +113,7 @@ function StudioDetails(props) {
 
   const fetchStudioData = async () => {
     //Production
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${studioId}`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${localStorage.getItem("studioId") ? localStorage.getItem("studioId") : ids.studioId  }`, {
       //Testing
       // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
       method: "GET",
