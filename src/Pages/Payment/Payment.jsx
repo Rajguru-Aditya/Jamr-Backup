@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import "./styles.css";
 import moment from "moment";
 import ScaleLoader from "react-spinners/ScaleLoader";
@@ -9,9 +8,36 @@ function Payment() {
   const [pressed, setPressed] = useState(false);
   const [loading, setLoading] = useState(true);
   const { details } = useContext(BookingDetailsContext);
+  const [storeDetails, setStoreDetails] = useState();
   const color = "#FF782C";
+  let LSItems;
 
-  const location = useLocation();
+  useEffect(() => {
+    if(window.localStorage.getItem("details") !== null) {
+      LSItems = JSON.parse(window.localStorage.getItem("details"));
+      console.log("LSItems", LSItems.bookingDate);
+      if(LSItems.bookingDate === null ||
+        LSItems.bookingDate === undefined ||
+        LSItems.bookingDate === ""){
+          window.localStorage.setItem("details", JSON.stringify(details));
+          // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+      } else {
+        if( details.bookingDate !== "" && LSItems.bookingDate !== details.bookingDate){
+          window.localStorage.setItem("details", JSON.stringify(details));
+        }
+      }
+    } else {
+      window.localStorage.setItem("details", JSON.stringify(details));
+    }
+
+  }, []);
+
+  useEffect(() => {
+    if(LSItems !== undefined || LSItems !== null || LSItems !== "") {
+      setStoreDetails(LSItems);
+    }
+  }, [LSItems]);
+  
 
   useEffect(() => {
     document.title = "Jamr | Payment";
@@ -19,6 +45,16 @@ function Payment() {
       setLoading(false);
     }, 2000);
   }, []);
+
+  console.log("LOCAL STORAGE details", JSON.parse(window.localStorage.getItem("details")));
+  // useEffect(() => {
+
+  //   if(window.localStorage.getItem("details") === null || window.localStorage.getItem("details") === undefined || window.localStorage.getItem("details") === ""){
+  //     setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+  //   }
+  // }, []);
+
+  console.log("storeDetails", storeDetails);
 
 
   const PromoCode = () => (
@@ -102,25 +138,25 @@ function Payment() {
             <div className="payment-studioDetails-right-container">
               <div className="payment-studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">{details.studioName}</h1>
+                  <h1 className="title">{details.studioName ? details.studioName : storeDetails?.studioName }</h1>
                 </div>
                 <div className="studioDetails-info-address">
-                  <p className="address">{details.studioAddress}</p>
+                  <p className="address">{details.studioAddress ? details.studioAddress : storeDetails?.studioAddress }</p>
                 </div>
               </div>
               <div className="date-time-container">
                 <p className="date">
-                  {moment(details.bookingDate).format("MMMM Do YYYY")}
+                  {moment(details.bookingDate ? details.bookingDate : storeDetails?.bookingDate ).format("MMMM Do YYYY")}
                 </p>
                 <p className="time">
-                  {details.startTime}pm to {details.endTime}pm
+                  {details.startTime ? details.startTime : storeDetails?.startTime }pm to {details.endTime ? details.endTime : storeDetails?.endTime }pm
                 </p>
               </div>
               <div className="payment-breakdown-container">
                 <p className="subtitle">Payment Breakdown</p>
                 <div className="cost-container">
                   <p className="title">Total</p>
-                  <p className="title">₹{details.totalPrice}</p>
+                  <p className="title">₹{details.totalPrice ? details.totalPrice : storeDetails?.totalPrice }</p>
                 </div>
               </div>
               <div
