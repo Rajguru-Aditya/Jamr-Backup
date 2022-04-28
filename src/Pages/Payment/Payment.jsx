@@ -138,25 +138,25 @@ function Payment() {
             <div className="payment-studioDetails-right-container">
               <div className="payment-studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">{LSItems?.studioName ? LSItems.studioName : storeDetails?.studioName }</h1>
+                  <h1 className="title">{details.studioName ? details.studioName : storeDetails?.studioName }</h1>
                 </div>
                 <div className="studioDetails-info-address">
-                  <p className="address">{LSItems?.studioAddress ? LSItems.studioAddress : storeDetails?.studioAddress }</p>
+                  <p className="address">{details.studioAddress ? details.studioAddress : storeDetails?.studioAddress }</p>
                 </div>
               </div>
               <div className="date-time-container">
                 <p className="date">
-                  {moment(LSItems?.bookingDate ? LSItems.bookingDate : storeDetails?.bookingDate ).format("MMMM Do YYYY")}
+                  {moment(details.bookingDate ? details.bookingDate : storeDetails?.bookingDate ).format("MMMM Do YYYY")}
                 </p>
                 <p className="time">
-                  {LSItems?.startTime ? LSItems.startTime : storeDetails?.startTime }pm to {LSItems?.endTime ? LSItems.endTime : storeDetails?.endTime }pm
+                  {details.startTime ? details.startTime : storeDetails?.startTime }pm to {details.endTime ? details.endTime : storeDetails?.endTime }pm
                 </p>
               </div>
               <div className="payment-breakdown-container">
                 <p className="subtitle">Payment Breakdown</p>
                 <div className="cost-container">
                   <p className="title">Total</p>
-                  <p className="title">₹{LSItems?.totalPrice ? LSItems.totalPrice : storeDetails?.totalPrice }</p>
+                  <p className="title">₹{details.totalPrice ? details.totalPrice : storeDetails?.totalPrice }</p>
                 </div>
               </div>
               <div
