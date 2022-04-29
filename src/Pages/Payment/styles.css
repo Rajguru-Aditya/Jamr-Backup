@@ -95,7 +95,7 @@
   justify-content: space-between;
 }
 
-.payment-btn {
+.payment-btn, .proceed-payment-btn {
   background-color: #ff782c;
   border-radius: 50px;
   color: #fff;
@@ -110,6 +110,10 @@
   box-shadow: -2px 2px 2px #555;
   cursor: pointer;
   margin-bottom: 50px;
+}
+
+.proceed-payment-btn{
+  margin-top: 50px;
 }
 
 .promotional-code,

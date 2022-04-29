@@ -10,6 +10,16 @@ function Navbar() {
   const navigate = useNavigate();
   const { ids } = useContext(UserDetailsContext);
 
+  useEffect(() => {
+    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
+        window.localStorage.setItem("userId", ids.userId);
+    } else {
+      if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
+        window.localStorage.setItem("userId", ids.userId);
+      }
+    }
+  }, []);
+
   console.log(ids.userId);
 
   const menuClicked = () => {
@@ -59,8 +69,10 @@ function Navbar() {
           <div className="faq">
             <p className="faq-text"> FAQs </p>
           </div>
-          {ids.userId ? (
-            <div className="nav-bookings">
+          {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
+            <div className="nav-bookings" onClick={() => {
+              navigate("/dashboard");
+            }}>
               <p className="nav-bookings-text"> Bookings </p>
             </div>
           ) : (
