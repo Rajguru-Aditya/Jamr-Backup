@@ -47,12 +47,41 @@ function Payment() {
   }, []);
 
   console.log("LOCAL STORAGE details", JSON.parse(window.localStorage.getItem("details")));
-  // useEffect(() => {
 
-  //   if(window.localStorage.getItem("details") === null || window.localStorage.getItem("details") === undefined || window.localStorage.getItem("details") === ""){
-  //     setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-  //   }
-  // }, []);
+
+  const transaction = async () => {
+    //PRODUCTION
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new}`, {
+    //TESTING  
+    // await fetch(`http://localhost:3000/studio/details/?type=L`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        studioId: 1,
+        clientId: 1,
+        date: details.bookingDate ? details.bookingDate : storeDetails?.bookingDate,
+        pricePerHour: details.pricePerHour ? details.pricePerHour : storeDetails?.pricePerHour,
+        isJamrPackage: 0,
+        slotsBooked: details.selectedSlots ? details.selectedSlots : storeDetails?.selectedSlots,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("Transaction history ----->", data.data);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   console.log("storeDetails", storeDetails);
 
@@ -95,6 +124,14 @@ function Payment() {
           <p className="info-text">Postal Number</p>
           <input type="text" className="payment-input"></input>
         </div>
+      </div>
+      <div
+        className="proceed-payment-btn"
+        onClick={() => {
+          transaction();
+        }}
+      >
+        <p>Proceed to pay</p>
       </div>
     </div>
   );

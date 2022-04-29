@@ -16,7 +16,7 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [navItem, setNavItem] = useState("login");
-  const { setIds } = useContext(UserDetailsContext);
+  const { ids,setIds } = useContext(UserDetailsContext);
   // STATES FOR REGISTRASTION
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -26,6 +26,16 @@ function Login() {
     phone: "",
     username: "",
   });
+
+  useEffect(() => {
+    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
+        window.localStorage.setItem("userId", ids.userId);
+    } else {
+      if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
+        window.localStorage.setItem("userId", ids.userId);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     document.title = "Jamr | Login";
@@ -112,18 +122,19 @@ function Login() {
         .confirm(otp)
         .then((result) => {
           // User signed in successfully.
-          const user = result.user;
-          console.log(user + "signed in");
+          // const user = result.user;
+          // console.log(user + "signed in");
+          console.log(result)
           alert("User signed in successfully");
-          if (userExists) {
-            // User exists
-            // Redirect to home page
-            navigate("/");
-          } else {
-            // User does not exist
-            // Redirect to signup page
-            alert("User does not exist");
-          }
+          // if (userExists) {
+          //   // User exists
+          //   // Redirect to home page
+          //   navigate("/");
+          // } else {
+          //   // User does not exist
+          //   // Redirect to signup page
+          //   alert("User does not exist");
+          // }
           // ...
         })
         .catch((error) => {
@@ -351,6 +362,17 @@ function Login() {
                 onChange={(e) =>
                   setUserDetails({ ...userDetails, email: e.target.value })
                 }
+              />
+            </div>
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="text"
+                placeholder="Referral Code"
+                // value={userDetails.email}
+                // onChange={(e) =>
+                //   setUserDetails({ ...userDetails, email: e.target.value })
+                // }
               />
             </div>
           </div>

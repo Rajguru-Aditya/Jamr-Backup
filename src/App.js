@@ -26,8 +26,8 @@ function App() {
             <Route path="studio-listing" element={<StudioListing />} />
             <Route path="studio-details" element={<StudioDetails />} />
             <Route path="payment" element={<Payment />} />
-            <Route path="UserDashboard" element={<UserDashboard />} />
-            <Route path="Login" element={<Login />} />
+            <Route path="dashboard" element={<UserDashboard />} />
+            <Route path="login" element={<Login />} />
           </Routes>
         </BrowserRouter>
         </BookingDetailsProvider>
