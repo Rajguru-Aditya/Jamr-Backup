@@ -10,6 +10,9 @@ function ReferralContent() {
 
   console.log(ids.userId);
 
+  const userIdForReferral = window.localStorage.getItem("userId");
+  console.log(" SHOW UID",userIdForReferral);
+
   useEffect(() => {
     fetchReferralCode();
   }, []);
@@ -20,7 +23,7 @@ function ReferralContent() {
 
   const fetchReferralCode = async () => {
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/referral/${ids.userId ? ids.userId : 0}`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/referral/${userIdForReferral ? userIdForReferral : 0}`,
       {
         method: "GET",
         headers: {
