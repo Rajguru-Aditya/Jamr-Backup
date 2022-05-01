@@ -13,6 +13,10 @@
   left: 100px;
 }
 
+.searchbar-hidden{
+  display: none;
+}
+
 .search-input {
   width: 100%;
   height: 100%;

@@ -3,6 +3,7 @@ import "./styles.css";
 import moment from "moment";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import BookingDetailsContext from "../../BookingDetailsContext";
+import { useNavigate } from "react-router-dom";
 
 function Payment() {
   const [pressed, setPressed] = useState(false);
@@ -11,6 +12,7 @@ function Payment() {
   const [storeDetails, setStoreDetails] = useState();
   const color = "#FF782C";
   let LSItems;
+  let navigate = useNavigate();
 
   useEffect(() => {
     if(window.localStorage.getItem("details") !== null) {
@@ -51,7 +53,7 @@ function Payment() {
 
   const transaction = async () => {
     //PRODUCTION
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new}`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`, {
     //TESTING  
     // await fetch(`http://localhost:3000/studio/details/?type=L`, {
       method: "Post",
@@ -60,12 +62,13 @@ function Payment() {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        studioId: 1,
-        clientId: 1,
+        studioId: window.localStorage.getItem("studioId"),
+        clientId: window.localStorage.getItem("userId"),
         date: details.bookingDate ? details.bookingDate : storeDetails?.bookingDate,
-        pricePerHour: details.pricePerHour ? details.pricePerHour : storeDetails?.pricePerHour,
-        isJamrPackage: 0,
-        slotsBooked: details.selectedSlots ? details.selectedSlots : storeDetails?.selectedSlots,
+        basePrice: details.pricePerHour ? details.pricePerHour : storeDetails?.pricePerHour,
+        paymentMode: "test card",
+        isJamr: 0,
+        slots: details.selectedSlots ? details.selectedSlots : storeDetails?.selectedSlots,
       }),
     })
       .then((response) => {
@@ -128,7 +131,7 @@ function Payment() {
       <div
         className="proceed-payment-btn"
         onClick={() => {
-          transaction();
+            transaction();
         }}
       >
         <p>Proceed to pay</p>

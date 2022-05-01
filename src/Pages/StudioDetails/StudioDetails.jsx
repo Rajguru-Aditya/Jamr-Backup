@@ -187,16 +187,21 @@ function StudioDetails(props) {
   let navigate = useNavigate();
 
   const proceedBooking = () => {
-    setDetails({
-      bookingDate: dateState,
-      selectedSlots: selectedSlots,
-      totalPrice: selectedSlots.length * studioData.studioPrice,
-      pricePerHour: studioData.studioPrice,
-      startTime: startTime,
-      endTime: endTime,
-      studioName: studioData.studioName,
-      studioAddress: studioData.locality + " , " + studioData.city,})
-    navigate("/Payment")
+    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
+      alert("Please Login/Register to proceed");
+      navigate("/login");
+    } else {
+      setDetails({
+        bookingDate: dateState,
+        selectedSlots: selectedSlots,
+        totalPrice: selectedSlots.length * studioData.studioPrice,
+        pricePerHour: studioData.studioPrice,
+        startTime: startTime,
+        endTime: endTime,
+        studioName: studioData.studioName,
+        studioAddress: studioData.locality + " , " + studioData.city,})
+      navigate("/Payment")
+    }
   };
   console.log(dateState.toISOString());
 
