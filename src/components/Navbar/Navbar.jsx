@@ -10,15 +10,15 @@ function Navbar() {
   const navigate = useNavigate();
   const { ids } = useContext(UserDetailsContext);
 
-  useEffect(() => {
-    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
-        window.localStorage.setItem("userId", ids.userId);
-    } else {
-      if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
-        window.localStorage.setItem("userId", ids.userId);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
+  //       window.localStorage.setItem("userId", ids.userId);
+  //   } else {
+  //     if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
+  //       window.localStorage.setItem("userId", ids.userId);
+  //     }
+  //   }
+  // }, []);
 
   console.log(ids.userId);
 

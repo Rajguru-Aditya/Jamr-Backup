@@ -8,7 +8,7 @@ function Home(props) {
   const [studiosList, setStudiosList] = useState([]);
   const [studioNames, setStudiosNames] = useState([]);
   const [studioId, setStudioId] = useState(null);
-  const { setIds } = useContext(UserDetailsContext);
+  const { ids, setIds } = useContext(UserDetailsContext);
 
   useEffect(() => {
     document.title = "Jamr | Home";
@@ -19,6 +19,16 @@ function Home(props) {
     console.log("==GET DATA==", studios);
     console.log("==GET DATA List==", studiosList);
   }, [studios, studiosList]);
+
+  useEffect(() => {
+    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
+        window.localStorage.setItem("userId", ids.userId);
+    } else {
+      if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
+        window.localStorage.setItem("userId", ids.userId);
+      }
+    }
+  }, []);
 
   const fetchStudios = async () => {
     //PRODUCTION

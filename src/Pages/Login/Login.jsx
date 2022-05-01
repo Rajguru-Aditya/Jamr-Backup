@@ -160,6 +160,8 @@ function Login() {
         console.log("User details", userDetails);
         console.log("====================================");
         registerUser();
+      } else {
+        alert("Password and confirm password do not match");
       }
     } else {
       alert("Please fill all the fields");
