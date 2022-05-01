@@ -9,17 +9,13 @@ function UserDashboard() {
   const [navItemName, setNavItemName] = useState("Bookings");
   const [referralCode, setReferralCode] = useState("");
   const [getReferralData, setReferralData] = useState("");
-  const [loading, setLoading] = useState(true);
-  const color = "#FF782C";
 
   const onClickNavItem = (name) => {
     setNavItemName(name);
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    document.title = "Jamr | Dashboard";
   }, []);
 
   useEffect(() => {
@@ -49,18 +45,6 @@ function UserDashboard() {
 
   return (
     <div className="container">
-      {loading ? (
-        <div className="loader">
-          <ScaleLoader
-            color={color}
-            loading={loading}
-            height={100}
-            width={20}
-            radius={100}
-            margin={10}
-          />
-        </div>
-      ) : (
         <div className="user-dashboard">
           <div className="banner-image">
             <img
@@ -137,7 +121,6 @@ function UserDashboard() {
           </div>
           {DisplayContent()}
         </div>
-      )}
     </div>
   );
 }

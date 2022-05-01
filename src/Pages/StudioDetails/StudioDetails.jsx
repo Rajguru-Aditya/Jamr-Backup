@@ -63,11 +63,11 @@ function StudioDetails(props) {
     // }, 2000);
   }, [studioData]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // }, []);
 
   useEffect(() => {
     getStartTime();
@@ -133,6 +133,7 @@ function StudioDetails(props) {
           setEquipmentData(data.data[0].equipment);
           console.log("studioData ----->", data.data);
           console.log("Studio Data in states ----->", studioData);
+          setLoading(false);
         } else {
           console.log("Failed", data.isError);
         }

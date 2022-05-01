@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import moment from "moment";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import BookingDetailsContext from "../../BookingDetailsContext";
 import { useNavigate } from "react-router-dom";
 
 function Payment() {
   const [pressed, setPressed] = useState(false);
-  const [loading, setLoading] = useState(true);
   const { details } = useContext(BookingDetailsContext);
   const [storeDetails, setStoreDetails] = useState();
-  const color = "#FF782C";
   let LSItems;
   let navigate = useNavigate();
 
@@ -43,9 +40,6 @@ function Payment() {
 
   useEffect(() => {
     document.title = "Jamr | Payment";
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
   }, []);
 
   console.log("LOCAL STORAGE details", JSON.parse(window.localStorage.getItem("details")));
@@ -77,6 +71,8 @@ function Payment() {
       .then((data) => {
         if (!data.isError) {
           console.log("Transaction history ----->", data.data);
+          alert("Transaction Successful");
+          navigate("/");
         } else {
           console.log("Failed", data.isError);
         }
@@ -141,19 +137,6 @@ function Payment() {
 
   return (
     <div className="payment">
-      {loading ? (
-        <div className="loader">
-          <ScaleLoader
-            color={color}
-            loading={loading}
-            height={100}
-            width={20}
-            radius={100}
-            margin={10}
-          />
-        </div>
-      ) : (
-        <>
           <div className="payment-image">
             <img
               src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
@@ -210,8 +193,6 @@ function Payment() {
               </div>
             </div>
           </div>
-        </>
-      )}
     </div>
   );
 }
