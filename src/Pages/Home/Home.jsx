@@ -2,13 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./homeStyles.css";
 import UserDetailsContext from "../../UserDetailsContext";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 function Home(props) {
   const [studios, setStudios] = useState([]);
   const [studiosList, setStudiosList] = useState([]);
   const [studioNames, setStudiosNames] = useState([]);
   const [studioId, setStudioId] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { ids, setIds } = useContext(UserDetailsContext);
+  const color = "#FF782C";
 
   useEffect(() => {
     document.title = "Jamr | Home";
@@ -53,6 +56,7 @@ function Home(props) {
           //   console.log("studio ----->", studio.studioName);
           //   console.log("====================================");
           // });
+          setLoading(false);
         } else {
           console.log("Failed", data.isError);
         }
@@ -103,126 +107,142 @@ function Home(props) {
   };
 
   return (
-    <div className="home">
-      {/* Banner Image */}
-      <div className="banner">
-        {/* <img
-          src="https://i.ibb.co/DbzFf5y/Orange-Rectangle.png"
-          alt="Orange-Rectangle"
-          className="banner-bg"
-        /> */}
-        <img src="https://i.ibb.co/yVnjNLr/Rectangle-Orange.png" alt="Rectangle-Orange" className="banner-bg"/>
-        {/* <img
-          src="https://i.ibb.co/sHHJ1h1/Login-BGHigher-Res.png"
-          alt="Login-BGHigher-Res"
-          className="banner-img"
-        ></img> */}
-      </div>
+    <div>
 
-      {/* Services */}
-      <div className="services">
-        <Link className="service-link" to="/studio-listing">
-          <div onClick={onClickStudioList} className="service-container">
-            <div className="service-upperContainer">
-              {/* <img
-                src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
-                alt="headphone"
-                className="service-icon"
-              /> */}
-              <img src="https://i.ibb.co/h16KyH9/vector1.png" className="service-icon" alt="vector1" />
-            </div>
-            <div className="service-lowerContainer">
-              <p>Music Studios</p>
-            </div>
-          </div>
-        </Link>
-        <Link className="service-link" to="/studio-listing">
-          <div className="service-container">
-            <div className="service-upperContainer">
-              {/* <img
-                src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/500/000000/external-guitar-stay-home-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
-                alt="guitar"
-                className="service-icon"
-              /> */}
-              <img src="https://i.ibb.co/b67hL01/vector2.png" alt="vector2" className="service-icon"/>
-            </div>
-            <div className="service-lowerContainer">
-              <p>Jam Pads</p>
-            </div>
-          </div>
-        </Link>
-        <Link className="service-link" to="/studio-listing">
-          <div className="service-container">
-            <div className="service-upperContainer">
-              {/* <img
-                src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/500/000000/external-mixer-radio-vitaliy-gorbachev-flat-vitaly-gorbachev.png"
-                alt="mixer"
-                className="service-icon"
-              /> */}
-              <img src="https://i.ibb.co/dBbyZH2/vector3.png" alt="vector3" className="service-icon"/>
-            </div>
-            <div className="service-lowerContainer">
-              <p>Mixing & Mastering</p>
-            </div>
-          </div>
-        </Link>
-        {/* <Link className="service-link" to="/studio-listing">
-          <div className="service-container">
-            <div className="service-upperContainer">
-              <img
-                src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/500/000000/external-video-advertising-xnimrodx-lineal-color-xnimrodx-6.png"
-                alt="video"
-                className="service-icon"
-              />
-            </div>
-            <div className="service-lowerContainer">
-              <p>Videos</p>
-            </div>
-          </div>
-        </Link>
-        <Link className="service-link" to="/studio-listing">
-          <div className="service-container">
-            <div className="service-upperContainer">
-              <img
-                src="https://img.icons8.com/color/500/000000/teaching.png"
-                alt="teaching"
-                className="service-icon"
-              />
-            </div>
-            <div className="service-lowerContainer">
-              <p>Courses</p>
-            </div>
-          </div>
-        </Link> */}
-      </div>
-      {/* MUSIC STUDIOS */}
-      <div className="studios">
-        <div className="studio-title-main-container">
-
-        <div className="studios-title-container">
-          <div className="title-container">
-            <h1 className="title">Music Studios</h1>
-            <h1 className="subtitle">Top Picks 🔥</h1>
-          </div>
-          <div>
-          <Link className="service-link" to="/studio-listing">
-
-            <h1 className="sideText">View More</h1>
-          </Link>
-          </div>
-        </div>
-        </div>
-        <div className="studios-main-container">
-          {studios.slice(0,3).map((studio, index) => (
-            <StudioContainer
-              id={studio.studio.locationId}
-              image={studio.studio.imageLocationLinks[0]}
-              name={studio.studio.studioName}
-              key={index}
+        {loading ? (
+          <div className="loader">
+            <ScaleLoader
+              color={color}
+              loading={loading}
+              height={100}
+              width={20}
+              radius={100}
+              margin={10}
             />
-          ))}
-        </div>
-      </div>
+          </div>
+        ) : (
+          <div className="home">
+                 {/* Banner Image */}
+            <div className="banner">
+              {/* <img
+                src="https://i.ibb.co/DbzFf5y/Orange-Rectangle.png"
+                alt="Orange-Rectangle"
+                className="banner-bg"
+              /> */}
+              <img src="https://i.ibb.co/yVnjNLr/Rectangle-Orange.png" alt="Rectangle-Orange" className="banner-bg"/>
+              {/* <img
+                src="https://i.ibb.co/sHHJ1h1/Login-BGHigher-Res.png"
+                alt="Login-BGHigher-Res"
+                className="banner-img"
+              ></img> */}
+            </div>
+
+            {/* Services */}
+            <div className="services">
+              <Link className="service-link" to="/studio-listing">
+                <div onClick={onClickStudioList} className="service-container">
+                  <div className="service-upperContainer">
+                    {/* <img
+                      src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
+                      alt="headphone"
+                      className="service-icon"
+                    /> */}
+                    <img src="https://i.ibb.co/h16KyH9/vector1.png" className="service-icon" alt="vector1" />
+                  </div>
+                  <div className="service-lowerContainer">
+                    <p>Music Studios</p>
+                  </div>
+                </div>
+              </Link>
+              <Link className="service-link" to="/studio-listing">
+                <div className="service-container">
+                  <div className="service-upperContainer">
+                    {/* <img
+                      src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/500/000000/external-guitar-stay-home-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"
+                      alt="guitar"
+                      className="service-icon"
+                    /> */}
+                    <img src="https://i.ibb.co/b67hL01/vector2.png" alt="vector2" className="service-icon"/>
+                  </div>
+                  <div className="service-lowerContainer">
+                    <p>Jam Pads</p>
+                  </div>
+                </div>
+              </Link>
+              <Link className="service-link" to="/studio-listing">
+                <div className="service-container">
+                  <div className="service-upperContainer">
+                    {/* <img
+                      src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/500/000000/external-mixer-radio-vitaliy-gorbachev-flat-vitaly-gorbachev.png"
+                      alt="mixer"
+                      className="service-icon"
+                    /> */}
+                    <img src="https://i.ibb.co/dBbyZH2/vector3.png" alt="vector3" className="service-icon"/>
+                  </div>
+                  <div className="service-lowerContainer">
+                    <p>Mixing & Mastering</p>
+                  </div>
+                </div>
+              </Link>
+              {/* <Link className="service-link" to="/studio-listing">
+                <div className="service-container">
+                  <div className="service-upperContainer">
+                    <img
+                      src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/500/000000/external-video-advertising-xnimrodx-lineal-color-xnimrodx-6.png"
+                      alt="video"
+                      className="service-icon"
+                    />
+                  </div>
+                  <div className="service-lowerContainer">
+                    <p>Videos</p>
+                  </div>
+                </div>
+              </Link>
+              <Link className="service-link" to="/studio-listing">
+                <div className="service-container">
+                  <div className="service-upperContainer">
+                    <img
+                      src="https://img.icons8.com/color/500/000000/teaching.png"
+                      alt="teaching"
+                      className="service-icon"
+                    />
+                  </div>
+                  <div className="service-lowerContainer">
+                    <p>Courses</p>
+                  </div>
+                </div>
+              </Link> */}
+            </div>
+            {/* MUSIC STUDIOS */}
+            <div className="studios">
+              <div className="studio-title-main-container">
+
+              <div className="studios-title-container">
+                <div className="title-container">
+                  <h1 className="title">Music Studios</h1>
+                  <h1 className="subtitle">Top Picks 🔥</h1>
+                </div>
+                <div>
+                <Link className="service-link" to="/studio-listing">
+
+                  <h1 className="sideText">View More</h1>
+                </Link>
+                </div>
+              </div>
+              </div>
+              <div className="studios-main-container">
+                {studios.slice(0,3).map((studio, index) => (
+                  <StudioContainer
+                    id={studio.studio.locationId}
+                    image={studio.studio.imageLocationLinks[0]}
+                    name={studio.studio.studioName}
+                    key={index}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 }

@@ -2,10 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import UserDetailsContext from "../../UserDetailsContext";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 function StudioListing(props) {
   const [studiosList, setStudiosList] = useState([]);
   const { setIds } = useContext(UserDetailsContext);
+  const [loading, setLoading] = useState(true);
+  const color = "#FF782C";
 
   useEffect(() => {
     document.title = "Jamr | Studios";
@@ -36,6 +39,7 @@ function StudioListing(props) {
         if (!data.isError) {
           setStudiosList(data.data);
           console.log("studiosData ----->", studiosList);
+          setLoading(false);
         } else {
           console.log("Failed", data.isError);
         }
@@ -90,7 +94,20 @@ function StudioListing(props) {
   };
 
   return (
-    <div className="studioListing">
+    <div>
+        {loading ? (
+          <div className="loader">
+            <ScaleLoader
+              color={color}
+              loading={loading}
+              height={100}
+              width={20}
+              radius={100}
+              margin={10}
+            />
+          </div>
+        ) : (
+          <div className="studioListing">
       <div className="studioListing-image">
         <img
           src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
@@ -122,6 +139,8 @@ function StudioListing(props) {
           // </Link>
         ))}
       </div>
+    </div>
+        )}
     </div>
   );
 }

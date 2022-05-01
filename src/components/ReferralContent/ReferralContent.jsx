@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useContext } from "react";
 import UserDetailsContext from "../../UserDetailsContext";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 function ReferralContent() {
   const [referralCode, setReferralCode] = useState("");
   const [getReferralData, setReferralData] = useState("");
   const { ids } = useContext(UserDetailsContext);
+  const [loading, setLoading] = useState(true);
+  const color = "#FF782C";
 
   console.log(ids.userId);
 
@@ -39,6 +42,7 @@ function ReferralContent() {
         if (!data.isError) {
           setReferralData(data.data);
           console.log("REFERRALCODE ----->", data.data);
+          setLoading(false);
         } else {
           console.log("Failed", data.isError);
         }
@@ -49,7 +53,20 @@ function ReferralContent() {
   };
 
   return (
-    <div className="content-promotions">
+    <div>
+            {loading ? (
+        <div className="loader">
+          <ScaleLoader
+            color={color}
+            loading={loading}
+            height={100}
+            width={20}
+            radius={100}
+            margin={10}
+          />
+        </div>
+      ) : (
+        <div className="content-promotions">
       <div className="promotion-content-container">
         <div className="promotion-left">
           <h1 className="promotion-title">Refer and get FREE services</h1>
@@ -125,6 +142,8 @@ function ReferralContent() {
           </div>
         </div>
       </div>
+    </div>
+      )}
     </div>
   );
 }

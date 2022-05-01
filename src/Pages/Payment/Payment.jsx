@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import moment from "moment";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import BookingDetailsContext from "../../BookingDetailsContext";
+import { useNavigate } from "react-router-dom";
 
 function Payment() {
   const [pressed, setPressed] = useState(false);
-  const [loading, setLoading] = useState(true);
   const { details } = useContext(BookingDetailsContext);
   const [storeDetails, setStoreDetails] = useState();
-  const color = "#FF782C";
   let LSItems;
+  let navigate = useNavigate();
 
   useEffect(() => {
     if(window.localStorage.getItem("details") !== null) {
@@ -41,9 +40,6 @@ function Payment() {
 
   useEffect(() => {
     document.title = "Jamr | Payment";
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
   }, []);
 
   console.log("LOCAL STORAGE details", JSON.parse(window.localStorage.getItem("details")));
@@ -51,7 +47,7 @@ function Payment() {
 
   const transaction = async () => {
     //PRODUCTION
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new}`, {
+    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`, {
     //TESTING  
     // await fetch(`http://localhost:3000/studio/details/?type=L`, {
       method: "Post",
@@ -60,12 +56,13 @@ function Payment() {
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        studioId: 1,
-        clientId: 1,
+        studioId: window.localStorage.getItem("studioId"),
+        clientId: window.localStorage.getItem("userId"),
         date: details.bookingDate ? details.bookingDate : storeDetails?.bookingDate,
-        pricePerHour: details.pricePerHour ? details.pricePerHour : storeDetails?.pricePerHour,
-        isJamrPackage: 0,
-        slotsBooked: details.selectedSlots ? details.selectedSlots : storeDetails?.selectedSlots,
+        basePrice: details.pricePerHour ? details.pricePerHour : storeDetails?.pricePerHour,
+        paymentMode: "test card",
+        isJamr: 0,
+        slots: details.selectedSlots ? details.selectedSlots : storeDetails?.selectedSlots,
       }),
     })
       .then((response) => {
@@ -74,6 +71,8 @@ function Payment() {
       .then((data) => {
         if (!data.isError) {
           console.log("Transaction history ----->", data.data);
+          alert("Transaction Successful");
+          navigate("/");
         } else {
           console.log("Failed", data.isError);
         }
@@ -128,7 +127,7 @@ function Payment() {
       <div
         className="proceed-payment-btn"
         onClick={() => {
-          transaction();
+            transaction();
         }}
       >
         <p>Proceed to pay</p>
@@ -138,19 +137,6 @@ function Payment() {
 
   return (
     <div className="payment">
-      {loading ? (
-        <div className="loader">
-          <ScaleLoader
-            color={color}
-            loading={loading}
-            height={100}
-            width={20}
-            radius={100}
-            margin={10}
-          />
-        </div>
-      ) : (
-        <>
           <div className="payment-image">
             <img
               src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
@@ -207,8 +193,6 @@ function Payment() {
               </div>
             </div>
           </div>
-        </>
-      )}
     </div>
   );
 }
