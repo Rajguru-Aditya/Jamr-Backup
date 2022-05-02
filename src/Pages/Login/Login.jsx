@@ -184,21 +184,21 @@ function Login() {
       }),
     })
       .then((response) => response.json())
-      .then((responseData) => {
+      .then((data) => {
         console.log(
           "POST Response",
-          "Response Body -> " + JSON.stringify(responseData.data.UserId)
+          "Response Body -> " + JSON.stringify(data.data)
         );
-        // setResponseData(responseData.data.UserId);
-        if (!responseData.isError) {
+        // setdata(data.data.UserId);
+        if (!data.isError) {
           // props.navigation.navigate("Home");
           alert("Registration Successful");
           setIds({
-            userId: responseData.data.UserId,
+            userId: data.data.UserId,
           });
           navigate("/");
         } else {
-          alert("Something went wrong", responseData.message);
+          alert("Something went wrong", data.message);
         }
       })
       .catch((error) => {
