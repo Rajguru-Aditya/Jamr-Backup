@@ -199,6 +199,8 @@ function Login() {
           navigate("/");
         } else {
           alert("Something went wrong", data.message);
+          console.log("Something went wrong", data);
+
         }
       })
       .catch((error) => {
