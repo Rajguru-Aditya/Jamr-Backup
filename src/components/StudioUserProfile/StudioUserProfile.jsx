@@ -15,7 +15,56 @@ function StudioUserProfile() {
           </div>
           <p>Add or Edit profile picture</p>
         </div>
-        <div className="profile-upper-right-container"></div>
+        <div className="profile-upper-right-container">
+          <div className="inputs">
+            <div className="input-fields-container">
+              <input className="input-fields" type="text" placeholder="Name" />
+              <img
+                src="https://img.icons8.com/fluency-systems-filled/48/000000/edit.png"
+                alt="edit"
+                className="edit-icon"
+              />
+            </div>
+            <div className="input-fields-container">
+              <input
+                className="input-fields"
+                type="text"
+                placeholder="Mobile Number"
+              />
+              <img
+                src="https://img.icons8.com/fluency-systems-filled/48/000000/edit.png"
+                alt="edit"
+                className="edit-icon"
+              />
+            </div>
+            <div className="input-fields-container">
+              <input
+                className="input-fields"
+                type="text"
+                placeholder="Email Address"
+              />
+              <img
+                src="https://img.icons8.com/fluency-systems-filled/48/000000/edit.png"
+                alt="edit"
+                className="edit-icon"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="profile-middle-container">
+        <div className="inputs">
+          <textarea
+            className="textarea-field"
+            type="text"
+            placeholder="Add your Bio"
+          />
+          <textarea
+            className="textarea-field"
+            type="text"
+            placeholder="Address"
+          />
+        </div>
       </div>
     </div>
   );
