@@ -32,6 +32,7 @@
   font-size: 50px;
   color: #fff;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .studios {
@@ -163,6 +164,9 @@
     font-size: 30px;
     color: #000;
     text-transform: uppercase;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 20px;
   }
 
   .wavy-orange, .listing-page-vector {
