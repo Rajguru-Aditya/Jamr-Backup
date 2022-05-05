@@ -4,6 +4,7 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import BookingsContent from "../../components/BookingsContent/BookingsContent";
 import ReferralContent from "../../components/ReferralContent/ReferralContent";
 import StudioOwnerProfile from "../../components/StudioOwnerProfile/StudioOwnerProfile";
+import StudioUserProfile from "../../components/StudioUserProfile/StudioUserProfile";
 
 function UserDashboard() {
   const [navItemName, setNavItemName] = useState("Bookings");
@@ -37,7 +38,7 @@ function UserDashboard() {
       case "Projects":
         return <ProjectsContent />;
       case "Profile":
-        return <StudioOwnerProfile />;
+        return <StudioUserProfile />;
       default:
         return <BookingsContent />;
     }

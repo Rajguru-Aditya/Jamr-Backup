@@ -102,7 +102,6 @@
   .navbar{
     justify-content: center;
     flex-direction: column;
-    width: 100%;
   }
 
   .navbar-items {

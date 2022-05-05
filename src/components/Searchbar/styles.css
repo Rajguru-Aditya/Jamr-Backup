@@ -33,7 +33,9 @@
   .searchbar {
     align-items: center;
     justify-content: center;
-    left: 15px;
-    width: 300px;
+    width: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
   }
 }
