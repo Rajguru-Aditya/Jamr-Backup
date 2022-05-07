@@ -465,3 +465,39 @@
   align-items: center;
 }
 
+@media screen and (max-width: 900px) {
+  .details-Page-Vector{
+    display: none;
+  }
+  .studioDetails-content{
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  .studioDetails-left-container {
+    width: 100%;
+    margin: -150px 0 0 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .studioDetails-right-container {
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0;
+    padding: 0;
+  }
+
+  .additional-packages-container{
+    justify-content: center;
+  }
+
+  .date-time-slots-container {
+    align-items: center;
+    margin-top: 50px;
+    width: 80%;
+  }
+  
+}
