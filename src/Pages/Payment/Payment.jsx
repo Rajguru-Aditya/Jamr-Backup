@@ -12,59 +12,73 @@ function Payment() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if(window.localStorage.getItem("details") !== null) {
+    if (window.localStorage.getItem("details") !== null) {
       LSItems = JSON.parse(window.localStorage.getItem("details"));
       console.log("LSItems", LSItems.bookingDate);
-      if(LSItems.bookingDate === null ||
+      if (
+        LSItems.bookingDate === null ||
         LSItems.bookingDate === undefined ||
-        LSItems.bookingDate === ""){
-          window.localStorage.setItem("details", JSON.stringify(details));
-          // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+        LSItems.bookingDate === ""
+      ) {
+        window.localStorage.setItem("details", JSON.stringify(details));
+        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
       } else {
-        if( details.bookingDate !== "" && LSItems.bookingDate !== details.bookingDate){
+        if (
+          details.bookingDate !== "" &&
+          LSItems.bookingDate !== details.bookingDate
+        ) {
           window.localStorage.setItem("details", JSON.stringify(details));
         }
       }
     } else {
       window.localStorage.setItem("details", JSON.stringify(details));
     }
-
   }, []);
 
   useEffect(() => {
-    if(LSItems !== undefined || LSItems !== null || LSItems !== "") {
+    if (LSItems !== undefined || LSItems !== null || LSItems !== "") {
       setStoreDetails(LSItems);
     }
   }, [LSItems]);
-  
 
   useEffect(() => {
     document.title = "Jamr | Payment";
   }, []);
 
-  console.log("LOCAL STORAGE details", JSON.parse(window.localStorage.getItem("details")));
-
+  console.log(
+    "LOCAL STORAGE details",
+    JSON.parse(window.localStorage.getItem("details"))
+  );
 
   const transaction = async () => {
     //PRODUCTION
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`, {
-    //TESTING  
-    // await fetch(`http://localhost:3000/studio/details/?type=L`, {
-      method: "Post",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        studioId: window.localStorage.getItem("studioId"),
-        clientId: window.localStorage.getItem("userId"),
-        date: details.bookingDate ? details.bookingDate : storeDetails?.bookingDate,
-        basePrice: details.pricePerHour ? details.pricePerHour : storeDetails?.pricePerHour,
-        paymentMode: "test card",
-        isJamr: 0,
-        slots: details.selectedSlots ? details.selectedSlots : storeDetails?.selectedSlots,
-      }),
-    })
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`,
+      {
+        //TESTING
+        // await fetch(`http://localhost:3000/studio/details/?type=L`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          studioId: window.localStorage.getItem("studioId"),
+          clientId: window.localStorage.getItem("userId"),
+          date: details.bookingDate
+            ? details.bookingDate
+            : storeDetails?.bookingDate,
+          basePrice: details.pricePerHour
+            ? details.pricePerHour
+            : storeDetails?.pricePerHour,
+          paymentMode: "test card",
+          isJamr: 0,
+          slots: details.selectedSlots
+            ? details.selectedSlots
+            : storeDetails?.selectedSlots,
+        }),
+      }
+    )
       .then((response) => {
         return response.json();
       })
@@ -83,7 +97,6 @@ function Payment() {
   };
 
   console.log("storeDetails", storeDetails);
-
 
   const PromoCode = () => (
     <div className="promotional-code">
@@ -127,7 +140,7 @@ function Payment() {
       <div
         className="proceed-payment-btn"
         onClick={() => {
-            transaction();
+          transaction();
         }}
       >
         <p>Proceed to pay</p>
@@ -137,62 +150,81 @@ function Payment() {
 
   return (
     <div className="payment">
-          <div className="payment-image">
-            <img
-              src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
-              alt="wavy-Orange"
-              className="wavy-orange"
-            ></img>
-            <img
-              src="https://i.ibb.co/2FdvSgs/Studio-Details-Img.png"
-              alt="payment-page-Img"
-              className="payment-Page-Vector"
-            ></img>
-          </div>
-          <div className="payment-studioDetails">
-            <div className="payment-studioDetails-left-container">
-              <img
-                src="https://cdn.pixabay.com/photo/2016/03/30/05/41/music-1290087_960_720.jpg"
-                alt="studio"
-                className="studio-image"
-              />
-              {pressed ? <PaymentDetails /> : <PromoCode />}
+      <div className="payment-image">
+        <img
+          src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
+          alt="wavy-Orange"
+          className="wavy-orange-payment"
+        ></img>
+        <img
+          src="https://i.ibb.co/2FdvSgs/Studio-Details-Img.png"
+          alt="payment-page-Img"
+          className="payment-Page-Vector"
+        ></img>
+      </div>
+      <div className="payment-studioDetails">
+        <div className="payment-studioDetails-left-container">
+          <img
+            src="https://cdn.pixabay.com/photo/2016/03/30/05/41/music-1290087_960_720.jpg"
+            alt="studio"
+            className="studio-image"
+          />
+          {pressed ? <PaymentDetails /> : <PromoCode />}
+        </div>
+        <div className="payment-studioDetails-right-container">
+          <div className="payment-studioDetails-info">
+            <div className="studioDetails-info-title">
+              <h1 className="title">
+                {details.studioName
+                  ? details.studioName
+                  : storeDetails?.studioName}
+              </h1>
             </div>
-            <div className="payment-studioDetails-right-container">
-              <div className="payment-studioDetails-info">
-                <div className="studioDetails-info-title">
-                  <h1 className="title">{details.studioName ? details.studioName : storeDetails?.studioName }</h1>
-                </div>
-                <div className="studioDetails-info-address">
-                  <p className="address">{details.studioAddress ? details.studioAddress : storeDetails?.studioAddress }</p>
-                </div>
-              </div>
-              <div className="date-time-container">
-                <p className="date">
-                  {moment(details.bookingDate ? details.bookingDate : storeDetails?.bookingDate ).format("MMMM Do YYYY")}
-                </p>
-                <p className="time">
-                  {details.startTime ? details.startTime : storeDetails?.startTime }pm to {details.endTime ? details.endTime : storeDetails?.endTime }pm
-                </p>
-              </div>
-              <div className="payment-breakdown-container">
-                <p className="subtitle">Payment Breakdown</p>
-                <div className="cost-container">
-                  <p className="title">Total</p>
-                  <p className="title">₹{details.totalPrice ? details.totalPrice : storeDetails?.totalPrice }</p>
-                </div>
-              </div>
-              <div
-                className="payment-btn"
-                onClick={() => {
-                  setPressed(true);
-                  console.log(pressed);
-                }}
-              >
-                <p>Continue to payment</p>
-              </div>
+            <div className="studioDetails-info-address">
+              <p className="address">
+                {details.studioAddress
+                  ? details.studioAddress
+                  : storeDetails?.studioAddress}
+              </p>
             </div>
           </div>
+          <div className="date-time-container">
+            <p className="date">
+              {moment(
+                details.bookingDate
+                  ? details.bookingDate
+                  : storeDetails?.bookingDate
+              ).format("MMMM Do YYYY")}
+            </p>
+            <p className="time">
+              {details.startTime ? details.startTime : storeDetails?.startTime}
+              pm to {details.endTime ? details.endTime : storeDetails?.endTime}
+              pm
+            </p>
+          </div>
+          <div className="payment-breakdown-container">
+            <p className="subtitle">Payment Breakdown</p>
+            <div className="cost-container">
+              <p className="title">Total</p>
+              <p className="title">
+                ₹
+                {details.totalPrice
+                  ? details.totalPrice
+                  : storeDetails?.totalPrice}
+              </p>
+            </div>
+          </div>
+          <div
+            className="payment-btn"
+            onClick={() => {
+              setPressed(true);
+              console.log(pressed);
+            }}
+          >
+            <p>Continue to payment</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
