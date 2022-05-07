@@ -100,9 +100,9 @@ function Payment() {
 
   const PromoCode = () => (
     <div className="promotional-code">
-      <p className="subtitle">Apply a promotional code</p>
+      <p className="subtitle-promo-code">Apply a promotional code</p>
       <div className="input-btn-container">
-        <input type="text" className="promotional-code-input"></input>
+        <input type="text" className="promotional-code-input" />
         <div className="promotional-code-btn">Apply</div>
       </div>
     </div>

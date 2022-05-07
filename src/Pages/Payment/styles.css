@@ -75,11 +75,11 @@
 
 .date,
 .time,
-.subtitle {
+.subtitle-promo-code {
   font-size: 22px;
 }
 
-.subtitle {
+.subtitle-promo-code {
   font-weight: bold;
 }
 
@@ -207,10 +207,31 @@
     margin: 50px;
   }
 
-  .promotional-code,
   .payment-details-container {
     align-items: center;
     width: 80%;
+  }
+
+  .promotional-code{
+    width: 100%;
+    align-items: center;
+    margin-top: 50px;
+  }
+
+  .subtitle-promo-code{
+    display: block;
+  }
+
+  .input-btn-container {
+    flex-direction: column;
+    height: 100px;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  .promotional-code-btn{
+    margin: 0;
   }
 
   .payment-details-container{
