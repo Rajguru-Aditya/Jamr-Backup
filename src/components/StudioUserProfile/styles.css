@@ -85,6 +85,16 @@
   }
   .profile-upper-container {
     flex-direction: column;
+    margin-top: 50px;
+  }
+
+  .textarea-field{
+    width: 80%;
+    font-size: 20px;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #000;
+    margin-bottom: 50px;
   }
   
 }
