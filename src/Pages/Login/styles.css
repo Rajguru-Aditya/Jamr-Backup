@@ -135,6 +135,14 @@
     position: relative;
 }
 
+.register-mobile-number{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
 .country-code{
     display: flex;
     flex-direction: row;
@@ -224,7 +232,8 @@ textarea:focus, input:focus{
 .send-otp-btn{
     border-radius: 20px;
     padding: 10px;
-    height: 100%;
+    width:10em;
+    height: 70px;
     border: none;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     background-color: #FF782C;
@@ -238,4 +247,72 @@ textarea:focus, input:focus{
     position: absolute;
     right: 20px;
     /* top: 20px; */
+}
+.country-code-and-input{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+@media screen and (max-width: 1250px){
+    .mobile-number{
+        position: static;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+    .country-code{
+        max-width: 30%;
+        height: 70px;
+    }
+    .send-otp-btn{
+        margin-top: 20px;
+        position: static;
+        height: 70px;
+    }
+    .mobile-number, .mobile-otp{
+        justify-content: flex-start;
+        height: 100%;
+    }
+}
+
+@media screen and (max-width: 800px){
+    .login-left{
+        display: none;
+    }
+    .login-form{
+        width: 90%;
+    }
+    .country-code{
+        padding: 5px;
+    }
+    
+    .flag{
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+    
+    .country-code h1{
+        width: 30%;
+        font-size: 20px;
+        font-weight: bold;
+        color: #000;
+        margin: 0;
+        display: flex;
+    }
+    .text-container{
+        flex-direction: column;
+        border: 1px solid #000;
+        border-radius: 20px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 90%;
+        margin-right: 20px;
+    }
+    .username-pass{
+        margin: 0 0 10px 0;
+    }
 }
