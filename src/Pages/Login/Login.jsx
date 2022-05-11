@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { authentication } from "../../config";
 import { useNavigate } from "react-router-dom";
-import {
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useContext } from "react";
 import UserDetailsContext from "../../UserDetailsContext";
-
 
 function Login() {
   let navigate = useNavigate();
@@ -16,7 +12,7 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [navItem, setNavItem] = useState("login");
-  const { ids,setIds } = useContext(UserDetailsContext);
+  const { ids, setIds } = useContext(UserDetailsContext);
   // STATES FOR REGISTRASTION
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -28,10 +24,17 @@ function Login() {
   });
 
   useEffect(() => {
-    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
-        window.localStorage.setItem("userId", ids.userId);
+    if (
+      window.localStorage.getItem("userId") === null ||
+      window.localStorage.getItem("userId") === undefined ||
+      window.localStorage.getItem("userId") === ""
+    ) {
+      window.localStorage.setItem("userId", ids.userId);
     } else {
-      if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
+      if (
+        ids.userId !== "" &&
+        window.localStorage.getItem("userId") !== ids.userId
+      ) {
         window.localStorage.setItem("userId", ids.userId);
       }
     }
@@ -92,12 +95,15 @@ function Login() {
   };
 
   const authenticateUserWithPhone = (userPhone) => {
-    fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/exists?identify=${userPhone}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/exists?identify=${userPhone}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         if (response.status === 200) {
           console.log("Success");
@@ -124,7 +130,7 @@ function Login() {
           // User signed in successfully.
           // const user = result.user;
           // console.log(user + "signed in");
-          console.log(result)
+          console.log(result);
           alert("User signed in successfully");
           // if (userExists) {
           //   // User exists
@@ -169,20 +175,23 @@ function Login() {
   };
 
   const registerUser = () => {
-    fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        full_name: userDetails.name,
-        username: userDetails.username,
-        password: userDetails.password,
-        mobile: userDetails.phone,
-        email: userDetails.email,
-      }),
-    })
+    fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          full_name: userDetails.name,
+          username: userDetails.username,
+          password: userDetails.password,
+          mobile: userDetails.phone,
+          email: userDetails.email,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(
@@ -200,7 +209,6 @@ function Login() {
         } else {
           alert("Something went wrong", data.message);
           console.log("Something went wrong", data);
-
         }
       })
       .catch((error) => {
@@ -225,22 +233,24 @@ function Login() {
           </p>
           <div className="inputs">
             <div className="mobile-number">
-              <div className="country-code">
-                <img
-                  src="https://img.icons8.com/color/96/000000/india.png"
-                  alt="flag"
-                  className="flag"
+              <div className="country-code-and-input">
+                <div className="country-code">
+                  <img
+                    src="https://img.icons8.com/color/96/000000/india.png"
+                    alt="flag"
+                    className="flag"
+                  />
+                  <h1>+91</h1>
+                </div>
+                <input
+                  className="mobile-number-input"
+                  type="text"
+                  placeholder="Mobile Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  maxLength="10"
                 />
-                <h1>+91</h1>
               </div>
-              <input
-                className="mobile-number-input"
-                type="text"
-                placeholder="Mobile Number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                maxLength="10"
-              />
               <button onClick={onPressSendOtp} className="send-otp-btn">
                 Send OTP
               </button>
@@ -252,7 +262,7 @@ function Login() {
               <input
                 className="mobile-otp-input"
                 type="text"
-                placeholder="Mobile Number"
+                placeholder="Enter OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
                 maxLength="6"
@@ -301,7 +311,7 @@ function Login() {
                 }
               />
             </div>
-            <div className="mobile-number">
+            <div className="register-mobile-number">
               <div className="country-code">
                 <img
                   src="https://img.icons8.com/color/96/000000/india.png"
