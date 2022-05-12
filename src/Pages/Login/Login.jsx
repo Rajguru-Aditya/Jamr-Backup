@@ -174,6 +174,11 @@ function Login() {
     }
   };
 
+  const onClickLogout = () => {
+    window.localStorage.removeItem("userId");
+    navigate("/");
+  };
+
   const registerUser = () => {
     fetch(
       `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/`,
@@ -404,33 +409,47 @@ function Login() {
   console.log("NUMBER", phone);
 
   return (
-    <div className="login">
-      <div className="login-nav">
-        <div
-          onClick={() => {
-            navHandler("login");
-          }}
-          className={
-            navItem === "login" ? "login-nav-item-selected" : "login-nav-item"
-          }
-        >
-          <p className="login-nav-text">Login</p>
+    <>
+      {window.localStorage.getItem("userId") ? (
+        <div className="logout-container">
+          <h1>You are already logged in</h1>
+          <h3>Would you like to Logout?</h3>
+          <button className="logout-btn" onClick={onClickLogout}>
+            Logout
+          </button>
         </div>
-        <div
-          onClick={() => {
-            navHandler("register");
-          }}
-          className={
-            navItem === "register"
-              ? "login-nav-item-selected"
-              : "login-nav-item"
-          }
-        >
-          <p className="login-nav-text">Register</p>
+      ) : (
+        <div className="login">
+          <div className="login-nav">
+            <div
+              onClick={() => {
+                navHandler("login");
+              }}
+              className={
+                navItem === "login"
+                  ? "login-nav-item-selected"
+                  : "login-nav-item"
+              }
+            >
+              <p className="login-nav-text">Login</p>
+            </div>
+            <div
+              onClick={() => {
+                navHandler("register");
+              }}
+              className={
+                navItem === "register"
+                  ? "login-nav-item-selected"
+                  : "login-nav-item"
+              }
+            >
+              <p className="login-nav-text">Register</p>
+            </div>
+          </div>
+          {navItem === "login" ? loginForm() : registrationForm()}
         </div>
-      </div>
-      {navItem === "login" ? loginForm() : registrationForm()}
-    </div>
+      )}
+    </>
   );
 }
 
