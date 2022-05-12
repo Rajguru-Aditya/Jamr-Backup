@@ -46,82 +46,82 @@ function UserDashboard() {
 
   return (
     <div className="container">
-        <div className="user-dashboard">
-          <div className="banner-image">
-            <img
-              src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
-              alt="wavy-Orange"
-              className="wavy-orange"
-            ></img>
-          </div>
-          <div className="user-dashboard-navbar">
-            <div
-              onClick={() => {
-                onClickNavItem("Bookings");
-              }}
-              className="navbar-item-container"
-            >
-              <div
-                className={
-                  navItemName === "Bookings"
-                    ? "navbar-item-selected"
-                    : "navbar-item"
-                }
-              >
-                <p className="navbar-text">Bookings</p>
-              </div>
-            </div>
-            <div
-              onClick={() => {
-                onClickNavItem("Promotions");
-              }}
-              className="navbar-item-container"
-            >
-              <div
-                className={
-                  navItemName === "Promotions"
-                    ? "navbar-item-selected"
-                    : "navbar-item"
-                }
-              >
-                <p className="navbar-text">Promotions</p>
-              </div>
-            </div>
-            <div
-              onClick={() => {
-                onClickNavItem("Projects");
-              }}
-              className="navbar-item-container"
-            >
-              <div
-                className={
-                  navItemName === "Projects"
-                    ? "navbar-item-selected"
-                    : "navbar-item"
-                }
-              >
-                <p className="navbar-text">Projects</p>
-              </div>
-            </div>
-            <div
-              onClick={() => {
-                onClickNavItem("Profile");
-              }}
-              className="navbar-item-container"
-            >
-              <div
-                className={
-                  navItemName === "Profile"
-                    ? "navbar-item-selected"
-                    : "navbar-item"
-                }
-              >
-                <p className="navbar-text">Profile</p>
-              </div>
-            </div>
-          </div>
-          {DisplayContent()}
+      <div className="user-dashboard">
+        <div className="banner-image">
+          <img
+            src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
+            alt="wavy-Orange"
+            className="wavy-orange"
+          ></img>
         </div>
+        <div className="user-dashboard-navbar">
+          <div
+            onClick={() => {
+              onClickNavItem("Bookings");
+            }}
+            className="navbar-item-container"
+          >
+            <div
+              className={
+                navItemName === "Bookings"
+                  ? "navbar-item-selected"
+                  : "navbar-item"
+              }
+            >
+              <p className="navbar-text">Bookings</p>
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              onClickNavItem("Promotions");
+            }}
+            className="navbar-item-container"
+          >
+            <div
+              className={
+                navItemName === "Promotions"
+                  ? "navbar-item-selected"
+                  : "navbar-item"
+              }
+            >
+              <p className="navbar-text">Promotions</p>
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              onClickNavItem("Projects");
+            }}
+            className="navbar-item-container"
+          >
+            <div
+              className={
+                navItemName === "Projects"
+                  ? "navbar-item-selected"
+                  : "navbar-item"
+              }
+            >
+              <p className="navbar-text">Projects</p>
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              onClickNavItem("Profile");
+            }}
+            className="navbar-item-container"
+          >
+            <div
+              className={
+                navItemName === "Profile"
+                  ? "navbar-item-selected"
+                  : "navbar-item"
+              }
+            >
+              <p className="navbar-text">Profile</p>
+            </div>
+          </div>
+        </div>
+        {DisplayContent()}
+      </div>
     </div>
   );
 }
