@@ -70,9 +70,12 @@ function Navbar() {
             <p className="faq-text"> FAQs </p>
           </div>
           {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
-            <div className="nav-bookings" onClick={() => {
-              navigate("/dashboard");
-            }}>
+            <div
+              className="nav-bookings"
+              onClick={() => {
+                navigate("/dashboard");
+              }}
+            >
               <p className="nav-bookings-text"> Bookings </p>
             </div>
           ) : (
@@ -80,6 +83,14 @@ function Navbar() {
               <p className="login-btn-text"> Login / Register </p>
             </div>
           )}
+          {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
+            <div
+              className="profileIcon"
+              onClick={() => {
+                navigate("/dashboard");
+              }}
+            ></div>
+          ) : null}
         </div>
       )}
       <img
