@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./styles.css";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import BookingsContent from "../../components/BookingsContent/BookingsContent";
 import ReferralContent from "../../components/ReferralContent/ReferralContent";
 import StudioOwnerProfile from "../../components/StudioOwnerProfile/StudioOwnerProfile";
 import StudioUserProfile from "../../components/StudioUserProfile/StudioUserProfile";
+import NavigationContext from "../../NavigationContext";
 
 function UserDashboard() {
   const [navItemName, setNavItemName] = useState("Bookings");
   const [referralCode, setReferralCode] = useState("");
   const [getReferralData, setReferralData] = useState("");
+  const { openComponent } = useContext(NavigationContext);
 
   const onClickNavItem = (name) => {
     setNavItemName(name);
@@ -17,7 +19,10 @@ function UserDashboard() {
 
   useEffect(() => {
     document.title = "Jamr | Dashboard";
-  }, []);
+    setNavItemName(openComponent ? openComponent : "Bookings");
+  }, [openComponent]);
+
+  console.log("openComponent", openComponent);
 
   useEffect(() => {
     setReferralCode(getReferralData[0]?.ReferralCode);

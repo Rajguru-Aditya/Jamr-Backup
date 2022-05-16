@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./navbar.css";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import UserDetailsContext from "../../UserDetailsContext";
+import NavigationContext from "../../NavigationContext";
 
 function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
   const { ids } = useContext(UserDetailsContext);
+  const { setOpenComponent } = useContext(NavigationContext);
 
   // useEffect(() => {
   //   if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
@@ -73,6 +74,7 @@ function Navbar() {
             <div
               className="nav-bookings"
               onClick={() => {
+                setOpenComponent("Bookings");
                 navigate("/dashboard");
               }}
             >
@@ -87,6 +89,7 @@ function Navbar() {
             <div
               className="profileIcon"
               onClick={() => {
+                setOpenComponent("Profile");
                 navigate("/dashboard");
               }}
             ></div>
