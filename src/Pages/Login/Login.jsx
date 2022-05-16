@@ -12,6 +12,7 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [userExists, setUserExists] = useState(false);
   const [navItem, setNavItem] = useState("login");
+  const [uid, setUid] = useState("");
   const { ids, setIds } = useContext(UserDetailsContext);
   // STATES FOR REGISTRASTION
   const [userDetails, setUserDetails] = useState({
@@ -109,9 +110,7 @@ function Login() {
         console.log(data);
         if (data !== "" || data !== null || data !== undefined) {
           console.log("Success", data);
-          setIds({
-            userId: data.userId,
-          });
+          setUid(data.userId);
           setUserExists(true);
         } else {
           console.log("Failed");
@@ -140,6 +139,9 @@ function Login() {
             // User exists
             // Redirect to home page
             alert("User signed in successfully");
+            setIds({
+              userId: uid,
+            });
             navigate("/");
           } else {
             // User does not exist
