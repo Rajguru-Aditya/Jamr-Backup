@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserDetailsProvider } from "./UserDetailsContext";
 import { BookingDetailsProvider } from "./BookingDetailsContext";
+import { NavigationProvider } from "./NavigationContext";
 import Searchbar from "./components/Searchbar/Searchbar";
 import FilterBar from "./components/FilterBar/FilterBar";
 import Home from "./Pages/Home/Home";
@@ -19,6 +20,7 @@ function App() {
       {/* <FilterBar /> */}
       <UserDetailsProvider>
       <BookingDetailsProvider>
+      <NavigationProvider>
         <BrowserRouter>
           <Navbar />
           <Routes>
@@ -30,6 +32,7 @@ function App() {
             <Route path="login" element={<Login />} />
           </Routes>
         </BrowserRouter>
+        </NavigationProvider>
         </BookingDetailsProvider>
       </UserDetailsProvider>
     </div>

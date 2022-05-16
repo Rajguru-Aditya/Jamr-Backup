@@ -76,6 +76,7 @@ function Payment() {
           slots: details.selectedSlots
             ? details.selectedSlots
             : storeDetails?.selectedSlots,
+          couponCode: "",
         }),
       }
     )

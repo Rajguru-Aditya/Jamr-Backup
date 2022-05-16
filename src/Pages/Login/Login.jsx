@@ -45,7 +45,7 @@ function Login() {
   }, []);
 
   const phoneNumber = `+91${phone}`;
-  console.log(phoneNumber);
+  // console.log(phoneNumber);
 
   const navHandler = (nav) => {
     if (nav === "register") {
@@ -106,7 +106,7 @@ function Login() {
     )
       .then((response) => {
         if (response.status === 200) {
-          console.log("Success");
+          console.log("Success", response);
           setUserExists(true);
         } else {
           console.log("Failed");
@@ -131,16 +131,16 @@ function Login() {
           // const user = result.user;
           // console.log(user + "signed in");
           console.log(result);
-          alert("User signed in successfully");
-          // if (userExists) {
-          //   // User exists
-          //   // Redirect to home page
-          //   navigate("/");
-          // } else {
-          //   // User does not exist
-          //   // Redirect to signup page
-          //   alert("User does not exist");
-          // }
+          if (userExists) {
+            // User exists
+            // Redirect to home page
+            alert("User signed in successfully");
+            navigate("/");
+          } else {
+            // User does not exist
+            // Redirect to signup page
+            alert("No user found. Please register first");
+          }
           // ...
         })
         .catch((error) => {
@@ -406,7 +406,7 @@ function Login() {
     </div>
   );
 
-  console.log("NUMBER", phone);
+  // console.log("NUMBER", phone);
 
   return (
     <>
