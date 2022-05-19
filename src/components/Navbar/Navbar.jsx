@@ -85,17 +85,17 @@ function Navbar() {
               <p className="login-btn-text"> Login / Register </p>
             </div>
           )}
-          {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
-            <div
-              className="profileIcon"
-              onClick={() => {
-                setOpenComponent("Profile");
-                navigate("/dashboard");
-              }}
-            ></div>
-          ) : null}
         </div>
       )}
+      {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
+        <div
+          className="profileIcon"
+          onClick={() => {
+            setOpenComponent("Profile");
+            navigate("/dashboard");
+          }}
+        ></div>
+      ) : null}
       <img
         src="https://img.icons8.com/ios-glyphs/100/ff782c/menu--v1.png"
         alt="menu"

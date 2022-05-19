@@ -21,6 +21,7 @@
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
+  margin-right: 100px;
 }
 .location-marker {
   height: 3em;
@@ -86,12 +87,15 @@
   background-color: aqua;
   border-radius: 50%;
   cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 15px
 }
 
 .menu{
   display: none;
   position: absolute;
-  right: 50px;
+  left: 50px;
   top: 7px;
   padding: 5px;
   color: #000;
@@ -105,12 +109,14 @@
 
   .jamr-logo{
     height: 5em;
-    width: 200px;  
+    width: 200px;
+    margin-left: 100px;
   }
 
   .navbar{
     justify-content: center;
     flex-direction: column;
+    position: relative;
   }
 
   .navbar-items {
@@ -122,5 +128,6 @@
 
   .menu {
     display: block;
+    left: 10px;
   }
 }

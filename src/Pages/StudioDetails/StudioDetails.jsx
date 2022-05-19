@@ -22,9 +22,11 @@ function StudioDetails(props) {
   const [dateState, setDateState] = useState(new Date());
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const bookedSlotsArray = [];
   const { ids } = useContext(UserDetailsContext);
   // const studioId = ids.studioId;
-  
+
   const { setDetails } = useContext(BookingDetailsContext);
 
   // console.log("studioId ->", studioId);
@@ -34,17 +36,23 @@ function StudioDetails(props) {
   };
 
   useEffect(() => {
-    if(window.localStorage.getItem("studioId") === null || window.localStorage.getItem("studioId") === undefined || window.localStorage.getItem("studioId") === ""){
-        window.localStorage.setItem("studioId", ids.studioId);
+    if (
+      window.localStorage.getItem("studioId") === null ||
+      window.localStorage.getItem("studioId") === undefined ||
+      window.localStorage.getItem("studioId") === ""
+    ) {
+      window.localStorage.setItem("studioId", ids.studioId);
     } else {
-      if( ids.studioId !== "" && window.localStorage.getItem("studioId") !== ids.studioId){
+      if (
+        ids.studioId !== "" &&
+        window.localStorage.getItem("studioId") !== ids.studioId
+      ) {
         window.localStorage.setItem("studioId", ids.studioId);
       }
     }
   }, []);
 
   console.log("LOCALSTORAGE", window.localStorage.getItem("studioId"));
-  
 
   const color = "#FF782C";
 
@@ -54,6 +62,15 @@ function StudioDetails(props) {
     document.title = "Jamr | Studio Details";
     fetchStudioData();
   }, []);
+
+  useEffect(() => {
+    bookedSlots.map((slot) => {
+      console.log("slot ->", slot.SlotBooked);
+      bookedSlotsArray.push(slot.SlotBooked);
+    });
+    console.log("bookedSlotsArray ->", bookedSlotsArray);
+    SlotsComponent();
+  }, [bookedSlots]);
 
   useEffect(() => {
     console.log("==GET STUDIO DATA==", studioData);
@@ -72,6 +89,10 @@ function StudioDetails(props) {
   useEffect(() => {
     getStartTime();
   }, [selectedSlots]);
+
+  useEffect(() => {
+    fetchBookedSlots();
+  }, [dateState]);
 
   const days = [
     "Sunday",
@@ -111,28 +132,76 @@ function StudioDetails(props) {
     setPackageSelected(!packageSelected);
   };
 
+  console.log("DATE ->>>", moment(dateState).format("YYYY-MM-DD"));
+
+  const fetchBookedSlots = async () => {
+    //Production
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${
+        process.env.REACT_APP_DOMAIN
+      }/slots?id=${
+        localStorage.getItem("studioId")
+          ? localStorage.getItem("studioId")
+          : ids.studioId
+      }&date=${moment(dateState).format("YYYY-MM-DD")}`,
+      {
+        //Testing
+        // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.data) {
+          console.log("BOOKED SLOTS", data);
+          console.log("BOOKED SLOTS LIST ->", data.data);
+          setBookedSlots(data.data);
+        } else {
+          console.log("Something went wrong", data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const fetchStudioData = async () => {
     //Production
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=D&id=${localStorage.getItem("studioId") ? localStorage.getItem("studioId") : ids.studioId  }`, {
-      //Testing
-      // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${
+        process.env.REACT_APP_DOMAIN
+      }/studio/details?type=D&id=${
+        localStorage.getItem("studioId")
+          ? localStorage.getItem("studioId")
+          : ids.studioId
+      }`,
+      {
+        //Testing
+        // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         if (!data.isError) {
-          console.log("=========>",data.data[0])
-          console.log("STUDIO DATA=========>",data.data[0].studio)
+          // console.log("=========>", data.data[0]);
+          // console.log("STUDIO DATA=========>", data.data[0].studio);
           setStudioData(data.data[0].studio);
           setEquipmentData(data.data[0].equipment);
-          console.log("studioData ----->", data.data);
-          console.log("Studio Data in states ----->", studioData);
+          // console.log("studioData ----->", data.data);
+          // console.log("Studio Data in states ----->", studioData);
           setLoading(false);
         } else {
           console.log("Failed", data.isError);
@@ -187,8 +256,41 @@ function StudioDetails(props) {
 
   let navigate = useNavigate();
 
+  const SlotsComponent = () => (
+    <div className="slots-container">
+      <div className="slots-inner-container">
+        {SlotsData.map((slot, index) => (
+          <div
+            onClick={() => {
+              slotClicked(slot.id);
+            }}
+            className="slot-items"
+            key={index}
+          >
+            <div
+              className={[
+                bookedSlotsArray.includes(slot.id)
+                  ? "disabled-slots"
+                  : selectedSlots.includes(slot.id)
+                  ? "selected-slot-circle"
+                  : "slot-circle",
+              ]}
+            ></div>
+            <p>
+              {slot.start}:00 - {slot.end}:00
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const proceedBooking = () => {
-    if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
+    if (
+      window.localStorage.getItem("userId") === null ||
+      window.localStorage.getItem("userId") === undefined ||
+      window.localStorage.getItem("userId") === ""
+    ) {
       alert("Please Login/Register to proceed");
       navigate("/login");
     } else {
@@ -200,8 +302,9 @@ function StudioDetails(props) {
         startTime: startTime,
         endTime: endTime,
         studioName: studioData.studioName,
-        studioAddress: studioData.locality + " , " + studioData.city,})
-      navigate("/Payment")
+        studioAddress: studioData.locality + " , " + studioData.city,
+      });
+      navigate("/Payment");
     }
   };
   console.log(dateState.toISOString());
@@ -280,7 +383,7 @@ function StudioDetails(props) {
                   </div>
                 </div>
                 {/* SLOTS */}
-                <div className="slots-container">
+                {/* <div className="slots-container">
                   <div className="slots-inner-container">
                     {SlotsData.map((slot, index) => (
                       <div
@@ -292,10 +395,13 @@ function StudioDetails(props) {
                       >
                         <div
                           className={
-                            selectedSlots.includes(slot.id)
+                            bookedSlotsArray.includes(slot.id)
+                              ? "disabled-slots"
+                              : selectedSlots.includes(slot.id)
                               ? "selected-slot-circle"
                               : "slot-circle"
                           }
+                          PointerEvents="none"
                         ></div>
                         <p>
                           {slot.start}:00 - {slot.end}:00
@@ -303,7 +409,8 @@ function StudioDetails(props) {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
+                <SlotsComponent />
                 <div onClick={proceedBooking} className="book-now-btn">
                   <p>Book Now</p>
                 </div>
