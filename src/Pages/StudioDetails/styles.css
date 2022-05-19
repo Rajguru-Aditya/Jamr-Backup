@@ -347,6 +347,12 @@
   justify-content: center;
   margin-top: 50px;
   width: 70%;
+  /* border: #000 1px solid; */
+  padding: 20px;
+  border-radius: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 2px 2px #ccc;
 }
 
 .date,
@@ -357,6 +363,10 @@
 
 .date-title {
   text-transform: uppercase;
+}
+
+.date-container{
+  width: 90%;
 }
 
 .date-inner-container {
@@ -371,19 +381,26 @@
   padding: 0 20px;
   box-shadow: 0px 2px 2px #555;
   cursor: pointer;
+  width: 100%;
 }
 
 .calendar{
   margin-top: 50px;
 }
 
+.time-container, .duration-container{
+  /* width: 100%; */
+  display: flex;
+  flex: 0.4;
+  flex-direction: column;
+}
+
 .time-duration-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: wrap;
   justify-content: space-between;
-  width: 50%;
+  width: 90%;
   margin-top: 20px;
 }
 
@@ -405,6 +422,7 @@
   border-radius: 20px;
   padding: 0 20px;
   box-shadow: 0px 2px 2px #555;
+  width: 100%;
 }
 
 .book-now-btn {
@@ -442,8 +460,17 @@
   cursor: pointer;
 }
 
+.disabled-slots {
+  background-color: #ccc;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #555;
+  margin-bottom: 10px;
+}
+
 .slots-container {
-  width: 80%;
+  width: 100%;
  margin-top: 50px;
 
 }
@@ -498,6 +525,22 @@
     align-items: center;
     margin-top: 50px;
     width: 80%;
+  }
+
+  .date-time-slots-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+    width: 80%;
+    /* border: #000 1px solid; */
+    padding: 20px;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 2px 2px #ccc;
   }
   
 }
