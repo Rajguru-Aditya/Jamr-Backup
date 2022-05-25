@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import moment from "moment";
 import BookingDetailsContext from "../../BookingDetailsContext";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import { useNavigate } from "react-router-dom";
 
 function Payment() {
   const [pressed, setPressed] = useState(false);
   const { details } = useContext(BookingDetailsContext);
   const [storeDetails, setStoreDetails] = useState();
+  const [paymentLoading, setPaymentLoading] = useState(false);
   let LSItems;
   let navigate = useNavigate();
 
@@ -50,7 +52,7 @@ function Payment() {
     JSON.parse(window.localStorage.getItem("details"))
   );
 
-  const transaction = async () => {
+  const transaction = async (response) => {
     //PRODUCTION
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`,
@@ -77,6 +79,9 @@ function Payment() {
             ? details.selectedSlots
             : storeDetails?.selectedSlots,
           couponCode: "",
+          order_id: response.razorpay_order_id,
+          payment_id: response.razorpay_payment_id,
+          transaction_id: response.razorpay_signature,
         }),
       }
     )
@@ -97,9 +102,52 @@ function Payment() {
       });
   };
 
+  // PAYMENT
+
+  const payment = async () => {
+    //PRODUCTION
+    await fetch(
+      `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
+      {
+        //TESTING
+        // await fetch(`http://localhost:3000/studio/details/?type=L`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          sid: window.localStorage.getItem("studioId"),
+          baseAmount: details.pricePerHour
+            ? details.pricePerHour
+            : storeDetails?.pricePerHour,
+          hours: details.selectedSlots.length
+            ? details.selectedSlots.length
+            : storeDetails?.selectedSlots.length,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("payment api called ----->", data);
+          // alert("Transaction Successful");
+          // navigate("/");
+          RazorPayPayment(data);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   console.log("storeDetails", storeDetails);
 
-  //PAYMENT
+  // RAZORPAY PAYMENT
 
   const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -118,7 +166,7 @@ function Payment() {
     });
   };
 
-  const ProceedPayment = async () => {
+  const RazorPayPayment = async (data) => {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -129,32 +177,30 @@ function Payment() {
     }
 
     const options = {
-      key: "YOUR_KEY_ID", // Enter the Key ID generated from the Dashboard
-      amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      key: "rzp_test_JQQLKxhPmex7o8", // Enter the Key ID generated from the Dashboard
+      amount: data.subunitAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       currency: "INR",
-      name: "Acme Corp",
+      name: "JAMR",
       description: "Test Transaction",
-      image: "https://example.com/your_logo",
-      order_id: "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      image:
+        "https://i.ibb.co/TP8VqHk/Whats-App-Image-2022-02-01-at-21-17-1.png",
+      order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       handler: function (response) {
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
-      },
-      prefill: {
-        name: "Gaurav Kumar",
-        email: "gaurav.kumar@example.com",
-        contact: "9999999999",
-      },
-      notes: {
-        address: "Razorpay Corporate Office",
+        setPaymentLoading(false);
+        alert("SUCCESS");
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+        console.log(response);
+        transaction(response);
       },
       theme: {
-        color: "#3399cc",
+        color: "#FF782C",
       },
     };
     const rzp1 = new window.Razorpay(options);
     rzp1.on("payment.failed", function (response) {
+      setPaymentLoading(false);
       alert(response.error.code);
       alert(response.error.description);
       alert(response.error.source);
@@ -209,7 +255,7 @@ function Payment() {
         className="proceed-payment-btn"
         id="payment-button"
         onClick={() => {
-          ProceedPayment();
+          payment();
         }}
       >
         <p>Proceed to pay</p>
@@ -238,7 +284,7 @@ function Payment() {
             alt="studio"
             className="studio-image"
           />
-          {pressed ? <PaymentDetails /> : <PromoCode />}
+          <PromoCode />
         </div>
         <div className="payment-studioDetails-right-container">
           <div className="payment-studioDetails-info">
@@ -286,11 +332,24 @@ function Payment() {
           <div
             className="payment-btn"
             onClick={() => {
-              setPressed(true);
-              console.log(pressed);
+              payment();
+              setPaymentLoading(true);
             }}
           >
-            <p>Continue to payment</p>
+            {paymentLoading ? (
+              <div className="loader-payment">
+                <ScaleLoader
+                  color={"#fff"}
+                  loading={paymentLoading}
+                  height={50}
+                  width={10}
+                  radius={50}
+                  margin={5}
+                />
+              </div>
+            ) : (
+              <p>Continue to payment</p>
+            )}
           </div>
         </div>
       </div>
