@@ -2,12 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import moment from "moment";
 import BookingDetailsContext from "../../BookingDetailsContext";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import { useNavigate } from "react-router-dom";
 
 function Payment() {
   const [pressed, setPressed] = useState(false);
-  const { details } = useContext(BookingDetailsContext);
+  const { details, transactionId, setTransactionId } = useContext(
+    BookingDetailsContext
+  );
   const [storeDetails, setStoreDetails] = useState();
+  const [storeTrnId, setStoreTrnId] = useState();
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [LSTransactionId, setLSTransactionId] = useState();
+  let receiptId = [];
   let LSItems;
   let navigate = useNavigate();
 
@@ -36,10 +43,52 @@ function Payment() {
   }, []);
 
   useEffect(() => {
+    if (
+      window.localStorage.getItem("transactionId") !== null ||
+      window.localStorage.getItem("transactionId") !== "" ||
+      window.localStorage.getItem("transactionId") !== undefined
+    ) {
+      let tempLSTrnId = window.localStorage.getItem("transactionId");
+      setLSTransactionId(tempLSTrnId);
+      console.log("transactionId", LSTransactionId);
+      if (
+        LSTransactionId === null ||
+        LSTransactionId === undefined ||
+        LSTransactionId === ""
+      ) {
+        window.localStorage.setItem(
+          "transactionId",
+          JSON.stringify(transactionId)
+        );
+        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+      } else {
+        if (transactionId !== "" && LSTransactionId !== transactionId) {
+          window.localStorage.setItem(
+            "transactionId",
+            JSON.stringify(transactionId)
+          );
+        }
+      }
+    } else {
+      window.localStorage.setItem(
+        "transactionId",
+        JSON.stringify(transactionId)
+      );
+    }
+  }, [LSTransactionId, transactionId]);
+
+  useEffect(() => {
     if (LSItems !== undefined || LSItems !== null || LSItems !== "") {
       setStoreDetails(LSItems);
     }
-  }, [LSItems]);
+    if (
+      LSTransactionId !== undefined ||
+      LSTransactionId !== null ||
+      LSTransactionId !== ""
+    ) {
+      setStoreTrnId(LSTransactionId);
+    }
+  }, [LSItems, LSTransactionId]);
 
   useEffect(() => {
     document.title = "Jamr | Payment";
@@ -50,7 +99,7 @@ function Payment() {
     JSON.parse(window.localStorage.getItem("details"))
   );
 
-  const transaction = async () => {
+  const transaction = async (response) => {
     //PRODUCTION
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`,
@@ -77,6 +126,11 @@ function Payment() {
             ? details.selectedSlots
             : storeDetails?.selectedSlots,
           couponCode: "",
+          order_id: response.razorpay_order_id,
+          receipt_id: receiptId[0],
+          payment_id: response.razorpay_payment_id,
+          transaction_id: response.razorpay_signature,
+          paymentSignature: response.razorpay_signature,
         }),
       }
     )
@@ -87,7 +141,53 @@ function Payment() {
         if (!data.isError) {
           console.log("Transaction history ----->", data.data);
           alert("Transaction Successful");
-          navigate("/");
+          setTransactionId(data.data.transactionId);
+          navigate("/dashboard");
+        } else {
+          console.log("Failed", data.isError);
+          alert("Transaction Failed");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // PAYMENT
+
+  const payment = async () => {
+    //PRODUCTION
+    await fetch(
+      `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
+      {
+        //TESTING
+        // await fetch(`http://localhost:3000/studio/details/?type=L`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          sid: window.localStorage.getItem("studioId"),
+          baseAmount: details.pricePerHour
+            ? details.pricePerHour
+            : storeDetails?.pricePerHour,
+          hours: details.selectedSlots.length
+            ? details.selectedSlots.length
+            : storeDetails?.selectedSlots.length,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("payment api called ----->", data);
+          // alert("Transaction Successful");
+          // navigate("/");
+          RazorPayPayment(data);
+          receiptId.push(data.receipt);
         } else {
           console.log("Failed", data.isError);
         }
@@ -98,6 +198,71 @@ function Payment() {
   };
 
   console.log("storeDetails", storeDetails);
+
+  // RAZORPAY PAYMENT
+
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+
+      script.onload = () => {
+        resolve(true);
+      };
+
+      script.onerror = () => {
+        resolve(false);
+      };
+
+      document.body.appendChild(script);
+    });
+  };
+
+  const RazorPayPayment = async (data) => {
+    const res = await loadScript(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+
+    if (!res) {
+      alert("Something went wrong");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_JQQLKxhPmex7o8", // Enter the Key ID generated from the Dashboard
+      amount: data.subunitAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "JAMR",
+      description: "Test Transaction",
+      image:
+        "https://i.ibb.co/TP8VqHk/Whats-App-Image-2022-02-01-at-21-17-1.png",
+      order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: function (response) {
+        setPaymentLoading(false);
+        alert("SUCCESS");
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature);
+        console.log(response);
+        transaction(response);
+      },
+      theme: {
+        color: "#FF782C",
+      },
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      setPaymentLoading(false);
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);
+    });
+    rzp1.open();
+  };
 
   const PromoCode = () => (
     <div className="promotional-code">
@@ -140,8 +305,9 @@ function Payment() {
       </div>
       <div
         className="proceed-payment-btn"
+        id="payment-button"
         onClick={() => {
-          transaction();
+          payment();
         }}
       >
         <p>Proceed to pay</p>
@@ -170,7 +336,7 @@ function Payment() {
             alt="studio"
             className="studio-image"
           />
-          {pressed ? <PaymentDetails /> : <PromoCode />}
+          <PromoCode />
         </div>
         <div className="payment-studioDetails-right-container">
           <div className="payment-studioDetails-info">
@@ -218,11 +384,24 @@ function Payment() {
           <div
             className="payment-btn"
             onClick={() => {
-              setPressed(true);
-              console.log(pressed);
+              payment();
+              setPaymentLoading(true);
             }}
           >
-            <p>Continue to payment</p>
+            {paymentLoading ? (
+              <div className="loader-payment">
+                <ScaleLoader
+                  color={"#fff"}
+                  loading={paymentLoading}
+                  height={50}
+                  width={10}
+                  radius={50}
+                  margin={5}
+                />
+              </div>
+            ) : (
+              <p>Continue to payment</p>
+            )}
           </div>
         </div>
       </div>

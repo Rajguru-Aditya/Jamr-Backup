@@ -12,8 +12,8 @@ import BookingDetailsContext from "../../BookingDetailsContext";
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
   const [equipmentData, setEquipmentData] = useState();
-  const equipments = [];
-  const [equipmentName, setEquipmentName] = useState();
+  const equipmentKeys = [];
+  const equipmentValues = [];
   const [loading, setLoading] = useState(true);
   const [packageSelected, setPackageSelected] = useState(false);
   const [packageName, setPackageName] = useState("");
@@ -74,17 +74,14 @@ function StudioDetails(props) {
 
   useEffect(() => {
     console.log("==GET STUDIO DATA==", studioData);
-    console.log("==GET EQUIPMENT DATA==", equipmentName);
-    // setTimeout(() => {
-    //   getEquipment();
-    // }, 2000);
-  }, [studioData]);
+    console.log("==GET EQUIPMENT DATA==", equipmentData);
+    getEquipment();
+  }, [equipmentData, studioData]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000);
-  // }, []);
+  useEffect(() => {
+    console.log(equipmentKeys);
+    console.log(equipmentValues);
+  }, [equipmentKeys, equipmentValues]);
 
   useEffect(() => {
     getStartTime();
@@ -197,11 +194,11 @@ function StudioDetails(props) {
       .then((data) => {
         if (!data.isError) {
           // console.log("=========>", data.data[0]);
-          // console.log("STUDIO DATA=========>", data.data[0].studio);
+          console.log("STUDIO DATA=========>", data.data);
           setStudioData(data.data[0].studio);
           setEquipmentData(data.data[0].equipment);
           // console.log("studioData ----->", data.data);
-          // console.log("Studio Data in states ----->", studioData);
+          // console.log("Equipment Data in states ----->", equipmentData);
           setLoading(false);
         } else {
           console.log("Failed", data.isError);
@@ -247,14 +244,37 @@ function StudioDetails(props) {
     setDateClicked(!dateClicked);
   };
 
-  // const getEquipment = () => {
-  //   Object.keys(equipmentData).map((key) => {
-  //     return equipments.push(key);
-  //   });
-  //   setEquipmentName([...equipments]);
-  // };
+  const getEquipment = () => {
+    for (var key in equipmentData) {
+      if (equipmentData.hasOwnProperty(key)) {
+        console.log("key", key);
+        console.log("value", equipmentData[key]);
+        equipmentKeys.push(key);
+        equipmentValues.push(equipmentData[key]);
+      }
+    }
+  };
 
   let navigate = useNavigate();
+
+  const EquipmentsComponent = () => {
+    for (var key in equipmentData) {
+      if (equipmentData.hasOwnProperty(key)) {
+        console.log("key", key);
+        console.log("value", equipmentData[key]);
+        equipmentKeys.push(key);
+        equipmentValues.push(equipmentData[key]);
+        return (
+          <div className="equipment">
+            <p className="bulletpoint">·</p>
+            <p className="equipment-name">
+              Headphones-2 x Pioneer HRM-5 Headphones
+            </p>
+          </div>
+        );
+      }
+    }
+  };
 
   const SlotsComponent = () => (
     <div className="slots-container">
@@ -524,26 +544,27 @@ function StudioDetails(props) {
                 <p className="equipments-title">Equipments</p>
                 <div className="equipments-container">
                   {/* 1 */}
-                  <div className="equipment">
+                  {/* <div className="equipment">
                     <p className="bulletpoint">·</p>
                     <p className="equipment-name">
                       Condenser Microphone- SE Electronics SE2300
                     </p>
-                  </div>
+                  </div> */}
                   {/* 1 */}
-                  <div className="equipment">
+                  {/* <div className="equipment">
                     <p className="bulletpoint">·</p>
                     <p className="equipment-name">
                       External USB mouse & keyboard
                     </p>
-                  </div>
+                  </div> */}
                   {/* 1 */}
-                  <div className="equipment">
+                  {/* <div className="equipment">
                     <p className="bulletpoint">·</p>
                     <p className="equipment-name">
                       Headphones-2 x Pioneer HRM-5 Headphones
                     </p>
-                  </div>
+                  </div> */}
+                  <EquipmentsComponent />
                 </div>
                 <div className="service-ratings-reviews-container">
                   <div className="service-overall-ratings">
