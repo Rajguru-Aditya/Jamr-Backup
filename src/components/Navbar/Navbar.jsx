@@ -12,11 +12,27 @@ function Navbar() {
   const { setOpenComponent } = useContext(NavigationContext);
 
   // useEffect(() => {
-  //   if(window.localStorage.getItem("userId") === null || window.localStorage.getItem("userId") === undefined || window.localStorage.getItem("userId") === ""){
-  //       window.localStorage.setItem("userId", ids.userId);
+  //   if (
+  //     window.localStorage.getItem("userId") === null ||
+  //     window.localStorage.getItem("userId") === undefined ||
+  //     window.localStorage.getItem("userId") === ""
+  //   ) {
+  //     window.localStorage.setItem("userId", ids.userId);
   //   } else {
-  //     if( ids.userId !== "" && window.localStorage.getItem("userId") !== ids.userId){
+  //     if (
+  //       ids.userId !== "" &&
+  //       window.localStorage.getItem("userId") !== ids.userId
+  //     ) {
   //       window.localStorage.setItem("userId", ids.userId);
+  //     } else {
+  //       if (
+  //         window.localStorage.getItem("userId") === undefined &&
+  //         ids.userId === ""
+  //       ) {
+  //         setIdExists(false);
+  //       } else {
+  //         setIdExists(true);
+  //       }
   //     }
   //   }
   // }, []);
@@ -70,7 +86,13 @@ function Navbar() {
           <div className="faq">
             <p className="faq-text"> FAQs </p>
           </div>
-          {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
+          {(
+            ids.userId
+              ? ids.userId
+              : window.localStorage.getItem("userId")
+              ? window.localStorage.getItem("userId")
+              : false
+          ) ? (
             <div
               className="nav-bookings"
               onClick={() => {
@@ -87,7 +109,13 @@ function Navbar() {
           )}
         </div>
       )}
-      {(ids.userId ? ids.userId : window.localStorage.getItem("userId")) ? (
+      {(
+        ids.userId
+          ? ids.userId
+          : window.localStorage.getItem("userId")
+          ? window.localStorage.getItem("userId")
+          : false
+      ) ? (
         <div
           className="profileIcon"
           onClick={() => {
