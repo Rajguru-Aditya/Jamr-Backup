@@ -25,19 +25,21 @@ function Home(props) {
 
   useEffect(() => {
     if (
-      window.localStorage.getItem("userId") === null ||
-      window.localStorage.getItem("userId") === undefined ||
-      window.localStorage.getItem("userId") === ""
+      (window.localStorage.getItem("userId") === null ||
+        window.localStorage.getItem("userId") === undefined ||
+        window.localStorage.getItem("userId") === "") &&
+      ids.userId !== null
     ) {
       window.localStorage.setItem("userId", ids.userId);
-    } else {
-      if (
-        ids.userId !== "" &&
-        window.localStorage.getItem("userId") !== ids.userId
-      ) {
-        window.localStorage.setItem("userId", ids.userId);
-      }
     }
+    // else {
+    //   if (
+    //     ids.userId !== "" &&
+    //     window.localStorage.getItem("userId") !== ids.userId
+    //   ) {
+    //     window.localStorage.setItem("userId", ids.userId);
+    //   }
+    // }
   }, []);
 
   const fetchStudios = async () => {
