@@ -16,22 +16,24 @@ function StudioListing(props) {
   }, []);
 
   useEffect(() => {
-    console.log( process.env)
+    console.log(process.env);
     console.log("==GET DATA List==", studiosList);
-    
   }, [studiosList]);
 
   //PRODUCTION
   const fetchStudioList = async () => {
-    await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`, {
-      //TESTIN
-      // await fetch(`http://localhost:3000/studio/details/?type=L`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`,
+      {
+        //TESTIN
+        // await fetch(`http://localhost:3000/studio/details/?type=L`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    )
       .then((response) => {
         return response.json();
       })
@@ -95,52 +97,56 @@ function StudioListing(props) {
 
   return (
     <div>
-        {loading ? (
-          <div className="loader">
-            <ScaleLoader
-              color={color}
-              loading={loading}
-              height={100}
-              width={20}
-              radius={100}
-              margin={10}
-            />
-          </div>
-        ) : (
-          <div className="studioListing">
-      <div className="studioListing-image">
-        <img
-          src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
-          alt="wavy-Orange"
-          className="wavy-orange-vector"
-        ></img>
-        <img
-          src="https://i.ibb.co/p2ZTCq0/listing-Page-Vector.png"
-          alt="listing-Page-Vector"
-          className="listing-page-vector"
-        ></img>
-        <h1 className="header">Music Studios</h1>
-      </div>
-      <div className="studios">
-        {studiosList.map((studio, index) => (
-          // <Link
-          //   className="studio-link"
-          //   to={{ pathname: "/studio-details", data: studio.LocationId }}
-          // >
-          // {console.log(studio.LocationId)}
-          <StudioContainer
-            id={studio.studio.locationId}
-            name={studio.studio.studioName}
-            address={studio.studio.locality}
-            price={studio.studio.studioPrice}
-            image={studio.studio.imageLocationLinks[0]}
-            key={index}
+      {loading ? (
+        <div className="loader">
+          <ScaleLoader
+            color={color}
+            loading={loading}
+            height={100}
+            width={20}
+            radius={100}
+            margin={10}
           />
-          // </Link>
-        ))}
-      </div>
-    </div>
-        )}
+        </div>
+      ) : (
+        <div className="studioListing">
+          <div className="studioListing-image">
+            <img
+              src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
+              alt="wavy-Orange"
+              className="wavy-orange-vector"
+            ></img>
+            <img
+              src="https://i.ibb.co/p2ZTCq0/listing-Page-Vector.png"
+              alt="listing-Page-Vector"
+              className="listing-page-vector"
+            ></img>
+            <h1 className="header">Music Studios</h1>
+          </div>
+          <div className="studios">
+            {studiosList.map((studio, index) => (
+              // <Link
+              //   className="studio-link"
+              //   to={{ pathname: "/studio-details", data: studio.LocationId }}
+              // >
+              // {console.log(studio.LocationId)}
+              <StudioContainer
+                id={studio.studio.locationId}
+                name={studio.studio.studioName}
+                address={studio.studio.locality}
+                price={
+                  studio.studio.studioPrice !== "0.00"
+                    ? studio.studio.studioPrice
+                    : studio.studio.jampadPrice
+                }
+                image={studio.studio.imageLocationLinks[0]}
+                key={index}
+              />
+              // </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

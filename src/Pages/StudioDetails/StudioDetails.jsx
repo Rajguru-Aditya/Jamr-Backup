@@ -61,6 +61,7 @@ function StudioDetails(props) {
   useEffect(() => {
     document.title = "Jamr | Studio Details";
     fetchStudioData();
+    fetchReviews();
   }, []);
 
   useEffect(() => {
@@ -200,6 +201,44 @@ function StudioDetails(props) {
           // console.log("studioData ----->", data.data);
           // console.log("Equipment Data in states ----->", equipmentData);
           setLoading(false);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  //FETCHING REVIEWS
+
+  const fetchReviews = async () => {
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/review`,
+      {
+        //Testing
+        // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          listType: "S",
+          sid: 2,
+          // localStorage.getItem("studioId")
+          // ? localStorage.getItem("studioId")
+          // : ids.studioId,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          // console.log("=========>", data.data[0]);
+          console.log("STUDIO REVIEWS=========>", data.data);
         } else {
           console.log("Failed", data.isError);
         }
@@ -460,7 +499,12 @@ function StudioDetails(props) {
                   </div>
                   <div className="studioDetails-cost">
                     <p className="cost">
-                      ₹{studioData ? studioData.studioPrice : null}
+                      ₹
+                      {studioData
+                        ? studioData.studioPrice !== "0.00"
+                          ? studioData.studioPrice
+                          : studioData.jampadPrice
+                        : null}
                       /hr
                     </p>
                   </div>

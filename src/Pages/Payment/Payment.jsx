@@ -94,6 +94,10 @@ function Payment() {
     document.title = "Jamr | Payment";
   }, []);
 
+  useEffect(() => {
+    console.log("RECEIPT ID", receiptId);
+  }, [receiptId]);
+
   console.log(
     "LOCAL STORAGE details",
     JSON.parse(window.localStorage.getItem("details"))
@@ -158,8 +162,8 @@ function Payment() {
   const payment = async () => {
     //PRODUCTION
     await fetch(
-      //`https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
-       `https://backend.jamr.online/payment/gateway/initiate`,
+      // `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
+      `https://backend.jamr.online/payment/gateway/initiate`,
       {
         //TESTING
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
