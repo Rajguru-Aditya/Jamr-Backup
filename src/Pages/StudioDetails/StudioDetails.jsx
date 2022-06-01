@@ -361,7 +361,10 @@ function StudioDetails(props) {
           (studioData.studioPrice !== "0.00"
             ? studioData.studioPrice
             : studioData.jampadPrice),
-        pricePerHour: studioData.studioPrice,
+        pricePerHour:
+          studioData.studioPrice !== "0.00"
+            ? studioData.studioPrice
+            : studioData.jampadPrice,
         startTime: startTime,
         endTime: endTime,
         studioName: studioData.studioName,
