@@ -357,9 +357,10 @@ function StudioDetails(props) {
         bookingDate: dateState,
         selectedSlots: selectedSlots,
         totalPrice:
-          selectedSlots.length * studioData.studioPrice !== "0.00"
+          selectedSlots.length *
+          (studioData.studioPrice !== "0.00"
             ? studioData.studioPrice
-            : studioData.jampadPrice,
+            : studioData.jampadPrice),
         pricePerHour: studioData.studioPrice,
         startTime: startTime,
         endTime: endTime,
