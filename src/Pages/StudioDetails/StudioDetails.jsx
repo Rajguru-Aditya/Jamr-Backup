@@ -324,6 +324,9 @@ function StudioDetails(props) {
         <div className="review-user-container">
           <div className="review-user-img" />
           <p className="review-username">{reviews.fullname}</p>
+          <div className="reviewsContainer">
+            <p className="review-text">{"⭐".repeat(reviews.ratings)}</p>
+          </div>
         </div>
         <p className="review-text">{reviews.reviewText}</p>
       </div>
@@ -632,7 +635,7 @@ function StudioDetails(props) {
                   </div> */}
                   <EquipmentsComponent />
                 </div>
-                <div className="service-ratings-reviews-container">
+                {/* <div className="service-ratings-reviews-container">
                   <div className="service-overall-ratings">
                     <div className="ratings-container">
                       <p className="service-ratings-number">4.0/5</p>
@@ -648,34 +651,15 @@ function StudioDetails(props) {
                   <div className="service-review-btn-container">
                     <div className="service-review-btn">Write a Review</div>
                   </div>
-                </div>
-                <p className="reviews-title">Reviews</p>
-                {/* <div className="reviews-container">
-                  <div className="review-user-container">
-                    <div className="review-user-img" />
-                    <p className="review-username">Aditya Rajguru</p>
-                  </div>
-                  <p className="review-text">
-                    "I had a wonderful experience working with the Sound
-                    Engineer and Associates."
-                  </p>
-                </div>
-                <div className="reviews-container">
-                  <div className="review-user-container">
-                    <div className="review-user-img" />
-                    <p className="review-username">Aditya Rajguru</p>
-                  </div>
-                  <p className="review-text">
-                    "I had a wonderful experience working with the Sound
-                    Engineer and Associates."
-                  </p>
                 </div> */}
+                <p className="reviews-title">Reviews</p>
                 {reviews &&
                   reviews.map((review, index) => (
                     <RenderReviews
                       key={index}
                       fullname={review.FullName}
                       reviewText={review.ReviewText}
+                      ratings={review.ReviewScore}
                     />
                   ))}
               </div>
