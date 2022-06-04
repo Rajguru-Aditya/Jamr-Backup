@@ -5,10 +5,9 @@ import UserDetailsContext from "../../UserDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 function Home(props) {
+  const [studiosJampads, setStudiosJampads] = useState([]);
   const [studios, setStudios] = useState([]);
-  const [studiosList, setStudiosList] = useState([]);
-  const [studioNames, setStudiosNames] = useState([]);
-  const [studioId, setStudioId] = useState(null);
+  const [jampads, setJampads] = useState([]);
   const [loading, setLoading] = useState(true);
   const { ids, setIds } = useContext(UserDetailsContext);
   const color = "#FF782C";
@@ -20,8 +19,14 @@ function Home(props) {
 
   useEffect(() => {
     console.log("==GET DATA==", studios);
-    console.log("==GET DATA List==", studiosList);
-  }, [studios, studiosList]);
+  }, [studios]);
+
+  useEffect(() => {
+    let studioList = studiosJampads.filter((studio) => studio.studio.isStudio);
+    let jampadList = studiosJampads.filter((jampad) => jampad.studio.isJampad);
+    setStudios(studioList);
+    setJampads(jampadList);
+  }, [studiosJampads]);
 
   useEffect(() => {
     if (
@@ -45,7 +50,7 @@ function Home(props) {
   const fetchStudios = async () => {
     //PRODUCTION
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=S&id=0}`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0}`,
       {
         //TESTING
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
@@ -61,8 +66,8 @@ function Home(props) {
       })
       .then((data) => {
         if (!data.isError) {
-          setStudios(data.data);
           console.log("studiosData ----->", data.data);
+          setStudiosJampads(data.data);
           // studios.map((studio, index) => {
           //   console.log("====================================");
           //   console.log("studio ----->", studio.studioName);
@@ -77,20 +82,6 @@ function Home(props) {
         console.error(error);
       });
   };
-
-  const onClickMusicStudio = async (id) => {
-    // fetchStudios();
-    console.log("id", id);
-  };
-
-  const onClickStudioList = async () => {
-    // fetchStudioList();
-    console.log("------->studio list", studiosList);
-  };
-
-  // console.log("====================================");
-  // console.log("studioNames ----->", studioNames);
-  // console.log("====================================");
 
   const StudioContainer = (studio) => {
     const id = studio.id;
@@ -155,7 +146,7 @@ function Home(props) {
           {/* Services */}
           <div className="services">
             <Link className="service-link" to="/studio-listing">
-              <div onClick={onClickStudioList} className="service-container">
+              <div className="service-container">
                 <div className="service-upperContainer">
                   {/* <img
                       src="https://img.icons8.com/external-konkapp-flat-konkapp/500/000000/external-headphone-electronic-devices-konkapp-flat-konkapp.png"
@@ -173,7 +164,7 @@ function Home(props) {
                 </div>
               </div>
             </Link>
-            <Link className="service-link" to="/studio-listing">
+            <Link className="service-link" to="/jampad-listing">
               <div className="service-container">
                 <div className="service-upperContainer">
                   {/* <img
@@ -261,6 +252,32 @@ function Home(props) {
                   id={studio.studio.locationId}
                   image={studio.studio.imageLocationLinks[0]}
                   name={studio.studio.studioName}
+                  key={index}
+                />
+              ))}
+            </div>
+          </div>
+          {/* JAMPADS */}
+          <div className="studios">
+            <div className="studio-title-main-container">
+              <div className="studios-title-container">
+                <div className="title-container">
+                  <h1 className="title">Jampads</h1>
+                  <h1 className="subtitle">Top Picks 🔥</h1>
+                </div>
+                <div>
+                  <Link className="service-link" to="/studio-listing">
+                    <h1 className="sideText">View More</h1>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="studios-main-container">
+              {jampads.slice(0, 3).map((jampad, index) => (
+                <StudioContainer
+                  id={jampad.studio.locationId}
+                  image={jampad.studio.imageLocationLinks[0]}
+                  name={jampad.studio.studioName}
                   key={index}
                 />
               ))}

@@ -167,6 +167,18 @@
     cursor: pointer;
 }
 
+.ratingStars{
+    cursor: pointer;
+}
+
+.ratingStarClicked{
+    scale: 1.5;
+}
+
+.ratingStars:hover{
+    scale: 1.5;
+}
+
 .closeBtn{
     cursor: pointer;
 }
