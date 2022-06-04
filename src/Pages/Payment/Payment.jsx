@@ -108,8 +108,6 @@ function Payment() {
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`,
       {
-        //TESTING
-        // await fetch(`http://localhost:3000/studio/details/?type=L`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",

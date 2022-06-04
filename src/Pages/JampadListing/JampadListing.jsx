@@ -22,7 +22,7 @@ function StudioListing(props) {
   }, [studiosList]);
 
   useEffect(() => {
-    let studioList = studiosList.filter((studio) => studio.studio.isStudio);
+    let studioList = studiosList.filter((jampad) => jampad.studio.isJampad);
     setStudios(studioList);
   }, [studiosList]);
 
@@ -127,7 +127,7 @@ function StudioListing(props) {
               alt="listing-Page-Vector"
               className="listing-page-vector"
             ></img>
-            <h1 className="header">Music Studios</h1>
+            <h1 className="header">Jampads</h1>
           </div>
           <div className="studios">
             {studios.map((studio, index) => (

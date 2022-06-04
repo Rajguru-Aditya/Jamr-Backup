@@ -24,6 +24,7 @@ function StudioDetails(props) {
   const [endTime, setEndTime] = useState("");
   const [bookedSlots, setBookedSlots] = useState([]);
   const bookedSlotsArray = [];
+  const [reviews, setReviews] = useState([]);
   const { ids } = useContext(UserDetailsContext);
   // const studioId = ids.studioId;
 
@@ -91,6 +92,10 @@ function StudioDetails(props) {
   useEffect(() => {
     fetchBookedSlots();
   }, [dateState]);
+
+  useEffect(() => {
+    console.log("REVIEWS========>", reviews);
+  }, [reviews]);
 
   const days = [
     "Sunday",
@@ -214,21 +219,18 @@ function StudioDetails(props) {
 
   const fetchReviews = async () => {
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/review`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/review/get`,
       {
-        //Testing
-        // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          listType: "S",
-          sid: 2,
-          // localStorage.getItem("studioId")
-          // ? localStorage.getItem("studioId")
-          // : ids.studioId,
+          listing: "S",
+          sid: localStorage.getItem("studioId")
+            ? localStorage.getItem("studioId")
+            : ids.studioId,
         }),
       }
     )
@@ -239,6 +241,7 @@ function StudioDetails(props) {
         if (!data.isError) {
           // console.log("=========>", data.data[0]);
           console.log("STUDIO REVIEWS=========>", data.data);
+          setReviews(data.data);
         } else {
           console.log("Failed", data.isError);
         }
@@ -313,6 +316,21 @@ function StudioDetails(props) {
         );
       }
     }
+  };
+
+  const RenderReviews = (reviews) => {
+    return (
+      <div className="reviews-container">
+        <div className="review-user-container">
+          <div className="review-user-img" />
+          <p className="review-username">{reviews.fullname}</p>
+          <div className="reviewsContainer">
+            <p className="review-text">{"⭐".repeat(reviews.ratings)}</p>
+          </div>
+        </div>
+        <p className="review-text">{reviews.reviewText}</p>
+      </div>
+    );
   };
 
   const SlotsComponent = () => (
@@ -617,7 +635,7 @@ function StudioDetails(props) {
                   </div> */}
                   <EquipmentsComponent />
                 </div>
-                <div className="service-ratings-reviews-container">
+                {/* <div className="service-ratings-reviews-container">
                   <div className="service-overall-ratings">
                     <div className="ratings-container">
                       <p className="service-ratings-number">4.0/5</p>
@@ -633,28 +651,17 @@ function StudioDetails(props) {
                   <div className="service-review-btn-container">
                     <div className="service-review-btn">Write a Review</div>
                   </div>
-                </div>
+                </div> */}
                 <p className="reviews-title">Reviews</p>
-                <div className="reviews-container">
-                  <div className="review-user-container">
-                    <div className="review-user-img" />
-                    <p className="review-username">Aditya Rajguru</p>
-                  </div>
-                  <p className="review-text">
-                    "I had a wonderful experience working with the Sound
-                    Engineer and Associates."
-                  </p>
-                </div>
-                <div className="reviews-container">
-                  <div className="review-user-container">
-                    <div className="review-user-img" />
-                    <p className="review-username">Aditya Rajguru</p>
-                  </div>
-                  <p className="review-text">
-                    "I had a wonderful experience working with the Sound
-                    Engineer and Associates."
-                  </p>
-                </div>
+                {reviews &&
+                  reviews.map((review, index) => (
+                    <RenderReviews
+                      key={index}
+                      fullname={review.FullName}
+                      reviewText={review.ReviewText}
+                      ratings={review.ReviewScore}
+                    />
+                  ))}
               </div>
             </div>
           </div>
