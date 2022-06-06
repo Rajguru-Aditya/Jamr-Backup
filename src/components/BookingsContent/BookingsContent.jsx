@@ -1,18 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./styles.css";
 import BookingDetailsContext from "../../BookingDetailsContext";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 
 const BookingsContent = () => {
   const { transactionId } = useContext(BookingDetailsContext);
   const [LSTransactionId, setLSTransactionId] = useState(null);
   const [uid, setUid] = useState(null);
-  const ratingStars = [1, 2, 3, 4, 5];
   const [reviewText, setReviewText] = useState("");
   const [starClicked, setStarClicked] = useState(0);
+  const [trnIdForReview, setTrnIdForReview] = useState(null);
+  const [sidForReview, setSidForReview] = useState(null);
+
   let [transactionDetails, setTransactionDetails] = useState(null);
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const reviewRef = useRef(null);
+  const navigate = useNavigate();
 
   const customStyles = {
     content: {
@@ -32,11 +38,6 @@ const BookingsContent = () => {
 
   function openModal() {
     setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "#f00";
   }
 
   function closeModal() {
@@ -108,16 +109,31 @@ const BookingsContent = () => {
     console.log("TRANSACTION", transactionDetails);
   }, [fetchBookingData]);
 
-  const writeReview = () => {};
+  useEffect(() => {
+    console.log("Star clicked", starClicked);
+  }, [starClicked]);
 
-  const ShowStars = (star) => (
-    <h1
-      onClick={setStarClicked(star.key)}
-      className={starClicked ? "ratingStarClicked" : "ratingStars"}
-    >
-      ⭐
-    </h1>
-  );
+  const handleReviewChange = (event) => {
+    // 👇️ access textarea value
+    setReviewText(event.target.value);
+    console.log(event.target.value);
+  };
+
+  const onReviewSubmit = (e) => {
+    // setReviewText(reviewRef.current.value);
+    if (trnIdForReview === null && sidForReview === null) {
+      alert("Something went wrong. Please try again later");
+    } else {
+      if (reviewRef.current.value && starClicked > 0) {
+        console.log("Review text", reviewRef.current.value);
+        console.log("Star clicked", starClicked);
+        AddReview();
+      } else {
+        alert("Please enter review and rating");
+      }
+    }
+    e.preventDefault();
+  };
 
   const AddReview = async () => {
     //PRODUCTION
@@ -132,11 +148,11 @@ const BookingsContent = () => {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          sid: "",
-          uid: uid,
+          sid: sidForReview,
+          uid: window.localStorage.getItem("userId"),
           ratings: starClicked,
-          review: reviewText,
-          trnId: "",
+          review: reviewRef.current.value,
+          trnId: trnIdForReview,
         }),
       }
     )
@@ -145,6 +161,8 @@ const BookingsContent = () => {
       })
       .then((data) => {
         if (!data.isError) {
+          alert("Review added successfully");
+          navigate("/");
           console.log("AFTER REVIEW ----->", data.data);
         } else {
           console.log("Failed", data.isError);
@@ -159,7 +177,7 @@ const BookingsContent = () => {
       <div className="bookings">
         <Modal
           isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
+          // onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
@@ -173,21 +191,96 @@ const BookingsContent = () => {
           <div className="modalInnerContainer">
             <h2>How would you describe your experience?</h2>
             <form className="reviewForm">
-              <div>
-                {ratingStars.map((star, index) => (
-                  <ShowStars key={index} />
-                ))}
+              <div className="star-container">
+                <h1
+                  onClick={() => {
+                    setStarClicked(1);
+                  }}
+                  className={
+                    starClicked === 1 ? "ratingStarClicked" : "ratingStars"
+                  }
+                >
+                  ⭐
+                </h1>
+                <h1
+                  onClick={() => {
+                    setStarClicked(2);
+                  }}
+                  className={
+                    starClicked === 2 ? "ratingStarClicked" : "ratingStars"
+                  }
+                >
+                  ⭐
+                </h1>
+                <h1
+                  onClick={() => {
+                    setStarClicked(3);
+                  }}
+                  className={
+                    starClicked === 3 ? "ratingStarClicked" : "ratingStars"
+                  }
+                >
+                  ⭐
+                </h1>
+                <h1
+                  onClick={() => {
+                    setStarClicked(4);
+                  }}
+                  className={
+                    starClicked === 4 ? "ratingStarClicked" : "ratingStars"
+                  }
+                >
+                  ⭐
+                </h1>
+                <h1
+                  onClick={() => {
+                    setStarClicked(5);
+                  }}
+                  className={
+                    starClicked === 5 ? "ratingStarClicked" : "ratingStars"
+                  }
+                >
+                  ⭐
+                </h1>
               </div>
-              <textarea
+              {/* <textarea
                 className="reviewTextArea"
                 placeholder="Type your review"
                 value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
+                onChange={handleReviewChange}
+              /> */}
+              <textarea
+                name="review"
+                id="review"
+                cols="30"
+                rows="10"
+                className="reviewTextArea"
+                placeholder="Type your review"
+                ref={reviewRef}
               />
-              <button className="submitReviewBtn">Submit</button>
+              <button onClick={onReviewSubmit} className="submitReviewBtn">
+                Submit
+              </button>
             </form>
           </div>
         </Modal>
+        {/* <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+          <button onClick={closeModal}>close</button>
+          <div>I am a modal</div>
+          <form>
+            <input />
+            <button>tab navigation</button>
+            <button>stays</button>
+            <button>inside</button>
+            <button>the modal</button>
+          </form>
+        </Modal> */}
         <div className="bookings-header">
           <h1 className="bookings-header-title">StudioName</h1>
           <h1 className="bookings-header-title">{transaction.cost}</h1>
@@ -210,7 +303,16 @@ const BookingsContent = () => {
             <h1 className="bookings-body-item-value">3 hours</h1>
           </div>
           <div className="writeReviewBtnContainer">
-            <button className="writeReviewBtn" onClick={openModal}>
+            <button
+              className="writeReviewBtn"
+              onClick={() => {
+                console.log("SID", transaction.sid);
+                console.log("TrnId", transaction.trnId);
+                setTrnIdForReview(transaction.trnId);
+                setSidForReview(transaction.sid);
+                openModal();
+              }}
+            >
               Write a Review
             </button>
           </div>
@@ -231,6 +333,8 @@ const BookingsContent = () => {
               cost={transaction.NetAmount}
               orderNo={transaction.OrderNumber}
               date={transaction.DateOfBooking}
+              trnId={transaction.TrnId}
+              sid={transaction.StudioId}
             />
           ))}
       </div>
