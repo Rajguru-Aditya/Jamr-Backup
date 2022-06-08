@@ -116,7 +116,7 @@
   .navbar{
     justify-content: center;
     flex-direction: column;
-    position: relative;
+    position: fixed;
   }
 
   .navbar-items {

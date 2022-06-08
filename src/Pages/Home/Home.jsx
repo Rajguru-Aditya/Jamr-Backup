@@ -179,7 +179,7 @@ function Home(props) {
                   />
                 </div>
                 <div className="service-lowerContainer">
-                  <p>Jam Pads</p>
+                  <p>JamPads</p>
                 </div>
               </div>
             </Link>
@@ -237,7 +237,7 @@ function Home(props) {
               <div className="studios-title-container">
                 <div className="title-container">
                   <h1 className="title">Music Studios</h1>
-                  <h1 className="subtitle">Top Picks 🔥</h1>
+                  {/* <h1 className="subtitle">Top Picks 🔥</h1> */}
                 </div>
                 <div>
                   <Link className="service-link" to="/studio-listing">
@@ -263,7 +263,7 @@ function Home(props) {
               <div className="studios-title-container">
                 <div className="title-container">
                   <h1 className="title">Jampads</h1>
-                  <h1 className="subtitle">Top Picks 🔥</h1>
+                  {/* <h1 className="subtitle">Top Picks 🔥</h1> */}
                 </div>
                 <div>
                   <Link className="service-link" to="/studio-listing">

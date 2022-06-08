@@ -88,9 +88,10 @@ function StudioListing(props) {
               <p id="studio-cost" className="studio-text">
                 ₹{studio.price}/hr
               </p>
-              <p id="studio-ratings" className="studio-text">
+              {/* <p id="studio-ratings" className="studio-text">
                 {"⭐".repeat(studio.ratings)}
-              </p>
+              </p> */}
+              <p id="studio-ratings">⭐⭐⭐⭐</p>
             </div>
           </div>
           <div className="bookNow-btn">
