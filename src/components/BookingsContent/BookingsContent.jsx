@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./styles.css";
 import BookingDetailsContext from "../../BookingDetailsContext";
 import Modal from "react-modal";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 const BookingsContent = () => {
@@ -292,12 +293,14 @@ const BookingsContent = () => {
           </div>
           <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Date:</h1>
-            <h1 className="bookings-body-item-value">{transaction.date}</h1>
+            <h1 className="bookings-body-item-value">
+              {moment(transaction.date).format("MMMM Do YYYY")}
+            </h1>
           </div>
-          <div className="bookings-body-item">
+          {/* <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Time:</h1>
             <h1 className="bookings-body-item-value">March 30, 2022</h1>
-          </div>
+          </div> */}
           <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Duration:</h1>
             <h1 className="bookings-body-item-value">3 hours</h1>
@@ -326,17 +329,20 @@ const BookingsContent = () => {
       <div className="content-left">
         {/* Bookings */}
         {transactionDetails &&
-          transactionDetails.map((transaction, index) => (
-            <RenderBookingDetails
-              key={index}
-              // studioName={transaction.studioName}
-              cost={transaction.NetAmount}
-              orderNo={transaction.OrderNumber}
-              date={transaction.DateOfBooking}
-              trnId={transaction.TrnId}
-              sid={transaction.StudioId}
-            />
-          ))}
+          transactionDetails
+            .slice(0)
+            .reverse()
+            .map((transaction, index) => (
+              <RenderBookingDetails
+                key={index}
+                // studioName={transaction.studioName}
+                cost={transaction.NetAmount}
+                orderNo={transaction.OrderNumber}
+                date={transaction.DateOfBooking}
+                trnId={transaction.TrnId}
+                sid={transaction.StudioId}
+              />
+            ))}
       </div>
       <div className="content-right">
         <div className="content-right-first">
