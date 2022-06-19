@@ -68,7 +68,7 @@ function StudioDetails(props) {
   useEffect(() => {
     bookedSlots.map((slot) => {
       console.log("slot ->", slot.SlotBooked);
-      bookedSlotsArray.push(slot.SlotBooked);
+      return bookedSlotsArray.push(slot.SlotBooked);
     });
     console.log("bookedSlotsArray ->", bookedSlotsArray);
     SlotsComponent();
@@ -333,6 +333,7 @@ function StudioDetails(props) {
     );
   };
 
+  // Render Slots
   const SlotsComponent = () => (
     <div className="slots-container">
       <div className="slots-inner-container">

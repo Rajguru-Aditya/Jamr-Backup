@@ -6,13 +6,16 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 const BookingsContent = () => {
-  const { transactionId } = useContext(BookingDetailsContext);
+  const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
+  const { setOrderId } = useContext(BookingDetailsContext);
+  const { setTrnStudioId } = useContext(BookingDetailsContext);
   const [LSTransactionId, setLSTransactionId] = useState(null);
   const [uid, setUid] = useState(null);
   const [reviewText, setReviewText] = useState("");
   const [starClicked, setStarClicked] = useState(0);
   const [trnIdForReview, setTrnIdForReview] = useState(null);
   const [sidForReview, setSidForReview] = useState(null);
+  const [LSTrnId, setLSTrnId] = useState(null);
 
   let [transactionDetails, setTransactionDetails] = useState(null);
   let subtitle;
@@ -108,11 +111,13 @@ const BookingsContent = () => {
 
   useEffect(() => {
     console.log("TRANSACTION", transactionDetails);
-  }, [fetchBookingData]);
+  }, [transactionDetails]);
 
   useEffect(() => {
     console.log("Star clicked", starClicked);
   }, [starClicked]);
+
+  // Handle reviews
 
   const handleReviewChange = (event) => {
     // 👇️ access textarea value
@@ -173,9 +178,22 @@ const BookingsContent = () => {
         console.error(error);
       });
   };
+
+  const openOrderHistory = () => {
+    navigate("/order-history");
+  };
+
   const RenderBookingDetails = (transaction) => {
     return (
-      <div className="bookings">
+      <div
+        className="bookings"
+        onClick={() => {
+          setOrderId(transaction.orderId);
+          setTrnStudioId(transaction.sid);
+          setTransactionId(transaction.trnId);
+          openOrderHistory();
+        }}
+      >
         <Modal
           isOpen={modalIsOpen}
           // onAfterOpen={afterOpenModal}
@@ -289,7 +307,7 @@ const BookingsContent = () => {
         <div className="bookings-body">
           <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Order Number:</h1>
-            <h1 className="bookings-body-item-value">#{transaction.orderNo}</h1>
+            <h1 className="bookings-body-item-value">#{transaction.orderId}</h1>
           </div>
           <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Date:</h1>
@@ -338,9 +356,10 @@ const BookingsContent = () => {
                 // studioName={transaction.studioName}
                 cost={transaction.NetAmount}
                 orderNo={transaction.OrderNumber}
+                orderId={transaction.order_id}
                 date={transaction.DateOfBooking}
-                trnId={transaction.TrnId}
-                sid={transaction.StudioId}
+                trnId={transaction.id}
+                sid={transaction.studioId}
               />
             ))}
       </div>
