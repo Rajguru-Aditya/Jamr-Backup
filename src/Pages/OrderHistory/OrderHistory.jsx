@@ -241,48 +241,77 @@ function OrderHistory() {
 
   return (
     <div className="orderHistory">
-      {/* OLD ORDER HISTORY PAGE */}
-      {/* <h1>Order History</h1>
-      <div className="orderDetails">
-        <div className="orderDetails-content">
-          <h3>Status:</h3>
-          <h2 className="content-text">
-            {relatedOrders[0]?.orderDetails.state === 1
-              ? "Accepted"
-              : relatedOrders[0]?.orderDetails.state === 1
-              ? "Pending"
-              : relatedOrders[0]?.orderDetails.state === 0
-              ? "Rejected"
-              : null}
-          </h2>
-        </div>
-      </div>
-      {relatedOrders[0]?.orderDetails.state === 0 ? (
-        <>
-          <p>Your order has been rejected by the studio owner.</p>
-          <h3>Would you like to book diffferent slots?</h3>
-          <button className="modalBtn" onClick={openModal}>
-            Book slots
-          </button>
-
-          <button className="modalBtn" onClick={showData}>
-            Show Data
-          </button>
-
-          <button className="modalBtn" onClick={Rebooking}>
-            Confirm Booking
-          </button>
-        </>
-      ) : null}
-      {showModal ? (
-        <ReBookingModal setNewSlots={setNewSlots} setShowModal={setShowModal} />
-      ) : null} */}
-
-      {/* NEW ORDER HISTORY PAGE */}
-
       <div className="main-container">
-        <div className="left-main-container"></div>
-        <div className="right-main-container"></div>
+        <div className="left-main-container">
+          <div className="profile-container">
+            <div className="profile-image"></div>
+            <div className="profile-details">
+              <h1 className="name">Aditya Rajguru</h1>
+              <div className="contact-container">
+                <img
+                  src="https://img.icons8.com/ios-filled/50/ffffff/new-post.png"
+                  alt="email"
+                  className="contact-icons"
+                />
+                <h2 className="email">abc123@gmail.com</h2>
+              </div>
+              <div className="contact-container">
+                <img
+                  src="https://img.icons8.com/material-outlined/50/ffffff/iphone--v1.png"
+                  alt="phone"
+                  className="contact-icons"
+                />
+                <h2 className="phone">1234567899</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="right-main-container">
+          <div className="request-status-container">
+            <h1>Order Request:</h1>
+            <h1 className="request-status">Approved</h1>
+          </div>
+          <div className="order-details-container">
+            <div className="order-details-content">
+              <h1>Date: </h1>
+              <h1 className="detail">20th July 2022</h1>
+            </div>
+            <div className="order-details-content">
+              <h1>Duration: </h1>
+              <h1 className="detail">3hrs</h1>
+            </div>
+            <div className="order-details-content">
+              <h1>Time: </h1>
+              <h1 className="detail">1pm - 4pm</h1>
+            </div>
+          </div>
+          <div className="rebooking-container">
+            <button className="modalBtn" onClick={openModal}>
+              Book slots
+            </button>
+            {showModal ? (
+              <ReBookingModal
+                setNewSlots={setNewSlots}
+                setShowModal={setShowModal}
+              />
+            ) : null}
+            <button className="modalBtn detail" onClick={Rebooking}>
+              Confirm Booking
+            </button>
+          </div>
+          <div className="file-upload-container">
+            <div className="file-upload-inner-container">
+              <div className="file-upload-box">
+                <form>
+                  <input type="file" name="file" className="modalBtn" />
+                </form>
+                <h2>Or Drag and Drop a File here</h2>
+                <p>Max file size 1GB</p>
+              </div>
+            </div>
+            <button className="modalBtn">Upload Selected File</button>
+          </div>
+        </div>
       </div>
     </div>
   );

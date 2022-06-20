@@ -131,7 +131,6 @@ function Payment() {
           order_id: response.razorpay_order_id,
           receipt_id: receiptId[0],
           payment_id: response.razorpay_payment_id,
-          transaction_id: response.razorpay_signature,
           paymentSignature: response.razorpay_signature,
         }),
       }
@@ -142,6 +141,7 @@ function Payment() {
       .then((data) => {
         if (!data.isError) {
           console.log("Transaction history ----->", data.data);
+          console.log("Order Id", response.razorpay_order_id);
           alert("Transaction Successful");
           setTransactionId(data.data.transactionId);
           navigate("/dashboard");
@@ -160,8 +160,8 @@ function Payment() {
   const payment = async () => {
     //PRODUCTION
     await fetch(
-      // `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
-      `https://backend.jamr.online/payment/gateway/initiate`,
+      `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
+      // `https://backend.jamr.online/payment/gateway/initiate`,
       {
         //TESTING
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
