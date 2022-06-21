@@ -117,14 +117,6 @@ const BookingsContent = () => {
     console.log("Star clicked", starClicked);
   }, [starClicked]);
 
-  // Handle reviews
-
-  const handleReviewChange = (event) => {
-    // 👇️ access textarea value
-    setReviewText(event.target.value);
-    console.log(event.target.value);
-  };
-
   const onReviewSubmit = (e) => {
     // setReviewText(reviewRef.current.value);
     if (trnIdForReview === null && sidForReview === null) {
@@ -194,112 +186,6 @@ const BookingsContent = () => {
           openOrderHistory();
         }}
       >
-        <Modal
-          isOpen={modalIsOpen}
-          // onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <img
-            src="https://img.icons8.com/material-outlined/20/undefined/delete-sign.png"
-            alt="close"
-            onClick={closeModal}
-            className="closeBtn"
-          />
-          <div className="modalInnerContainer">
-            <h2>How would you describe your experience?</h2>
-            <form className="reviewForm">
-              <div className="star-container">
-                <h1
-                  onClick={() => {
-                    setStarClicked(1);
-                  }}
-                  className={
-                    starClicked === 1 ? "ratingStarClicked" : "ratingStars"
-                  }
-                >
-                  ⭐
-                </h1>
-                <h1
-                  onClick={() => {
-                    setStarClicked(2);
-                  }}
-                  className={
-                    starClicked === 2 ? "ratingStarClicked" : "ratingStars"
-                  }
-                >
-                  ⭐
-                </h1>
-                <h1
-                  onClick={() => {
-                    setStarClicked(3);
-                  }}
-                  className={
-                    starClicked === 3 ? "ratingStarClicked" : "ratingStars"
-                  }
-                >
-                  ⭐
-                </h1>
-                <h1
-                  onClick={() => {
-                    setStarClicked(4);
-                  }}
-                  className={
-                    starClicked === 4 ? "ratingStarClicked" : "ratingStars"
-                  }
-                >
-                  ⭐
-                </h1>
-                <h1
-                  onClick={() => {
-                    setStarClicked(5);
-                  }}
-                  className={
-                    starClicked === 5 ? "ratingStarClicked" : "ratingStars"
-                  }
-                >
-                  ⭐
-                </h1>
-              </div>
-              {/* <textarea
-                className="reviewTextArea"
-                placeholder="Type your review"
-                value={reviewText}
-                onChange={handleReviewChange}
-              /> */}
-              <textarea
-                name="review"
-                id="review"
-                cols="30"
-                rows="10"
-                className="reviewTextArea"
-                placeholder="Type your review"
-                ref={reviewRef}
-              />
-              <button onClick={onReviewSubmit} className="submitReviewBtn">
-                Submit
-              </button>
-            </form>
-          </div>
-        </Modal>
-        {/* <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-          <button onClick={closeModal}>close</button>
-          <div>I am a modal</div>
-          <form>
-            <input />
-            <button>tab navigation</button>
-            <button>stays</button>
-            <button>inside</button>
-            <button>the modal</button>
-          </form>
-        </Modal> */}
         <div className="bookings-header">
           <h1 className="bookings-header-title">StudioName</h1>
           <h1 className="bookings-header-title">{transaction.cost}</h1>
@@ -322,20 +208,6 @@ const BookingsContent = () => {
           <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Duration:</h1>
             <h1 className="bookings-body-item-value">3 hours</h1>
-          </div>
-          <div className="writeReviewBtnContainer">
-            <button
-              className="writeReviewBtn"
-              onClick={() => {
-                console.log("SID", transaction.sid);
-                console.log("TrnId", transaction.trnId);
-                setTrnIdForReview(transaction.trnId);
-                setSidForReview(transaction.sid);
-                openModal();
-              }}
-            >
-              Write a Review
-            </button>
           </div>
         </div>
       </div>

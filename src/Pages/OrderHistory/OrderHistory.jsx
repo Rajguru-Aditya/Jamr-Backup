@@ -4,6 +4,7 @@ import { ref, onValue } from "firebase/database";
 import { db } from "../../config/index.js";
 import BookingDetailsContext from "../../BookingDetailsContext";
 import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.jsx";
+import OtpInput from "react-otp-input";
 
 function OrderHistory() {
   const [details, setDetails] = useState([]);
@@ -21,6 +22,7 @@ function OrderHistory() {
   const [showModal, setShowModal] = useState(false);
   const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
   const [newSlots, setNewSlots] = useState([]);
+  const [otp, setOtp] = useState();
 
   useEffect(() => {
     console.log("New Slots ->", newSlots);
@@ -130,65 +132,65 @@ function OrderHistory() {
   }, [transactionId]);
 
   //Fetching all requests from Firebase
-  useEffect(() => {
-    onValue(ref(db), (snapshot) => {
-      setallRequests([]);
-      const data = snapshot.val();
-      if (data !== null) {
-        Object.values(data).forEach((request) => {
-          setallRequests((requests) => [...requests, request]);
-        });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   onValue(ref(db), (snapshot) => {
+  //     setallRequests([]);
+  //     const data = snapshot.val();
+  //     if (data !== null) {
+  //       Object.values(data).forEach((request) => {
+  //         setallRequests((requests) => [...requests, request]);
+  //       });
+  //     }
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    setstudioRequests(allRequests[parseInt(LSStudioId - 1)]);
-  }, [allRequests]);
+  // useEffect(() => {
+  //   setstudioRequests(allRequests[parseInt(LSStudioId - 1)]);
+  // }, [allRequests]);
 
-  useEffect(() => {
-    console.log("STUDIO REQUEST", studioRequests);
-    setOrders(studioRequests ? studioRequests.orders : []);
-  }, [orders, studioRequests]);
+  // useEffect(() => {
+  //   // console.log("STUDIO REQUEST", studioRequests);
+  //   setOrders(studioRequests ? studioRequests.orders : []);
+  // }, [orders, studioRequests]);
 
-  useEffect(() => {
-    console.log("ORDERS", orders);
-  }, [orders]);
+  // useEffect(() => {
+  //   console.log("ORDERS", orders);
+  // }, [orders]);
 
-  useEffect(() => {
-    setRelatedOrders([]);
-    if (orders) {
-      Object.entries(orders).forEach(([key, value]) => {
-        return key === LSOrderId
-          ? setRelatedOrders((relatedOrders) => [
-              ...relatedOrders,
-              {
-                orderId: key,
-                orderDetails: value,
-              },
-            ])
-          : null;
-      });
-    }
-  }, [orders]);
+  // useEffect(() => {
+  //   setRelatedOrders([]);
+  //   if (orders) {
+  //     Object.entries(orders).forEach(([key, value]) => {
+  //       return key === LSOrderId
+  //         ? setRelatedOrders((relatedOrders) => [
+  //             ...relatedOrders,
+  //             {
+  //               orderId: key,
+  //               orderDetails: value,
+  //             },
+  //           ])
+  //         : null;
+  //     });
+  //   }
+  // }, [orders]);
 
-  useEffect(() => {
-    console.log("RELATED ORDERS", relatedOrders);
-    relatedOrders.map((order) => {
-      console.log("ORDER", order);
-      console.log("ORDER ID", order.orderId);
-      console.log("ORDER LS ID", LSOrderId);
-      console.log("ORDER Date", order.orderDetails.booking_date);
-      //   return order.orderId === LSOrderId;
-    });
-  }, [LSOrderId, relatedOrders]);
+  // useEffect(() => {
+  //   // console.log("RELATED ORDERS", relatedOrders);
+  //   relatedOrders.map((order) => {
+  //     console.log("ORDER", order);
+  //     console.log("ORDER ID", order.orderId);
+  //     console.log("ORDER LS ID", LSOrderId);
+  //     console.log("ORDER Date", order.orderDetails.booking_date);
+  //     //   return order.orderId === LSOrderId;
+  //   });
+  // }, [LSOrderId, relatedOrders]);
 
-  useEffect(() => {
-    console.log("RELATED ORDERS", relatedOrders);
-    relatedOrders.filter((order) => {
-      return order.orderId === LSOrderId;
-    });
-  }, [LSOrderId, relatedOrders]);
+  // useEffect(() => {
+  //   // console.log("RELATED ORDERS", relatedOrders);
+  //   relatedOrders.filter((order) => {
+  //     return order.orderId === LSOrderId;
+  //   });
+  // }, [LSOrderId, relatedOrders]);
 
   useEffect(() => {
     console.log("LS TRN ID", LSTrnId);
@@ -243,8 +245,14 @@ function OrderHistory() {
     <div className="orderHistory">
       <div className="main-container">
         <div className="left-main-container">
-          <div className="profile-container">
-            <div className="profile-image"></div>
+          <div className="order-profile-container">
+            <div className="profile-image">
+              <img
+                src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80"
+                alt="profile"
+                className="profile-pic"
+              />
+            </div>
             <div className="profile-details">
               <h1 className="name">Aditya Rajguru</h1>
               <div className="contact-container">
@@ -267,25 +275,46 @@ function OrderHistory() {
           </div>
         </div>
         <div className="right-main-container">
-          <div className="request-status-container">
-            <h1>Order Request:</h1>
-            <h1 className="request-status">Approved</h1>
+          <div className="right-top-container">
+            <div className="request-status-container">
+              <h2>Order Status</h2>
+              <h1 className="request-status">Order Accepted</h1>
+            </div>
+            <div className="request-status-container">
+              <h2>OTP</h2>
+              <OtpInput
+                value={otp}
+                onChange={setOtp}
+                numInputs={6}
+                // separator={<span> - </span>}
+                containerStyle={"otp-container"}
+                inputStyle={"otp-input"}
+              />
+            </div>
           </div>
           <div className="order-details-container">
-            <div className="order-details-content">
-              <h1>Date: </h1>
-              <h1 className="detail">20th July 2022</h1>
+            <div className="order-details-text-content">
+              <div id="text-container">
+                <div className="order-details-content">
+                  <p className="detail-title">Recording Date: </p>
+                  <h1 className="detail">20th July 2022</h1>
+                </div>
+                <div className="order-details-content">
+                  <p className="detail-title">Time: </p>
+                  <h1 className="detail">1pm - 4pm</h1>
+                </div>
+                <div className="order-details-content">
+                  <p className="detail-title">Payment Type: </p>
+                  <h1 className="detail">UPI</h1>
+                </div>
+              </div>
             </div>
-            <div className="order-details-content">
-              <h1>Duration: </h1>
-              <h1 className="detail">3hrs</h1>
-            </div>
-            <div className="order-details-content">
-              <h1>Time: </h1>
-              <h1 className="detail">1pm - 4pm</h1>
+            <div className="order-details-btn-container">
+              <button className="modalBtn">Call the studio</button>
+              <button className="modalBtn">Get directions</button>
             </div>
           </div>
-          <div className="rebooking-container">
+          {/* <div className="rebooking-container">
             <button className="modalBtn" onClick={openModal}>
               Book slots
             </button>
@@ -298,7 +327,7 @@ function OrderHistory() {
             <button className="modalBtn detail" onClick={Rebooking}>
               Confirm Booking
             </button>
-          </div>
+          </div> */}
           <div className="file-upload-container">
             <div className="file-upload-inner-container">
               <div className="file-upload-box">
@@ -310,6 +339,51 @@ function OrderHistory() {
               </div>
             </div>
             <button className="modalBtn">Upload Selected File</button>
+          </div>
+          <div className="message-container">
+            <div className="message-text-content">
+              <div className="message-box">
+                <h2>Write a message to the host</h2>
+                <form className="message-form">
+                  <textarea
+                    rows={6}
+                    name="message"
+                    className="textarea"
+                  ></textarea>
+                </form>
+              </div>
+            </div>
+            <div className="message-btn-container">
+              <h2>Need Help?</h2>
+              <div className="buttons-container">
+                <button className="contact-btn live-chat-btn">Live Chat</button>
+                <button className="contact-btn call-us-btn">Call Us</button>
+              </div>
+            </div>
+          </div>
+          <div className="review-container">
+            <div className="review-btn-container">
+              <h2>Rate the Studio</h2>
+              <div className="buttons-container">
+                <h1>⭐</h1>
+                <h1>⭐</h1>
+                <h1>⭐</h1>
+                <h1>⭐</h1>
+                <h1>⭐</h1>
+              </div>
+            </div>
+            <div className="review-text-content">
+              <div className="review-box">
+                <h2>Write a Review</h2>
+                <form>
+                  <textarea
+                    rows={6}
+                    name="review"
+                    className="textarea"
+                  ></textarea>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
