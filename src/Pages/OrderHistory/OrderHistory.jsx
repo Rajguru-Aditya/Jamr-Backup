@@ -132,65 +132,65 @@ function OrderHistory() {
   }, [transactionId]);
 
   //Fetching all requests from Firebase
-  // useEffect(() => {
-  //   onValue(ref(db), (snapshot) => {
-  //     setallRequests([]);
-  //     const data = snapshot.val();
-  //     if (data !== null) {
-  //       Object.values(data).forEach((request) => {
-  //         setallRequests((requests) => [...requests, request]);
-  //       });
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    onValue(ref(db), (snapshot) => {
+      setallRequests([]);
+      const data = snapshot.val();
+      if (data !== null) {
+        Object.values(data).forEach((request) => {
+          setallRequests((requests) => [...requests, request]);
+        });
+      }
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   setstudioRequests(allRequests[parseInt(LSStudioId - 1)]);
-  // }, [allRequests]);
+  useEffect(() => {
+    setstudioRequests(allRequests[parseInt(LSStudioId - 1)]);
+  }, [allRequests]);
 
-  // useEffect(() => {
-  //   // console.log("STUDIO REQUEST", studioRequests);
-  //   setOrders(studioRequests ? studioRequests.orders : []);
-  // }, [orders, studioRequests]);
+  useEffect(() => {
+    // console.log("STUDIO REQUEST", studioRequests);
+    setOrders(studioRequests ? studioRequests.orders : []);
+  }, [orders, studioRequests]);
 
-  // useEffect(() => {
-  //   console.log("ORDERS", orders);
-  // }, [orders]);
+  useEffect(() => {
+    console.log("ORDERS", orders);
+  }, [orders]);
 
-  // useEffect(() => {
-  //   setRelatedOrders([]);
-  //   if (orders) {
-  //     Object.entries(orders).forEach(([key, value]) => {
-  //       return key === LSOrderId
-  //         ? setRelatedOrders((relatedOrders) => [
-  //             ...relatedOrders,
-  //             {
-  //               orderId: key,
-  //               orderDetails: value,
-  //             },
-  //           ])
-  //         : null;
-  //     });
-  //   }
-  // }, [orders]);
+  useEffect(() => {
+    setRelatedOrders([]);
+    if (orders) {
+      Object.entries(orders).forEach(([key, value]) => {
+        return key === LSOrderId
+          ? setRelatedOrders((relatedOrders) => [
+              ...relatedOrders,
+              {
+                orderId: key,
+                orderDetails: value,
+              },
+            ])
+          : null;
+      });
+    }
+  }, [orders]);
 
-  // useEffect(() => {
-  //   // console.log("RELATED ORDERS", relatedOrders);
-  //   relatedOrders.map((order) => {
-  //     console.log("ORDER", order);
-  //     console.log("ORDER ID", order.orderId);
-  //     console.log("ORDER LS ID", LSOrderId);
-  //     console.log("ORDER Date", order.orderDetails.booking_date);
-  //     //   return order.orderId === LSOrderId;
-  //   });
-  // }, [LSOrderId, relatedOrders]);
+  useEffect(() => {
+    // console.log("RELATED ORDERS", relatedOrders);
+    relatedOrders.map((order) => {
+      console.log("ORDER", order);
+      console.log("ORDER ID", order.orderId);
+      console.log("ORDER LS ID", LSOrderId);
+      console.log("ORDER State", order.orderDetails.state);
+      // return order.orderId === LSOrderId;
+    });
+  }, [LSOrderId, relatedOrders]);
 
-  // useEffect(() => {
-  //   // console.log("RELATED ORDERS", relatedOrders);
-  //   relatedOrders.filter((order) => {
-  //     return order.orderId === LSOrderId;
-  //   });
-  // }, [LSOrderId, relatedOrders]);
+  useEffect(() => {
+    // console.log("RELATED ORDERS", relatedOrders);
+    relatedOrders.filter((order) => {
+      return order.orderId === LSOrderId;
+    });
+  }, [LSOrderId, relatedOrders]);
 
   useEffect(() => {
     console.log("LS TRN ID", LSTrnId);
@@ -278,7 +278,17 @@ function OrderHistory() {
           <div className="right-top-container">
             <div className="request-status-container">
               <h2>Order Status</h2>
-              <h1 className="request-status">Order Accepted</h1>
+              <h1 className="request-status">
+                {relatedOrders.map((order) => {
+                  return order.orderDetails.state === -1
+                    ? "Pending"
+                    : order.orderDetails.state === 1
+                    ? "Order Accepted"
+                    : order.orderDetails.state === 0
+                    ? "Order Rejected"
+                    : "Error";
+                })}
+              </h1>
             </div>
             <div className="request-status-container">
               <h2>OTP</h2>

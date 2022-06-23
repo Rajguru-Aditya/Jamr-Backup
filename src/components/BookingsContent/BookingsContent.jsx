@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const BookingsContent = () => {
   const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
-  const { setOrderId } = useContext(BookingDetailsContext);
-  const { setTrnStudioId } = useContext(BookingDetailsContext);
+  const { orderId, setOrderId } = useContext(BookingDetailsContext);
+  const { trnStudioId, setTrnStudioId } = useContext(BookingDetailsContext);
   const [LSTransactionId, setLSTransactionId] = useState(null);
   const [uid, setUid] = useState(null);
   const [reviewText, setReviewText] = useState("");
@@ -16,37 +16,12 @@ const BookingsContent = () => {
   const [trnIdForReview, setTrnIdForReview] = useState(null);
   const [sidForReview, setSidForReview] = useState(null);
   const [LSTrnId, setLSTrnId] = useState(null);
+  const [LSOrderId, setLSOrderId] = useState(null);
+  const [LSStudioId, setLSStudioId] = useState(null);
 
   let [transactionDetails, setTransactionDetails] = useState(null);
-  let subtitle;
-  const [modalIsOpen, setIsOpen] = React.useState(false);
 
-  const reviewRef = useRef(null);
   const navigate = useNavigate();
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "50%",
-      height: "50%",
-      borderRadius: "20px",
-    },
-  };
-
-  Modal.setAppElement("#root");
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   const fetchBookingData = async () => {
     //PRODUCTION
@@ -82,6 +57,8 @@ const BookingsContent = () => {
       });
   };
 
+  // FETCHING DATA FROM LOCAL STORAGE
+
   useEffect(() => {
     if (transactionId !== null) {
       setLSTransactionId(transactionId);
@@ -106,6 +83,71 @@ const BookingsContent = () => {
   }, []);
 
   useEffect(() => {
+    if (window.localStorage.getItem("orderId") !== null) {
+      if (LSOrderId === null || LSOrderId === undefined || LSOrderId === "") {
+        window.localStorage.setItem("orderId", JSON.stringify(orderId));
+        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+      } else {
+        if (orderId !== "") {
+          window.localStorage.setItem("orderId", JSON.stringify(orderId));
+        }
+      }
+    } else {
+      window.localStorage.setItem("orderId", JSON.stringify(orderId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("trnStudioId") !== null) {
+      if (
+        LSStudioId === null ||
+        LSStudioId === undefined ||
+        LSStudioId === ""
+      ) {
+        window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
+        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+      } else {
+        if (trnStudioId !== "") {
+          window.localStorage.setItem(
+            "trnStudioId",
+            JSON.stringify(trnStudioId)
+          );
+        }
+      }
+    } else {
+      window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (orderId !== null) {
+      setLSOrderId(orderId);
+    } else {
+      if (
+        window.localStorage.getItem("orderId") !== null ||
+        window.localStorage.getItem("orderId") !== undefined ||
+        window.localStorage.getItem("orderId") !== ""
+      ) {
+        setLSOrderId(window.localStorage.getItem("orderId"));
+      }
+    }
+  }, [orderId]);
+
+  useEffect(() => {
+    if (trnStudioId !== null) {
+      setLSStudioId(trnStudioId);
+    } else {
+      if (
+        window.localStorage.getItem("trnStudioId") !== null ||
+        window.localStorage.getItem("trnStudioId") !== undefined ||
+        window.localStorage.getItem("trnStudioId") !== ""
+      ) {
+        setLSStudioId(window.localStorage.getItem("studioId"));
+      }
+    }
+  }, [trnStudioId]);
+
+  useEffect(() => {
     fetchBookingData();
   }, [LSTransactionId]);
 
@@ -116,22 +158,6 @@ const BookingsContent = () => {
   useEffect(() => {
     console.log("Star clicked", starClicked);
   }, [starClicked]);
-
-  const onReviewSubmit = (e) => {
-    // setReviewText(reviewRef.current.value);
-    if (trnIdForReview === null && sidForReview === null) {
-      alert("Something went wrong. Please try again later");
-    } else {
-      if (reviewRef.current.value && starClicked > 0) {
-        console.log("Review text", reviewRef.current.value);
-        console.log("Star clicked", starClicked);
-        AddReview();
-      } else {
-        alert("Please enter review and rating");
-      }
-    }
-    e.preventDefault();
-  };
 
   const AddReview = async () => {
     //PRODUCTION
@@ -149,7 +175,7 @@ const BookingsContent = () => {
           sid: sidForReview,
           uid: window.localStorage.getItem("userId"),
           ratings: starClicked,
-          review: reviewRef.current.value,
+          // review: reviewRef.current.value,
           trnId: trnIdForReview,
         }),
       }
