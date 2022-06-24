@@ -16,6 +16,7 @@ export function BookingDetailsProvider({ children }) {
   const [transactionId, setTransactionId] = useState();
   const [orderId, setOrderId] = useState();
   const [trnStudioId, setTrnStudioId] = useState();
+  const [otp, setOtp] = useState();
   return (
     <BookingDetailsContext.Provider
       value={{
@@ -27,6 +28,8 @@ export function BookingDetailsProvider({ children }) {
         setOrderId,
         trnStudioId,
         setTrnStudioId,
+        setOtp,
+        otp,
       }}
     >
       {children}

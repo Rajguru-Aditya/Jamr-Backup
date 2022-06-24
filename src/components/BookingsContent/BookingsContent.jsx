@@ -9,6 +9,7 @@ const BookingsContent = () => {
   const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
   const { orderId, setOrderId } = useContext(BookingDetailsContext);
   const { trnStudioId, setTrnStudioId } = useContext(BookingDetailsContext);
+  const { otp, setOtp } = useContext(BookingDetailsContext);
   const [LSTransactionId, setLSTransactionId] = useState(null);
   const [uid, setUid] = useState(null);
   const [reviewText, setReviewText] = useState("");
@@ -18,6 +19,7 @@ const BookingsContent = () => {
   const [LSTrnId, setLSTrnId] = useState(null);
   const [LSOrderId, setLSOrderId] = useState(null);
   const [LSStudioId, setLSStudioId] = useState(null);
+  const [LSOtp, setLSOtp] = useState(null);
 
   let [transactionDetails, setTransactionDetails] = useState(null);
 
@@ -82,6 +84,8 @@ const BookingsContent = () => {
     }
   }, []);
 
+  //Order ID
+
   useEffect(() => {
     if (window.localStorage.getItem("orderId") !== null) {
       if (LSOrderId === null || LSOrderId === undefined || LSOrderId === "") {
@@ -96,6 +100,51 @@ const BookingsContent = () => {
       window.localStorage.setItem("orderId", JSON.stringify(orderId));
     }
   }, []);
+
+  useEffect(() => {
+    if (orderId !== null) {
+      setLSOrderId(orderId);
+    } else {
+      if (
+        window.localStorage.getItem("orderId") !== null ||
+        window.localStorage.getItem("orderId") !== undefined ||
+        window.localStorage.getItem("orderId") !== ""
+      ) {
+        setLSOrderId(window.localStorage.getItem("orderId"));
+      }
+    }
+  }, [orderId]);
+
+  //OTP
+  useEffect(() => {
+    if (window.localStorage.getItem("otp") !== null) {
+      if (LSOtp === null || LSOtp === undefined || LSOtp === "") {
+        window.localStorage.setItem("otp", JSON.stringify(otp));
+      } else {
+        if (otp !== "") {
+          window.localStorage.setItem("otp", JSON.stringify(otp));
+        }
+      }
+    } else {
+      window.localStorage.setItem("otp", JSON.stringify(otp));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (otp !== null) {
+      setLSOtp(otp);
+    } else {
+      if (
+        window.localStorage.getItem("otp") !== null ||
+        window.localStorage.getItem("otp") !== undefined ||
+        window.localStorage.getItem("otp") !== ""
+      ) {
+        setLSOtp(window.localStorage.getItem("otp"));
+      }
+    }
+  }, [otp]);
+
+  // Studio ID
 
   useEffect(() => {
     if (window.localStorage.getItem("trnStudioId") !== null) {
@@ -118,20 +167,6 @@ const BookingsContent = () => {
       window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
     }
   }, []);
-
-  useEffect(() => {
-    if (orderId !== null) {
-      setLSOrderId(orderId);
-    } else {
-      if (
-        window.localStorage.getItem("orderId") !== null ||
-        window.localStorage.getItem("orderId") !== undefined ||
-        window.localStorage.getItem("orderId") !== ""
-      ) {
-        setLSOrderId(window.localStorage.getItem("orderId"));
-      }
-    }
-  }, [orderId]);
 
   useEffect(() => {
     if (trnStudioId !== null) {
@@ -209,6 +244,7 @@ const BookingsContent = () => {
           setOrderId(transaction.orderId);
           setTrnStudioId(transaction.sid);
           setTransactionId(transaction.trnId);
+          setOtp(transaction.otp);
           openOrderHistory();
         }}
       >
@@ -258,6 +294,7 @@ const BookingsContent = () => {
                 date={transaction.DateOfBooking}
                 trnId={transaction.id}
                 sid={transaction.studioId}
+                otp={transaction.otp}
               />
             ))}
       </div>

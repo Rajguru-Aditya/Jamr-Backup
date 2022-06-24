@@ -15,14 +15,16 @@ function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [relatedOrders, setRelatedOrders] = useState([]);
   const { orderId } = useContext(BookingDetailsContext);
+  const { otp } = useContext(BookingDetailsContext);
   const { trnStudioId } = useContext(BookingDetailsContext);
   const [LSOrderId, setLSOrderId] = useState(null);
   const [LSStudioId, setLSStudioId] = useState(null);
   const [LSTrnId, setLSTrnId] = useState(null);
+  const [LSOtp, setLSOtp] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
   const [newSlots, setNewSlots] = useState([]);
-  const [otp, setOtp] = useState();
+  const [inputOtp, setInputOtp] = useState();
 
   useEffect(() => {
     console.log("New Slots ->", newSlots);
@@ -130,6 +132,34 @@ function OrderHistory() {
       }
     }
   }, [transactionId]);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("otp") !== null) {
+      if (LSOtp === null || LSOtp === undefined || LSOtp === "") {
+        window.localStorage.setItem("otp", JSON.stringify(otp));
+      } else {
+        if (otp !== "") {
+          window.localStorage.setItem("otp", JSON.stringify(otp));
+        }
+      }
+    } else {
+      window.localStorage.setItem("otp", JSON.stringify(otp));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (otp !== null) {
+      setLSOtp(otp);
+    } else {
+      if (
+        window.localStorage.getItem("otp") !== null ||
+        window.localStorage.getItem("otp") !== undefined ||
+        window.localStorage.getItem("otp") !== ""
+      ) {
+        setLSOtp(window.localStorage.getItem("otp"));
+      }
+    }
+  }, [otp]);
 
   //Fetching all requests from Firebase
   useEffect(() => {
@@ -293,8 +323,7 @@ function OrderHistory() {
             <div className="request-status-container">
               <h2>OTP</h2>
               <OtpInput
-                value={otp}
-                onChange={setOtp}
+                value={otp ? otp : LSOtp}
                 numInputs={6}
                 // separator={<span> - </span>}
                 containerStyle={"otp-container"}
