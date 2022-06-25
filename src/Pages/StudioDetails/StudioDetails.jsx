@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import SlotsData from "../../Data/SlotsData";
 import Calendar from "react-calendar";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import UserDetailsContext from "../../UserDetailsContext";
@@ -71,7 +73,7 @@ function StudioDetails(props) {
       return bookedSlotsArray.push(slot.SlotBooked);
     });
     console.log("bookedSlotsArray ->", bookedSlotsArray);
-    SlotsComponent();
+    // SlotsComponent();
   }, [bookedSlots]);
 
   useEffect(() => {
@@ -253,6 +255,34 @@ function StudioDetails(props) {
 
   // console.log("studioData", studioData[0].studio.JAMRStudioName);
 
+  // Render Slots
+  const SlotsComponent = () => (
+    <div className="slots-container">
+      <div className="slots-inner-container">
+        {SlotsData.map((slot, index) => (
+          <div
+            onClick={() => {
+              slotClicked(slot.id);
+            }}
+            className="slot-items"
+            key={index}
+          >
+            <div
+              className={[
+                selectedSlots.includes(slot.id)
+                  ? "selected-slot-circle"
+                  : "slot-circle",
+              ]}
+            ></div>
+            <p>
+              {slot.start}:00 - {slot.end}:00
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const slotClicked = (slot) => {
     if (selectedSlots.includes(slot)) {
       setSelectedSlots(selectedSlots.filter((item) => item !== slot));
@@ -280,10 +310,6 @@ function StudioDetails(props) {
       setStartTime(startT);
       setEndTime(endT);
     }
-  };
-
-  const onDateClicked = () => {
-    setDateClicked(!dateClicked);
   };
 
   const getEquipment = () => {
@@ -332,36 +358,6 @@ function StudioDetails(props) {
       </div>
     );
   };
-
-  // Render Slots
-  const SlotsComponent = () => (
-    <div className="slots-container">
-      <div className="slots-inner-container">
-        {SlotsData.map((slot, index) => (
-          <div
-            onClick={() => {
-              slotClicked(slot.id);
-            }}
-            className="slot-items"
-            key={index}
-          >
-            <div
-              className={[
-                bookedSlotsArray.includes(slot.id)
-                  ? "disabled-slots"
-                  : selectedSlots.includes(slot.id)
-                  ? "selected-slot-circle"
-                  : "slot-circle",
-              ]}
-            ></div>
-            <p>
-              {slot.start}:00 - {slot.end}:00
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 
   const proceedBooking = () => {
     if (
@@ -438,20 +434,13 @@ function StudioDetails(props) {
                 </div>
                 <div className="date-container">
                   <p className="date-title">Date</p>
-                  <div onClick={onDateClicked} className="date-inner-container">
-                    <p>
-                      {dateState
-                        ? moment(dateState).format("MMMM Do YYYY")
-                        : today}
-                    </p>
-                  </div>
-                  {dateClicked ? (
-                    <Calendar
-                      value={dateState}
-                      onChange={changeDate}
-                      className="calendar"
-                    />
-                  ) : null}
+                  <DatePicker
+                    selected={dateState}
+                    onChange={(date) => setDateState(date)}
+                    className="date-inner-container datePicker"
+                    minDate={moment().toDate()}
+                    dateFormat="dd MMMM yyyy"
+                  />
                 </div>
                 <div className="time-duration-container">
                   <div className="time-container">
