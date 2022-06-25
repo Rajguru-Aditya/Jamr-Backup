@@ -7,159 +7,64 @@ import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.j
 import OtpInput from "react-otp-input";
 
 function OrderHistory() {
-  const [details, setDetails] = useState([]);
   const [allRequests, setallRequests] = useState([]);
-  const [requestKeys, setRequestKeys] = useState([]);
-  const [requestValues, setRequestValues] = useState([]);
   const [studioRequests, setstudioRequests] = useState([]);
   const [orders, setOrders] = useState([]);
   const [relatedOrders, setRelatedOrders] = useState([]);
-  const { orderId } = useContext(BookingDetailsContext);
-  const { otp } = useContext(BookingDetailsContext);
-  const { trnStudioId } = useContext(BookingDetailsContext);
   const [LSOrderId, setLSOrderId] = useState(null);
   const [LSStudioId, setLSStudioId] = useState(null);
   const [LSTrnId, setLSTrnId] = useState(null);
   const [LSOtp, setLSOtp] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
   const [newSlots, setNewSlots] = useState([]);
-  const [inputOtp, setInputOtp] = useState();
+
+  const getLSOrderID = window.localStorage.getItem("orderId");
 
   useEffect(() => {
-    console.log("New Slots ->", newSlots);
-  }, [newSlots]);
-
-  useEffect(() => {
-    if (window.localStorage.getItem("orderId") !== null) {
-      if (LSOrderId === null || LSOrderId === undefined || LSOrderId === "") {
-        window.localStorage.setItem("orderId", JSON.stringify(orderId));
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (orderId !== "" && LSOrderId !== details) {
-          window.localStorage.setItem("orderId", JSON.stringify(orderId));
-        }
-      }
-    } else {
-      window.localStorage.setItem("orderId", JSON.stringify(orderId));
+    if (
+      window.localStorage.getItem("orderId") !== null ||
+      window.localStorage.getItem("orderId") !== undefined ||
+      window.localStorage.getItem("orderId") !== ""
+    ) {
+      setLSOrderId(window.localStorage.getItem("orderId"));
     }
-  }, []);
+  }, [getLSOrderID]);
+
+  const getTrnStudioId = window.localStorage.getItem("trnStudioId");
 
   useEffect(() => {
-    if (window.localStorage.getItem("trnStudioId") !== null) {
-      if (
-        LSStudioId === null ||
-        LSStudioId === undefined ||
-        LSStudioId === ""
-      ) {
-        window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (trnStudioId !== "" && LSStudioId !== details) {
-          window.localStorage.setItem(
-            "trnStudioId",
-            JSON.stringify(trnStudioId)
-          );
-        }
-      }
-    } else {
-      window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
+    if (
+      window.localStorage.getItem("trnStudioId") !== null ||
+      window.localStorage.getItem("trnStudioId") !== undefined ||
+      window.localStorage.getItem("trnStudioId") !== ""
+    ) {
+      setLSStudioId(window.localStorage.getItem("trnStudioId"));
     }
-  }, []);
+  }, [getTrnStudioId]);
+
+  const getLSTrnID = window.localStorage.getItem("transactionId");
 
   useEffect(() => {
-    if (orderId !== null) {
-      setLSOrderId(orderId);
-    } else {
-      if (
-        window.localStorage.getItem("orderId") !== null ||
-        window.localStorage.getItem("orderId") !== undefined ||
-        window.localStorage.getItem("orderId") !== ""
-      ) {
-        setLSOrderId(window.localStorage.getItem("orderId"));
-      }
+    if (
+      window.localStorage.getItem("transactionId") !== null ||
+      window.localStorage.getItem("transactionId") !== undefined ||
+      window.localStorage.getItem("transactionId") !== ""
+    ) {
+      setLSTrnId(window.localStorage.getItem("transactionId"));
     }
-  }, [orderId]);
+  }, [getLSTrnID]);
+
+  const getLSOTP = window.localStorage.getItem("otp");
 
   useEffect(() => {
-    if (trnStudioId !== null) {
-      setLSStudioId(trnStudioId);
-    } else {
-      if (
-        window.localStorage.getItem("trnStudioId") !== null ||
-        window.localStorage.getItem("trnStudioId") !== undefined ||
-        window.localStorage.getItem("trnStudioId") !== ""
-      ) {
-        setLSStudioId(window.localStorage.getItem("studioId"));
-      }
+    if (
+      window.localStorage.getItem("otp") !== null ||
+      window.localStorage.getItem("otp") !== undefined ||
+      window.localStorage.getItem("otp") !== ""
+    ) {
+      setLSOtp(window.localStorage.getItem("otp"));
     }
-  }, [trnStudioId]);
-
-  useEffect(() => {
-    if (window.localStorage.getItem("transactionId") !== null) {
-      if (LSTrnId === null || LSTrnId === undefined || LSTrnId === "") {
-        window.localStorage.setItem(
-          "transactionId",
-          JSON.stringify(transactionId)
-        );
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (transactionId !== "") {
-          window.localStorage.setItem(
-            "transactionId",
-            JSON.stringify(transactionId)
-          );
-        }
-      }
-    } else {
-      window.localStorage.setItem(
-        "transactionId",
-        JSON.stringify(transactionId)
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    if (LSTrnId !== null) {
-      setLSTrnId(transactionId);
-    } else {
-      if (
-        window.localStorage.getItem("transactionId") !== null ||
-        window.localStorage.getItem("transactionId") !== undefined ||
-        window.localStorage.getItem("transactionId") !== ""
-      ) {
-        setLSTrnId(window.localStorage.getItem("transactionId"));
-      }
-    }
-  }, [transactionId]);
-
-  useEffect(() => {
-    if (window.localStorage.getItem("otp") !== null) {
-      if (LSOtp === null || LSOtp === undefined || LSOtp === "") {
-        window.localStorage.setItem("otp", JSON.stringify(otp));
-      } else {
-        if (otp !== "") {
-          window.localStorage.setItem("otp", JSON.stringify(otp));
-        }
-      }
-    } else {
-      window.localStorage.setItem("otp", JSON.stringify(otp));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (otp !== null) {
-      setLSOtp(otp);
-    } else {
-      if (
-        window.localStorage.getItem("otp") !== null ||
-        window.localStorage.getItem("otp") !== undefined ||
-        window.localStorage.getItem("otp") !== ""
-      ) {
-        setLSOtp(window.localStorage.getItem("otp"));
-      }
-    }
-  }, [otp]);
+  }, [getLSOTP]);
 
   //Fetching all requests from Firebase
   useEffect(() => {
@@ -267,7 +172,6 @@ function OrderHistory() {
 
   const showData = () => {
     console.log("Get LS TRN ID", LSTrnId);
-    console.log("Get TRN ID", transactionId);
     console.log("Get New Slots", newSlots);
   };
 
@@ -323,7 +227,7 @@ function OrderHistory() {
             <div className="request-status-container">
               <h2>OTP</h2>
               <OtpInput
-                value={otp ? otp : LSOtp}
+                value={LSOtp}
                 numInputs={6}
                 // separator={<span> - </span>}
                 containerStyle={"otp-container"}

@@ -6,20 +6,15 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 const BookingsContent = () => {
-  const { transactionId, setTransactionId } = useContext(BookingDetailsContext);
-  const { orderId, setOrderId } = useContext(BookingDetailsContext);
-  const { trnStudioId, setTrnStudioId } = useContext(BookingDetailsContext);
-  const { otp, setOtp } = useContext(BookingDetailsContext);
+  const { setTransactionId } = useContext(BookingDetailsContext);
+  const { setOrderId } = useContext(BookingDetailsContext);
+  const { setTrnStudioId } = useContext(BookingDetailsContext);
+  const { setOtp } = useContext(BookingDetailsContext);
   const [LSTransactionId, setLSTransactionId] = useState(null);
   const [uid, setUid] = useState(null);
-  const [reviewText, setReviewText] = useState("");
   const [starClicked, setStarClicked] = useState(0);
   const [trnIdForReview, setTrnIdForReview] = useState(null);
   const [sidForReview, setSidForReview] = useState(null);
-  const [LSTrnId, setLSTrnId] = useState(null);
-  const [LSOrderId, setLSOrderId] = useState(null);
-  const [LSStudioId, setLSStudioId] = useState(null);
-  const [LSOtp, setLSOtp] = useState(null);
 
   let [transactionDetails, setTransactionDetails] = useState(null);
 
@@ -62,19 +57,6 @@ const BookingsContent = () => {
   // FETCHING DATA FROM LOCAL STORAGE
 
   useEffect(() => {
-    if (transactionId !== null) {
-      setLSTransactionId(transactionId);
-    } else {
-      if (
-        window.localStorage.getItem("transactionId") !== null ||
-        window.localStorage.getItem("transactionId") !== undefined
-      ) {
-        setLSTransactionId(window.localStorage.getItem("transactionId"));
-      }
-    }
-  }, [transactionId]);
-
-  useEffect(() => {
     if (
       window.localStorage.getItem("userId") !== null ||
       window.localStorage.getItem("userId") !== undefined ||
@@ -84,103 +66,17 @@ const BookingsContent = () => {
     }
   }, []);
 
-  //Order ID
+  const getLSTrnID = window.localStorage.getItem("transactionId");
 
   useEffect(() => {
-    if (window.localStorage.getItem("orderId") !== null) {
-      if (LSOrderId === null || LSOrderId === undefined || LSOrderId === "") {
-        window.localStorage.setItem("orderId", JSON.stringify(orderId));
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (orderId !== "") {
-          window.localStorage.setItem("orderId", JSON.stringify(orderId));
-        }
-      }
-    } else {
-      window.localStorage.setItem("orderId", JSON.stringify(orderId));
+    if (
+      window.localStorage.getItem("transactionId") !== null ||
+      window.localStorage.getItem("transactionId") !== undefined ||
+      window.localStorage.getItem("transactionId") !== ""
+    ) {
+      setLSTransactionId(window.localStorage.getItem("transactionId"));
     }
-  }, []);
-
-  useEffect(() => {
-    if (orderId !== null) {
-      setLSOrderId(orderId);
-    } else {
-      if (
-        window.localStorage.getItem("orderId") !== null ||
-        window.localStorage.getItem("orderId") !== undefined ||
-        window.localStorage.getItem("orderId") !== ""
-      ) {
-        setLSOrderId(window.localStorage.getItem("orderId"));
-      }
-    }
-  }, [orderId]);
-
-  //OTP
-  useEffect(() => {
-    if (window.localStorage.getItem("otp") !== null) {
-      if (LSOtp === null || LSOtp === undefined || LSOtp === "") {
-        window.localStorage.setItem("otp", JSON.stringify(otp));
-      } else {
-        if (otp !== "") {
-          window.localStorage.setItem("otp", JSON.stringify(otp));
-        }
-      }
-    } else {
-      window.localStorage.setItem("otp", JSON.stringify(otp));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (otp !== null) {
-      setLSOtp(otp);
-    } else {
-      if (
-        window.localStorage.getItem("otp") !== null ||
-        window.localStorage.getItem("otp") !== undefined ||
-        window.localStorage.getItem("otp") !== ""
-      ) {
-        setLSOtp(window.localStorage.getItem("otp"));
-      }
-    }
-  }, [otp]);
-
-  // Studio ID
-
-  useEffect(() => {
-    if (window.localStorage.getItem("trnStudioId") !== null) {
-      if (
-        LSStudioId === null ||
-        LSStudioId === undefined ||
-        LSStudioId === ""
-      ) {
-        window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (trnStudioId !== "") {
-          window.localStorage.setItem(
-            "trnStudioId",
-            JSON.stringify(trnStudioId)
-          );
-        }
-      }
-    } else {
-      window.localStorage.setItem("trnStudioId", JSON.stringify(trnStudioId));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (trnStudioId !== null) {
-      setLSStudioId(trnStudioId);
-    } else {
-      if (
-        window.localStorage.getItem("trnStudioId") !== null ||
-        window.localStorage.getItem("trnStudioId") !== undefined ||
-        window.localStorage.getItem("trnStudioId") !== ""
-      ) {
-        setLSStudioId(window.localStorage.getItem("studioId"));
-      }
-    }
-  }, [trnStudioId]);
+  }, [getLSTrnID]);
 
   useEffect(() => {
     fetchBookingData();
@@ -245,6 +141,11 @@ const BookingsContent = () => {
           setTrnStudioId(transaction.sid);
           setTransactionId(transaction.trnId);
           setOtp(transaction.otp);
+          window.localStorage.setItem("orderId", transaction.orderId);
+          window.localStorage.setItem("otp", transaction.otp);
+          window.localStorage.setItem("trnStudioId", transaction.sid);
+          window.localStorage.setItem("transactionId", transaction.trnId);
+
           openOrderHistory();
         }}
       >
