@@ -11,11 +11,58 @@ import moment from "moment";
 import UserDetailsContext from "../../UserDetailsContext";
 import BookingDetailsContext from "../../BookingDetailsContext";
 
+// Render Slots
+function SlotsComponent({ slots, selectedSlots, onSlotClick }) {
+  return (
+    <div className="slots-container">
+      <div className="slots-inner-container">
+        {slots.map((slot, index) => (
+          <div
+            onClick={() => onSlotClick(slot.id)}
+            className="slot-items"
+            key={index}
+          >
+            <div
+              className={[
+                selectedSlots.includes(slot.id)
+                  ? "selected-slot-circle"
+                  : "slot-circle",
+              ]}
+            ></div>
+            <p>
+              {slot.start}:00 - {slot.end}:00
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Equipments data
+const EquipmentsComponent = (eqData) => {
+  return (
+    <>
+      {Object.values(eqData).forEach((key) => {
+        Object.entries(key).forEach(([key, value]) => {
+          console.log("---key---", key);
+          console.log("---value---", value);
+          return (
+            <div className="equipment">
+              <p className="bulletpoint">·</p>
+              <p className="equipment-name">{key}</p>
+            </div>
+          );
+        });
+      })}
+    </>
+  );
+};
+
 function StudioDetails(props) {
   const [studioData, setStudioData] = useState();
-  const [equipmentData, setEquipmentData] = useState();
-  const equipmentKeys = [];
-  const equipmentValues = [];
+  const [equipmentData, setEquipmentData] = useState([]);
+  const [filteredEquipmentData, setFilteredEquipmentData] = useState();
   const [loading, setLoading] = useState(true);
   const [packageSelected, setPackageSelected] = useState(false);
   const [packageName, setPackageName] = useState("");
@@ -28,6 +75,7 @@ function StudioDetails(props) {
   const bookedSlotsArray = [];
   const [reviews, setReviews] = useState([]);
   const { ids } = useContext(UserDetailsContext);
+  let navigate = useNavigate();
   // const studioId = ids.studioId;
 
   const { setDetails } = useContext(BookingDetailsContext);
@@ -79,13 +127,7 @@ function StudioDetails(props) {
   useEffect(() => {
     console.log("==GET STUDIO DATA==", studioData);
     console.log("==GET EQUIPMENT DATA==", equipmentData);
-    getEquipment();
   }, [equipmentData, studioData]);
-
-  useEffect(() => {
-    console.log(equipmentKeys);
-    console.log(equipmentValues);
-  }, [equipmentKeys, equipmentValues]);
 
   useEffect(() => {
     getStartTime();
@@ -255,35 +297,18 @@ function StudioDetails(props) {
 
   // console.log("studioData", studioData[0].studio.JAMRStudioName);
 
-  // Render Slots
-  const SlotsComponent = () => (
-    <div className="slots-container">
-      <div className="slots-inner-container">
-        {SlotsData.map((slot, index) => (
-          <div
-            onClick={() => {
-              slotClicked(slot.id);
-            }}
-            className="slot-items"
-            key={index}
-          >
-            <div
-              className={[
-                selectedSlots.includes(slot.id)
-                  ? "selected-slot-circle"
-                  : "slot-circle",
-              ]}
-            ></div>
-            <p>
-              {slot.start}:00 - {slot.end}:00
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  //Filtered equipment data
 
-  const slotClicked = (slot) => {
+  useEffect(() => {
+    Object.entries(equipmentData).map(([key, value]) => {
+      console.log("---New key---", key);
+      console.log("---New value---", value);
+    });
+  }, [equipmentData]);
+
+  // Add and delete slots
+
+  const handleSlotClick = (slot) => {
     if (selectedSlots.includes(slot)) {
       setSelectedSlots(selectedSlots.filter((item) => item !== slot));
     } else {
@@ -309,38 +334,6 @@ function StudioDetails(props) {
         ].end;
       setStartTime(startT);
       setEndTime(endT);
-    }
-  };
-
-  const getEquipment = () => {
-    for (var key in equipmentData) {
-      if (equipmentData.hasOwnProperty(key)) {
-        console.log("key", key);
-        console.log("value", equipmentData[key]);
-        equipmentKeys.push(key);
-        equipmentValues.push(equipmentData[key]);
-      }
-    }
-  };
-
-  let navigate = useNavigate();
-
-  const EquipmentsComponent = () => {
-    for (var key in equipmentData) {
-      if (equipmentData.hasOwnProperty(key)) {
-        console.log("key", key);
-        console.log("value", equipmentData[key]);
-        equipmentKeys.push(key);
-        equipmentValues.push(equipmentData[key]);
-        return (
-          <div className="equipment">
-            <p className="bulletpoint">·</p>
-            <p className="equipment-name">
-              Headphones-2 x Pioneer HRM-5 Headphones
-            </p>
-          </div>
-        );
-      }
     }
   };
 
@@ -456,35 +449,11 @@ function StudioDetails(props) {
                     </div>
                   </div>
                 </div>
-                {/* SLOTS */}
-                {/* <div className="slots-container">
-                  <div className="slots-inner-container">
-                    {SlotsData.map((slot, index) => (
-                      <div
-                        onClick={() => {
-                          slotClicked(slot.id);
-                        }}
-                        className="slot-items"
-                        key={index}
-                      >
-                        <div
-                          className={
-                            bookedSlotsArray.includes(slot.id)
-                              ? "disabled-slots"
-                              : selectedSlots.includes(slot.id)
-                              ? "selected-slot-circle"
-                              : "slot-circle"
-                          }
-                          PointerEvents="none"
-                        ></div>
-                        <p>
-                          {slot.start}:00 - {slot.end}:00
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div> */}
-                <SlotsComponent />
+                <SlotsComponent
+                  slots={SlotsData}
+                  onSlotClick={handleSlotClick}
+                  selectedSlots={selectedSlots}
+                />
                 <div onClick={proceedBooking} className="book-now-btn">
                   <p>Book Now</p>
                 </div>
@@ -602,46 +571,8 @@ function StudioDetails(props) {
                 </div>
                 <p className="equipments-title">Equipments</p>
                 <div className="equipments-container">
-                  {/* 1 */}
-                  {/* <div className="equipment">
-                    <p className="bulletpoint">·</p>
-                    <p className="equipment-name">
-                      Condenser Microphone- SE Electronics SE2300
-                    </p>
-                  </div> */}
-                  {/* 1 */}
-                  {/* <div className="equipment">
-                    <p className="bulletpoint">·</p>
-                    <p className="equipment-name">
-                      External USB mouse & keyboard
-                    </p>
-                  </div> */}
-                  {/* 1 */}
-                  {/* <div className="equipment">
-                    <p className="bulletpoint">·</p>
-                    <p className="equipment-name">
-                      Headphones-2 x Pioneer HRM-5 Headphones
-                    </p>
-                  </div> */}
-                  <EquipmentsComponent />
+                  <EquipmentsComponent eqData={equipmentData} />
                 </div>
-                {/* <div className="service-ratings-reviews-container">
-                  <div className="service-overall-ratings">
-                    <div className="ratings-container">
-                      <p className="service-ratings-number">4.0/5</p>
-                      <p className="service-ratings-text">Overall Ratings</p>
-                    </div>
-                    <div className="verified-ratings">
-                      <p>⭐⭐⭐⭐</p>
-                      <p className="verified-ratings-text">
-                        1000+ verified ratings
-                      </p>
-                    </div>
-                  </div>
-                  <div className="service-review-btn-container">
-                    <div className="service-review-btn">Write a Review</div>
-                  </div>
-                </div> */}
                 <p className="reviews-title">Reviews</p>
                 {reviews &&
                   reviews.map((review, index) => (
