@@ -5,6 +5,7 @@ import { db } from "../../config/index.js";
 import BookingDetailsContext from "../../BookingDetailsContext";
 import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.jsx";
 import OtpInput from "react-otp-input";
+import { FileUploader } from "react-drag-drop-files";
 
 function OrderHistory() {
   const [allRequests, setallRequests] = useState([]);
@@ -17,6 +18,15 @@ function OrderHistory() {
   const [LSOtp, setLSOtp] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newSlots, setNewSlots] = useState([]);
+  const [downloadUrl, setDownloadUrl] = useState();
+
+  //File Upload
+  const fileTypes = ["JPG", "PNG", "GIF"];
+  const [file, setFile] = useState(null);
+  const handleFileChange = (file) => {
+    setFile(file);
+    console.log("Selected file", file);
+  };
 
   const getLSOrderID = window.localStorage.getItem("orderId");
 
@@ -143,6 +153,41 @@ function OrderHistory() {
       slots: newSlots,
       trn_id: LSTrnId,
     }),
+  };
+
+  // File upload api
+
+  const UploadFile = async (data) => {
+    const formData = new FormData();
+
+    formData.append("file_name", data.name);
+    formData.append("order_id", LSOrderId);
+    formData.append("upload_file", data);
+
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/order/files/upload`,
+      {
+        method: "post",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+        },
+        body: formData,
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("File uploading ----->", data);
+          setDownloadUrl(data.downloadUrl);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const Rebooking = async () => {
@@ -273,15 +318,58 @@ function OrderHistory() {
           </div> */}
           <div className="file-upload-container">
             <div className="file-upload-inner-container">
-              <div className="file-upload-box">
-                <form>
-                  <input type="file" name="file" className="modalBtn" />
-                </form>
-                <h2>Or Drag and Drop a File here</h2>
-                <p>Max file size 1GB</p>
+              <div>
+                <FileUploader
+                  handleChange={handleFileChange}
+                  name="file"
+                  types={fileTypes}
+                  classes="file-upload-box"
+                  maxSize={1024}
+                  children={
+                    <>
+                      <h2>Drag and Drop a File here</h2>
+                      <h2>OR</h2>
+                      <h3 className="modalBtn modalBtn2">
+                        Click here to select a file
+                      </h3>
+                      <p>Max file size 1GB</p>
+                    </>
+                  }
+                />
               </div>
             </div>
-            <button className="modalBtn">Upload Selected File</button>
+            {file ? (
+              <>
+                <div className="selected-file-container">
+                  <div className="selected-file">
+                    <h1 className="detail">{file.name}</h1>
+                  </div>
+                </div>
+                <button
+                  className="modalBtn modalBtn2"
+                  onClick={() => {
+                    UploadFile(file);
+                  }}
+                >
+                  Upload Selected File
+                </button>
+              </>
+            ) : null}
+            {downloadUrl ? (
+              <div className="uploaded-file-container">
+                <h3>Uploaded Files</h3>
+                <div className="uploaded-file">
+                  <a
+                    className="file-link"
+                    href={downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <h1 className="detail">{file.name}</h1>
+                  </a>
+                </div>
+              </div>
+            ) : null}
           </div>
           <div className="message-container">
             <div className="message-text-content">
