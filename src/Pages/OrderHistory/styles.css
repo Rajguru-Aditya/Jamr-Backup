@@ -31,6 +31,10 @@
     margin-bottom: 10px;
 }
 
+.modalBtn3{
+    padding: 0 10px;
+}
+
 /* New order history page */
 
 .main-container{
@@ -242,6 +246,7 @@
     margin-top: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
 }
 
 .file-upload-inner-container{
@@ -258,7 +263,7 @@
     height: 100%;
     border-radius: 20px;
     border: 3px dashed #ff782c;
-    background-color: #efefef;
+    /* background-color: #efefef; */
     margin: 10px 0;
 }
 
@@ -313,11 +318,25 @@
     border-radius: 10px;
     background-color: rgba(132, 255, 0, 0.2);
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 10px;
 }
 
 .file-link{
     text-decoration: none;
     color: #000;
+}
+
+.file-name{
+    font-size: 20px;
+}
+
+.file-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-wrap: wrap;
 }
 
 .message-text-content{

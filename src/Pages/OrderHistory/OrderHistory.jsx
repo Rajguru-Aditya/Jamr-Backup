@@ -6,6 +6,7 @@ import BookingDetailsContext from "../../BookingDetailsContext";
 import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.jsx";
 import OtpInput from "react-otp-input";
 import { FileUploader } from "react-drag-drop-files";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 function OrderHistory() {
   const [allRequests, setallRequests] = useState([]);
@@ -19,6 +20,8 @@ function OrderHistory() {
   const [showModal, setShowModal] = useState(false);
   const [newSlots, setNewSlots] = useState([]);
   const [downloadUrl, setDownloadUrl] = useState();
+  const [uploading, setUploading] = useState(false);
+  const [allFiles, setAllFiles] = useState([]);
 
   //File Upload
   const fileTypes = ["JPG", "PNG", "GIF"];
@@ -141,6 +144,10 @@ function OrderHistory() {
     console.log("LS TRN ID", LSTrnId);
   }, [LSTrnId]);
 
+  useEffect(() => {
+    GetUploadedFiles();
+  }, [LSOrderId, downloadUrl]);
+
   const options = {
     method: "post",
     headers: {
@@ -180,7 +187,35 @@ function OrderHistory() {
       .then((data) => {
         if (!data.isError) {
           console.log("File uploading ----->", data);
+          setUploading(false);
           setDownloadUrl(data.downloadUrl);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // Get uploaded files
+  const GetUploadedFiles = async () => {
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/order/files?order_id=${LSOrderId}`,
+      {
+        method: "get",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("GET uploaded files ----->", data.files);
+          setAllFiles(data.files);
         } else {
           console.log("Failed", data.isError);
         }
@@ -302,20 +337,6 @@ function OrderHistory() {
               <button className="modalBtn">Get directions</button>
             </div>
           </div>
-          {/* <div className="rebooking-container">
-            <button className="modalBtn" onClick={openModal}>
-              Book slots
-            </button>
-            {showModal ? (
-              <ReBookingModal
-                setNewSlots={setNewSlots}
-                setShowModal={setShowModal}
-              />
-            ) : null}
-            <button className="modalBtn detail" onClick={Rebooking}>
-              Confirm Booking
-            </button>
-          </div> */}
           <div className="file-upload-container">
             <div className="file-upload-inner-container">
               <div>
@@ -346,27 +367,47 @@ function OrderHistory() {
                   </div>
                 </div>
                 <button
-                  className="modalBtn modalBtn2"
+                  className="modalBtn modalBtn3"
                   onClick={() => {
+                    setUploading(true);
                     UploadFile(file);
                   }}
                 >
-                  Upload Selected File
+                  {uploading ? (
+                    <div>
+                      <ScaleLoader
+                        color={"#fff"}
+                        loading={uploading}
+                        height={20}
+                        width={5}
+                        radius={50}
+                      />
+                    </div>
+                  ) : (
+                    <p>Upload File</p>
+                  )}
                 </button>
               </>
             ) : null}
-            {downloadUrl ? (
+            {allFiles ? (
               <div className="uploaded-file-container">
                 <h3>Uploaded Files</h3>
-                <div className="uploaded-file">
-                  <a
-                    className="file-link"
-                    href={downloadUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <h1 className="detail">{file.name}</h1>
-                  </a>
+                <div className="file-container">
+                  {allFiles.map((file) => {
+                    let fileName = file.name;
+                    return (
+                      <div className="uploaded-file" key={file.downloadUrl}>
+                        <a
+                          className="file-link"
+                          href={file.downloadUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p className="file-name">{fileName.slice(0, -4)}</p>
+                        </a>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ) : null}
