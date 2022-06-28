@@ -7,6 +7,7 @@ import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.j
 import OtpInput from "react-otp-input";
 import { FileUploader } from "react-drag-drop-files";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { FaFileAudio } from "react-icons/fa";
 
 function OrderHistory() {
   const [allRequests, setallRequests] = useState([]);
@@ -403,6 +404,7 @@ function OrderHistory() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
+                          <FaFileAudio size={26} color={"#888"} />
                           <p className="file-name">{fileName.slice(0, -4)}</p>
                         </a>
                       </div>
