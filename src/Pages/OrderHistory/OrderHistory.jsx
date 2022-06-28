@@ -17,6 +17,7 @@ function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [relatedOrders, setRelatedOrders] = useState([]);
   const [LSOrderId, setLSOrderId] = useState(null);
+  const [LSUserId, setLSUserId] = useState(null);
   const [LSStudioId, setLSStudioId] = useState(null);
   const [LSTrnId, setLSTrnId] = useState(null);
   const [LSOtp, setLSOtp] = useState(null);
@@ -27,6 +28,7 @@ function OrderHistory() {
   const [allFiles, setAllFiles] = useState([]);
   const [ratingValue, setRatingValue] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [reviewText, setReviewText] = useState();
 
   //File Upload
   const fileTypes = ["JPG", "PNG", "GIF"];
@@ -83,6 +85,18 @@ function OrderHistory() {
       setLSOtp(window.localStorage.getItem("otp"));
     }
   }, [getLSOTP]);
+
+  const getLSUserID = window.localStorage.getItem("orderId");
+
+  useEffect(() => {
+    if (
+      window.localStorage.getItem("userId") !== null ||
+      window.localStorage.getItem("userId") !== undefined ||
+      window.localStorage.getItem("userId") !== ""
+    ) {
+      setLSUserId(window.localStorage.getItem("userId"));
+    }
+  }, [getLSUserID]);
 
   //Fetching all requests from Firebase
   useEffect(() => {
@@ -153,6 +167,10 @@ function OrderHistory() {
     GetUploadedFiles();
   }, [LSOrderId, downloadUrl]);
 
+  useEffect(() => {
+    setTimeout(() => setShowAlert(false), 4000);
+  }, [showAlert]);
+
   const options = {
     method: "post",
     headers: {
@@ -166,10 +184,6 @@ function OrderHistory() {
       trn_id: LSTrnId,
     }),
   };
-
-  useEffect(() => {
-    setTimeout(() => setShowAlert(false), 4000);
-  }, [showAlert]);
 
   // File upload api
 
@@ -257,13 +271,59 @@ function OrderHistory() {
       });
   };
 
-  const openModal = () => {
-    setShowModal(true);
+  const Review = async () => {
+    //PRODUCTION
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/review`,
+      {
+        method: "post",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: LSStudioId,
+          ratings: ratingValue,
+          uid: LSUserId,
+          trnId: LSTrnId,
+          review: reviewText,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("Transaction history ----->", data.data);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  const showData = () => {
-    console.log("Get LS TRN ID", LSTrnId);
-    console.log("Get New Slots", newSlots);
+  const submitReview = () => {
+    if (ratingValue && reviewText) {
+      console.log(
+        "Review Items:",
+        "sid",
+        LSStudioId,
+        "ratings",
+        ratingValue,
+        "uid",
+        LSUserId,
+        "trnId",
+        LSTrnId,
+        "review",
+        reviewText
+      );
+      Review();
+    } else {
+      alert("Please Rate the studio and add review text");
+    }
   };
 
   return (
@@ -449,30 +509,40 @@ function OrderHistory() {
             </div>
           </div>
           <div className="review-container">
-            <div className="review-btn-container">
-              <h2>Rate the Studio</h2>
-              <Rating
-                name="no-value"
-                value={ratingValue}
-                onChange={(event, newValue) => {
-                  console.log("Ratings", newValue);
-                  setRatingValue(newValue);
-                }}
-                size="large"
-              />
-            </div>
-            <div className="review-text-content">
-              <div className="review-box">
-                <h2>Write a Review</h2>
-                <form>
-                  <textarea
-                    rows={6}
-                    name="review"
-                    className="textarea"
-                  ></textarea>
-                </form>
+            <div className="review-items-container">
+              <div className="review-stars-container">
+                <h2>Rate the Studio</h2>
+                <Rating
+                  name="no-value"
+                  value={ratingValue}
+                  onChange={(event, newValue) => {
+                    console.log("Ratings", newValue);
+                    setRatingValue(newValue);
+                  }}
+                  size="large"
+                />
+              </div>
+              <div className="review-text-content">
+                <div className="review-box">
+                  <h2>Write a Review</h2>
+                  <form>
+                    <textarea
+                      rows={6}
+                      name="review"
+                      className="textarea"
+                      value={reviewText}
+                      onChange={(text) => {
+                        console.log("Review", text.target.value);
+                        setReviewText(text.target.value);
+                      }}
+                    ></textarea>
+                  </form>
+                </div>
               </div>
             </div>
+            <button className="modalBtn modalBtn2" onClick={submitReview}>
+              Submit Review
+            </button>
           </div>
         </div>
       </div>
