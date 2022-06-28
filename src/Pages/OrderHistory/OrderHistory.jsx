@@ -7,6 +7,8 @@ import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.j
 import OtpInput from "react-otp-input";
 import { FileUploader } from "react-drag-drop-files";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Rating from "@material-ui/lab/Rating";
+import Alert from "@mui/material/Alert";
 import { FaFileAudio } from "react-icons/fa";
 
 function OrderHistory() {
@@ -23,6 +25,8 @@ function OrderHistory() {
   const [downloadUrl, setDownloadUrl] = useState();
   const [uploading, setUploading] = useState(false);
   const [allFiles, setAllFiles] = useState([]);
+  const [ratingValue, setRatingValue] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
 
   //File Upload
   const fileTypes = ["JPG", "PNG", "GIF"];
@@ -163,6 +167,10 @@ function OrderHistory() {
     }),
   };
 
+  useEffect(() => {
+    setTimeout(() => setShowAlert(false), 4000);
+  }, [showAlert]);
+
   // File upload api
 
   const UploadFile = async (data) => {
@@ -190,6 +198,8 @@ function OrderHistory() {
           console.log("File uploading ----->", data);
           setUploading(false);
           setDownloadUrl(data.downloadUrl);
+          setShowAlert(true);
+          setFile(null);
         } else {
           console.log("Failed", data.isError);
         }
@@ -390,6 +400,9 @@ function OrderHistory() {
                 </button>
               </>
             ) : null}
+            {showAlert ? (
+              <Alert severity="success">File Uploaded Successfully!</Alert>
+            ) : null}
             {allFiles ? (
               <div className="uploaded-file-container">
                 <h3>Uploaded Files</h3>
@@ -438,13 +451,15 @@ function OrderHistory() {
           <div className="review-container">
             <div className="review-btn-container">
               <h2>Rate the Studio</h2>
-              <div className="buttons-container">
-                <h1>⭐</h1>
-                <h1>⭐</h1>
-                <h1>⭐</h1>
-                <h1>⭐</h1>
-                <h1>⭐</h1>
-              </div>
+              <Rating
+                name="no-value"
+                value={ratingValue}
+                onChange={(event, newValue) => {
+                  console.log("Ratings", newValue);
+                  setRatingValue(newValue);
+                }}
+                size="large"
+              />
             </div>
             <div className="review-text-content">
               <div className="review-box">
