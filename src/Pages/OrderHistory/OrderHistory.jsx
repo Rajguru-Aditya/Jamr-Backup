@@ -408,142 +408,174 @@ function OrderHistory() {
               <button className="modalBtn">Get directions</button>
             </div>
           </div>
-          <div className="file-upload-container">
-            <div className="file-upload-inner-container">
-              <div>
-                <FileUploader
-                  handleChange={handleFileChange}
-                  name="file"
-                  types={fileTypes}
-                  classes="file-upload-box"
-                  maxSize={1024}
-                  children={
-                    <>
-                      <h2>Drag and Drop a File here</h2>
-                      <h2>OR</h2>
-                      <h3 className="modalBtn modalBtn2">
-                        Click here to select a file
-                      </h3>
-                      <p>Max file size 1GB</p>
-                    </>
-                  }
-                />
-              </div>
-            </div>
-            {file ? (
+          {relatedOrders.map((order) => {
+            return order.orderDetails.state === -1 ? null : order.orderDetails
+                .state === 1 ? (
               <>
-                <div className="selected-file-container">
-                  <div className="selected-file">
-                    <h1 className="detail">{file.name}</h1>
-                  </div>
-                </div>
-                <button
-                  className="modalBtn modalBtn3"
-                  onClick={() => {
-                    setUploading(true);
-                    UploadFile(file);
-                  }}
-                >
-                  {uploading ? (
+                <div className="file-upload-container">
+                  <div className="file-upload-inner-container">
                     <div>
-                      <ScaleLoader
-                        color={"#fff"}
-                        loading={uploading}
-                        height={20}
-                        width={5}
-                        radius={50}
+                      <FileUploader
+                        handleChange={handleFileChange}
+                        name="file"
+                        types={fileTypes}
+                        classes="file-upload-box"
+                        maxSize={1024}
+                        children={
+                          <>
+                            <h2>Drag and Drop a File here</h2>
+                            <h2>OR</h2>
+                            <h3 className="modalBtn modalBtn2">
+                              Click here to select a file
+                            </h3>
+                            <p>Max file size 1GB</p>
+                          </>
+                        }
                       />
                     </div>
-                  ) : (
-                    <p>Upload File</p>
-                  )}
-                </button>
-              </>
-            ) : null}
-            {showAlert ? (
-              <Alert severity="success">File Uploaded Successfully!</Alert>
-            ) : null}
-            {allFiles ? (
-              <div className="uploaded-file-container">
-                <h3>Uploaded Files</h3>
-                <div className="file-container">
-                  {allFiles.map((file) => {
-                    let fileName = file.name;
-                    return (
-                      <div className="uploaded-file" key={file.downloadUrl}>
-                        <a
-                          className="file-link"
-                          href={file.downloadUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FaFileAudio size={26} color={"#888"} />
-                          <p className="file-name">{fileName.slice(0, -4)}</p>
-                        </a>
+                  </div>
+                  {file ? (
+                    <>
+                      <div className="selected-file-container">
+                        <div className="selected-file">
+                          <h1 className="detail">{file.name}</h1>
+                        </div>
                       </div>
-                    );
-                  })}
+                      <button
+                        className="modalBtn modalBtn3"
+                        onClick={() => {
+                          setUploading(true);
+                          UploadFile(file);
+                        }}
+                      >
+                        {uploading ? (
+                          <div>
+                            <ScaleLoader
+                              color={"#fff"}
+                              loading={uploading}
+                              height={20}
+                              width={5}
+                              radius={50}
+                            />
+                          </div>
+                        ) : (
+                          <p>Upload File</p>
+                        )}
+                      </button>
+                    </>
+                  ) : null}
+                  {showAlert ? (
+                    <Alert severity="success">
+                      File Uploaded Successfully!
+                    </Alert>
+                  ) : null}
+                  {allFiles ? (
+                    <div className="uploaded-file-container">
+                      <h3>Uploaded Files</h3>
+                      <div className="file-container">
+                        {allFiles.map((file) => {
+                          let fileName = file.name;
+                          return (
+                            <div
+                              className="uploaded-file"
+                              key={file.downloadUrl}
+                            >
+                              <a
+                                className="file-link"
+                                href={file.downloadUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <FaFileAudio size={26} color={"#888"} />
+                                <p className="file-name">
+                                  {fileName.slice(0, -4)}
+                                </p>
+                              </a>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+                <div className="message-container">
+                  <div className="message-text-content">
+                    <div className="message-box">
+                      <h2>Write a message to the host</h2>
+                      <form className="message-form">
+                        <textarea
+                          rows={6}
+                          name="message"
+                          className="textarea"
+                        ></textarea>
+                      </form>
+                    </div>
+                  </div>
+                  <div className="message-btn-container">
+                    <h2>Need Help?</h2>
+                    <div className="buttons-container">
+                      <button className="contact-btn live-chat-btn">
+                        Live Chat
+                      </button>
+                      <button className="contact-btn call-us-btn">
+                        Call Us
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="review-container">
+                  <div className="review-items-container">
+                    <div className="review-stars-container">
+                      <h2>Rate the Studio</h2>
+                      <Rating
+                        name="no-value"
+                        value={ratingValue}
+                        onChange={(event, newValue) => {
+                          console.log("Ratings", newValue);
+                          setRatingValue(newValue);
+                        }}
+                        size="large"
+                      />
+                    </div>
+                    <div className="review-text-content">
+                      <div className="review-box">
+                        <h2>Write a Review</h2>
+                        <form>
+                          <textarea
+                            rows={6}
+                            name="review"
+                            className="textarea"
+                            value={reviewText}
+                            onChange={(text) => {
+                              console.log("Review", text.target.value);
+                              setReviewText(text.target.value);
+                            }}
+                          ></textarea>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="modalBtn modalBtn2" onClick={submitReview}>
+                    Submit Review
+                  </button>
+                </div>
+              </>
+            ) : order.orderDetails.state === 0 ? (
+              <div className="rebooking-container">
+                <div className="rebooking-inner-container">
+                  <h1 className="detail rebooking-text">
+                    The studio owner has rejected your order. Please Rebook your
+                    order with different slots
+                  </h1>
+                  <button className="modalBtn modalBtn2" onClick={submitReview}>
+                    Rebook Slots
+                  </button>
                 </div>
               </div>
-            ) : null}
-          </div>
-          <div className="message-container">
-            <div className="message-text-content">
-              <div className="message-box">
-                <h2>Write a message to the host</h2>
-                <form className="message-form">
-                  <textarea
-                    rows={6}
-                    name="message"
-                    className="textarea"
-                  ></textarea>
-                </form>
-              </div>
-            </div>
-            <div className="message-btn-container">
-              <h2>Need Help?</h2>
-              <div className="buttons-container">
-                <button className="contact-btn live-chat-btn">Live Chat</button>
-                <button className="contact-btn call-us-btn">Call Us</button>
-              </div>
-            </div>
-          </div>
-          <div className="review-container">
-            <div className="review-items-container">
-              <div className="review-stars-container">
-                <h2>Rate the Studio</h2>
-                <Rating
-                  name="no-value"
-                  value={ratingValue}
-                  onChange={(event, newValue) => {
-                    console.log("Ratings", newValue);
-                    setRatingValue(newValue);
-                  }}
-                  size="large"
-                />
-              </div>
-              <div className="review-text-content">
-                <div className="review-box">
-                  <h2>Write a Review</h2>
-                  <form>
-                    <textarea
-                      rows={6}
-                      name="review"
-                      className="textarea"
-                      value={reviewText}
-                      onChange={(text) => {
-                        console.log("Review", text.target.value);
-                        setReviewText(text.target.value);
-                      }}
-                    ></textarea>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <button className="modalBtn modalBtn2" onClick={submitReview}>
-              Submit Review
-            </button>
-          </div>
+            ) : (
+              "Error"
+            );
+          })}
         </div>
       </div>
     </div>
