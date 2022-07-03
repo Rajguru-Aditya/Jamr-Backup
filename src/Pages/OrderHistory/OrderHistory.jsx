@@ -29,6 +29,7 @@ function OrderHistory() {
   const [ratingValue, setRatingValue] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [reviewText, setReviewText] = useState();
+  const [messageText, setMessageText] = useState();
 
   //File Upload
   const fileTypes = ["JPG", "PNG", "GIF"];
@@ -305,21 +306,42 @@ function OrderHistory() {
       });
   };
 
+  const Message = async () => {
+    //PRODUCTION
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/order/message`,
+      {
+        method: "post",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sid: LSStudioId,
+          order_id: LSOrderId,
+          msg_owner: "client",
+          trnid: LSTrnId,
+          message: messageText,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("Message ----->", data);
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const submitReview = () => {
     if (ratingValue && reviewText) {
-      console.log(
-        "Review Items:",
-        "sid",
-        LSStudioId,
-        "ratings",
-        ratingValue,
-        "uid",
-        LSUserId,
-        "trnId",
-        LSTrnId,
-        "review",
-        reviewText
-      );
       Review();
     } else {
       alert("Please Rate the studio and add review text");
@@ -507,8 +529,16 @@ function OrderHistory() {
                           rows={6}
                           name="message"
                           className="textarea"
+                          value={messageText}
+                          onChange={(text) => {
+                            console.log("Message", text.target.value);
+                            setMessageText(text.target.value);
+                          }}
                         ></textarea>
                       </form>
+                      <button className="modalBtn modalBtn2" onClick={Message}>
+                        Send Message
+                      </button>
                     </div>
                   </div>
                   <div className="message-btn-container">
