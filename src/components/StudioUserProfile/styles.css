@@ -30,11 +30,10 @@
 .profile-img-container {
   height: 300px;
   width: 300px;
-  background-color: #f5f;
   border-radius: 50%;
 }
 
-.profile-image {
+.user-profile-image {
   object-fit: cover;
   height: 100%;
   width: 100%;

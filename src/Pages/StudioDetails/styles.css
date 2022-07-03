@@ -388,6 +388,13 @@
   margin-top: 50px;
 }
 
+.datePicker{
+  border: none;
+  font-size: 22px;
+  padding: 20px;
+  text-align: center;
+}
+
 .time-container, .duration-container{
   /* width: 100%; */
   display: flex;

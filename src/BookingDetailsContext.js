@@ -14,9 +14,23 @@ export function BookingDetailsProvider({ children }) {
     studioAddress: "",
   });
   const [transactionId, setTransactionId] = useState();
+  const [orderId, setOrderId] = useState();
+  const [trnStudioId, setTrnStudioId] = useState();
+  const [otp, setOtp] = useState();
   return (
     <BookingDetailsContext.Provider
-      value={{ details, setDetails, transactionId, setTransactionId }}
+      value={{
+        details,
+        setDetails,
+        transactionId,
+        setTransactionId,
+        orderId,
+        setOrderId,
+        trnStudioId,
+        setTrnStudioId,
+        setOtp,
+        otp,
+      }}
     >
       {children}
     </BookingDetailsContext.Provider>

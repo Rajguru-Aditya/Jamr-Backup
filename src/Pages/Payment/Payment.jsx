@@ -18,77 +18,69 @@ function Payment() {
   let LSItems;
   let navigate = useNavigate();
 
-  useEffect(() => {
-    if (window.localStorage.getItem("details") !== null) {
-      LSItems = JSON.parse(window.localStorage.getItem("details"));
-      console.log("LSItems", LSItems.bookingDate);
-      if (
-        LSItems.bookingDate === null ||
-        LSItems.bookingDate === undefined ||
-        LSItems.bookingDate === ""
-      ) {
-        window.localStorage.setItem("details", JSON.stringify(details));
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (
-          details.bookingDate !== "" &&
-          LSItems.bookingDate !== details.bookingDate
-        ) {
-          window.localStorage.setItem("details", JSON.stringify(details));
-        }
-      }
-    } else {
-      window.localStorage.setItem("details", JSON.stringify(details));
-    }
-  }, []);
+  const getLSItems = window.localStorage.getItem("details");
 
   useEffect(() => {
     if (
-      window.localStorage.getItem("transactionId") !== null ||
-      window.localStorage.getItem("transactionId") !== "" ||
-      window.localStorage.getItem("transactionId") !== undefined
+      window.localStorage.getItem("details") !== null ||
+      window.localStorage.getItem("details") !== undefined ||
+      window.localStorage.getItem("details") !== ""
     ) {
-      let tempLSTrnId = window.localStorage.getItem("transactionId");
-      setLSTransactionId(tempLSTrnId);
-      console.log("transactionId", LSTransactionId);
-      if (
-        LSTransactionId === null ||
-        LSTransactionId === undefined ||
-        LSTransactionId === ""
-      ) {
-        window.localStorage.setItem(
-          "transactionId",
-          JSON.stringify(transactionId)
-        );
-        // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
-      } else {
-        if (transactionId !== "" && LSTransactionId !== transactionId) {
-          window.localStorage.setItem(
-            "transactionId",
-            JSON.stringify(transactionId)
-          );
-        }
-      }
-    } else {
-      window.localStorage.setItem(
-        "transactionId",
-        JSON.stringify(transactionId)
-      );
+      setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
     }
-  }, [LSTransactionId, transactionId]);
+  }, [getLSItems]);
 
   useEffect(() => {
-    if (LSItems !== undefined || LSItems !== null || LSItems !== "") {
-      setStoreDetails(LSItems);
-    }
-    if (
-      LSTransactionId !== undefined ||
-      LSTransactionId !== null ||
-      LSTransactionId !== ""
-    ) {
-      setStoreTrnId(LSTransactionId);
-    }
-  }, [LSItems, LSTransactionId]);
+    console.log("store Details =>>>", storeDetails);
+  }, [storeDetails]);
+
+  // useEffect(() => {
+  //   if (
+  //     window.localStorage.getItem("transactionId") !== null ||
+  //     window.localStorage.getItem("transactionId") !== "" ||
+  //     window.localStorage.getItem("transactionId") !== undefined
+  //   ) {
+  //     let tempLSTrnId = window.localStorage.getItem("transactionId");
+  //     setLSTransactionId(tempLSTrnId);
+  //     console.log("transactionId", LSTransactionId);
+  //     if (
+  //       LSTransactionId === null ||
+  //       LSTransactionId === undefined ||
+  //       LSTransactionId === ""
+  //     ) {
+  //       window.localStorage.setItem(
+  //         "transactionId",
+  //         JSON.stringify(transactionId)
+  //       );
+  //       // setStoreDetails(JSON.parse(window.localStorage.getItem("details")));
+  //     } else {
+  //       if (transactionId !== "" && LSTransactionId !== transactionId) {
+  //         window.localStorage.setItem(
+  //           "transactionId",
+  //           JSON.stringify(transactionId)
+  //         );
+  //       }
+  //     }
+  //   } else {
+  //     window.localStorage.setItem(
+  //       "transactionId",
+  //       JSON.stringify(transactionId)
+  //     );
+  //   }
+  // }, [LSTransactionId, transactionId]);
+
+  // useEffect(() => {
+  //   if (LSItems !== undefined || LSItems !== null || LSItems !== "") {
+  //     setStoreDetails(LSItems);
+  //   }
+  //   if (
+  //     LSTransactionId !== undefined ||
+  //     LSTransactionId !== null ||
+  //     LSTransactionId !== ""
+  //   ) {
+  //     setStoreTrnId(LSTransactionId);
+  //   }
+  // }, [LSItems, LSTransactionId]);
 
   useEffect(() => {
     document.title = "Jamr | Payment";
@@ -116,22 +108,15 @@ function Payment() {
         body: JSON.stringify({
           studioId: window.localStorage.getItem("studioId"),
           clientId: window.localStorage.getItem("userId"),
-          date: details.bookingDate
-            ? details.bookingDate
-            : storeDetails?.bookingDate,
-          basePrice: details.pricePerHour
-            ? details.pricePerHour
-            : storeDetails?.pricePerHour,
+          date: storeDetails?.bookingDate,
+          basePrice: storeDetails?.pricePerHour,
           paymentMode: "test card",
           isJamr: 0,
-          slots: details.selectedSlots
-            ? details.selectedSlots
-            : storeDetails?.selectedSlots,
+          slots: storeDetails?.selectedSlots,
           couponCode: "",
           order_id: response.razorpay_order_id,
           receipt_id: receiptId[0],
           payment_id: response.razorpay_payment_id,
-          transaction_id: response.razorpay_signature,
           paymentSignature: response.razorpay_signature,
         }),
       }
@@ -142,8 +127,10 @@ function Payment() {
       .then((data) => {
         if (!data.isError) {
           console.log("Transaction history ----->", data.data);
+          console.log("Order Id", response.razorpay_order_id);
           alert("Transaction Successful");
           setTransactionId(data.data.transactionId);
+          window.localStorage.setItem("transactionId", transactionId);
           navigate("/dashboard");
         } else {
           console.log("Failed", data.isError);
@@ -160,8 +147,8 @@ function Payment() {
   const payment = async () => {
     //PRODUCTION
     await fetch(
-      // `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
-      `https://backend.jamr.online/payment/gateway/initiate`,
+      `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
+      // `https://backend.jamr.online/payment/gateway/initiate`,
       {
         //TESTING
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
@@ -172,12 +159,8 @@ function Payment() {
         },
         body: JSON.stringify({
           sid: window.localStorage.getItem("studioId"),
-          baseAmount: details.pricePerHour
-            ? details.pricePerHour
-            : storeDetails?.pricePerHour,
-          hours: details.selectedSlots.length
-            ? details.selectedSlots.length
-            : storeDetails?.selectedSlots.length,
+          baseAmount: storeDetails?.pricePerHour,
+          hours: storeDetails?.selectedSlots.length,
         }),
       }
     )
@@ -344,31 +327,19 @@ function Payment() {
         <div className="payment-studioDetails-right-container">
           <div className="payment-studioDetails-info">
             <div className="studioDetails-info-title">
-              <h1 className="title">
-                {details.studioName
-                  ? details.studioName
-                  : storeDetails?.studioName}
-              </h1>
+              <h1 className="title">{storeDetails?.studioName}</h1>
             </div>
             <div className="studioDetails-info-address">
-              <p className="address">
-                {details.studioAddress
-                  ? details.studioAddress
-                  : storeDetails?.studioAddress}
-              </p>
+              <p className="address">{storeDetails?.studioAddress}</p>
             </div>
           </div>
           <div className="date-time-container">
             <p className="date">
-              {moment(
-                details.bookingDate
-                  ? details.bookingDate
-                  : storeDetails?.bookingDate
-              ).format("MMMM Do YYYY")}
+              {moment(storeDetails?.bookingDate).format("MMMM Do YYYY")}
             </p>
             <p className="time">
-              {details.startTime ? details.startTime : storeDetails?.startTime}
-              pm to {details.endTime ? details.endTime : storeDetails?.endTime}
+              {storeDetails?.startTime}
+              pm to {storeDetails?.endTime}
               pm
             </p>
           </div>
@@ -376,12 +347,7 @@ function Payment() {
             <p className="subtitle">Payment Breakdown</p>
             <div className="cost-container">
               <p className="title">Total</p>
-              <p className="title">
-                ₹
-                {details.totalPrice
-                  ? details.totalPrice
-                  : storeDetails?.totalPrice}
-              </p>
+              <p className="title">₹{storeDetails?.totalPrice}</p>
             </div>
           </div>
           <div

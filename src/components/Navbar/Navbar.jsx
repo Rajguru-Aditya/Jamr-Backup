@@ -80,9 +80,6 @@ function Navbar() {
               className="dropdown-arrow"
             />
           </div>
-          <div className="bookSlots">
-            <p className="bookSlots-text"> Book Slots </p>
-          </div>
           <div className="faq">
             <p className="faq-text"> FAQs </p>
           </div>

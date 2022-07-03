@@ -12,12 +12,13 @@ import JampadListing from "./Pages/JampadListing/JampadListing";
 import StudioDetails from "./Pages/StudioDetails/StudioDetails";
 import Payment from "./Pages/Payment/Payment";
 import UserDashboard from "./Pages/UserDashboard/UserDashboard";
+import OrderHistory from "./Pages/OrderHistory/OrderHistory";
 import Login from "./Pages/Login/Login";
 
 function App() {
   return (
     <div>
-      <Searchbar />
+      {/* <Searchbar /> */}
       {/* <FilterBar /> */}
       <UserDetailsProvider>
         <BookingDetailsProvider>
@@ -31,6 +32,7 @@ function App() {
                 <Route path="studio-details" element={<StudioDetails />} />
                 <Route path="payment" element={<Payment />} />
                 <Route path="dashboard" element={<UserDashboard />} />
+                <Route path="order-history" element={<OrderHistory />} />
                 <Route path="login" element={<Login />} />
               </Routes>
             </BrowserRouter>

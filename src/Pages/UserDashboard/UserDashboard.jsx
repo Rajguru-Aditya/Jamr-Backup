@@ -56,7 +56,7 @@ function UserDashboard() {
           <img
             src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
             alt="wavy-Orange"
-            className="wavy-orange"
+            className="wavy-orange-dashboard"
           ></img>
         </div>
         <div className="user-dashboard-navbar">
