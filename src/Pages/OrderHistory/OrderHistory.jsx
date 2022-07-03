@@ -531,7 +531,6 @@ function OrderHistory() {
                           className="textarea"
                           value={messageText}
                           onChange={(text) => {
-                            console.log("Message", text.target.value);
                             setMessageText(text.target.value);
                           }}
                         ></textarea>

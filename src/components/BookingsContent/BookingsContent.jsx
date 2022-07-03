@@ -90,44 +90,6 @@ const BookingsContent = () => {
     console.log("Star clicked", starClicked);
   }, [starClicked]);
 
-  const AddReview = async () => {
-    //PRODUCTION
-    await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/review`,
-      {
-        //TESTING
-        // await fetch(`http://localhost:3000/studio/details/?type=L`, {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          sid: sidForReview,
-          uid: window.localStorage.getItem("userId"),
-          ratings: starClicked,
-          // review: reviewRef.current.value,
-          trnId: trnIdForReview,
-        }),
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (!data.isError) {
-          alert("Review added successfully");
-          navigate("/");
-          console.log("AFTER REVIEW ----->", data.data);
-        } else {
-          console.log("Failed", data.isError);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   const openOrderHistory = () => {
     navigate("/order-history");
   };
