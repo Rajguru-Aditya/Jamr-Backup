@@ -108,9 +108,12 @@ function Login() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data !== "" || data !== null || data !== undefined) {
+        if (!data.isError) {
           console.log("Success", data);
           setUid(data.userId);
+          setIds({
+            userId: data.UserId,
+          });
           setUserExists(true);
         } else {
           console.log("Failed");
