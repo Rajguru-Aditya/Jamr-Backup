@@ -10,18 +10,20 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import Rating from "@material-ui/lab/Rating";
 import Alert from "@mui/material/Alert";
 import { FaFileAudio } from "react-icons/fa";
+import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
 function OrderHistory() {
   const [allRequests, setallRequests] = useState([]);
   const [studioRequests, setstudioRequests] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [relatedOrders, setRelatedOrders] = useState([]);
+  const [relatedMessages, setRelatedMessages] = useState([]);
   const [LSOrderId, setLSOrderId] = useState(null);
   const [LSUserId, setLSUserId] = useState(null);
   const [LSStudioId, setLSStudioId] = useState(null);
   const [LSTrnId, setLSTrnId] = useState(null);
   const [LSOtp, setLSOtp] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [newSlots, setNewSlots] = useState([]);
   const [downloadUrl, setDownloadUrl] = useState();
   const [uploading, setUploading] = useState(false);
@@ -30,6 +32,10 @@ function OrderHistory() {
   const [showAlert, setShowAlert] = useState(false);
   const [reviewText, setReviewText] = useState();
   const [messageText, setMessageText] = useState();
+  const [chatMessages, setChatMessages] = useState([]);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   //File Upload
   const fileTypes = ["JPG", "PNG", "GIF"];
@@ -37,6 +43,19 @@ function OrderHistory() {
   const handleFileChange = (file) => {
     setFile(file);
     console.log("Selected file", file);
+  };
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 5,
+    justifyContent: "center",
   };
 
   const getLSOrderID = window.localStorage.getItem("orderId");
@@ -117,13 +136,15 @@ function OrderHistory() {
   }, [allRequests]);
 
   useEffect(() => {
-    // console.log("STUDIO REQUEST", studioRequests);
+    console.log("STUDIO REQUEST", studioRequests);
     setOrders(studioRequests ? studioRequests.orders : []);
-  }, [orders, studioRequests]);
+    setMessages(studioRequests ? studioRequests.messages : []);
+  }, [orders, messages, studioRequests]);
 
   useEffect(() => {
     console.log("ORDERS", orders);
-  }, [orders]);
+    console.log("Messages", messages);
+  }, [messages, orders]);
 
   useEffect(() => {
     setRelatedOrders([]);
@@ -140,7 +161,23 @@ function OrderHistory() {
           : null;
       });
     }
-  }, [orders]);
+  }, [LSOrderId, orders]);
+
+  useEffect(() => {
+    setRelatedMessages([]);
+    if (messages) {
+      Object.entries(messages).forEach(([key, value]) => {
+        return key === LSOrderId
+          ? setRelatedMessages((relatedMessages) => [
+              ...relatedMessages,
+              {
+                messageDetails: value,
+              },
+            ])
+          : null;
+      });
+    }
+  }, [LSOrderId, messages]);
 
   useEffect(() => {
     // console.log("RELATED ORDERS", relatedOrders);
@@ -152,6 +189,27 @@ function OrderHistory() {
       // return order.orderId === LSOrderId;
     });
   }, [LSOrderId, relatedOrders]);
+
+  useEffect(() => {
+    setChatMessages([]);
+    relatedMessages.map((message) => {
+      // console.log("Message ->>>", message);
+      Object.values(message.messageDetails).forEach((value) => {
+        // console.log("Message Value", value);
+        return setChatMessages((msg) => [...msg, value]);
+      });
+    });
+  }, [LSOrderId, relatedMessages]);
+
+  useEffect(() => {
+    // console.log("RELATED ORDERS", relatedOrders);
+    chatMessages.map((msg) => {
+      console.log("Message ----->", msg);
+      console.log("Message From", msg.from);
+      console.log("Chat Message", msg.message);
+      // return order.orderId === LSOrderId;
+    });
+  }, [chatMessages]);
 
   useEffect(() => {
     // console.log("RELATED ORDERS", relatedOrders);
@@ -292,6 +350,9 @@ function OrderHistory() {
       }
     )
       .then((response) => {
+        if (response.ok) {
+          setReviewText("");
+        }
         return response.json();
       })
       .then((data) => {
@@ -306,7 +367,8 @@ function OrderHistory() {
       });
   };
 
-  const Message = async () => {
+  const Message = async (e) => {
+    e.preventDefault();
     //PRODUCTION
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/order/message`,
@@ -326,6 +388,9 @@ function OrderHistory() {
       }
     )
       .then((response) => {
+        if (response.ok) {
+          setMessageText("");
+        }
         return response.json();
       })
       .then((data) => {
@@ -524,7 +589,12 @@ function OrderHistory() {
                   <div className="message-text-content">
                     <div className="message-box">
                       <h2>Write a message to the host</h2>
-                      <form className="message-form">
+                      <form
+                        className="message-form"
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                        }}
+                      >
                         <textarea
                           rows={6}
                           name="message"
@@ -535,12 +605,23 @@ function OrderHistory() {
                           }}
                         ></textarea>
                       </form>
-                      <button className="modalBtn modalBtn2" onClick={Message}>
-                        Send Message
-                      </button>
+                      <div className="message-btn-container">
+                        <button
+                          className="modalBtn modalBtn2"
+                          onClick={Message}
+                        >
+                          Send Message
+                        </button>
+                        <button
+                          className="modalBtn modalBtn2"
+                          onClick={handleOpen}
+                        >
+                          Open Chat
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div className="message-btn-container">
+                  <div className="help-btn-container">
                     <h2>Need Help?</h2>
                     <div className="buttons-container">
                       <button className="contact-btn live-chat-btn">
@@ -551,6 +632,59 @@ function OrderHistory() {
                       </button>
                     </div>
                   </div>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={modalStyle}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Text in a modal
+                      </Typography>
+                      <div className="chat-area">
+                        {chatMessages.map((msg) => (
+                          <>
+                            {msg.from === "client" ? (
+                              <div className="message-text-box">
+                                <p style={{ margin: 0 }}>Client</p>
+                                <p className="chat-text-user">{msg.message}</p>
+                              </div>
+                            ) : (
+                              <div className="message-text-box">
+                                <p style={{ margin: 0 }}>Studio</p>
+                                <p className="chat-text-studio">
+                                  {msg.message}
+                                </p>
+                              </div>
+                            )}
+                          </>
+                        ))}
+                      </div>
+                      <div className="chat-input">
+                        <TextField
+                          className="outlined-basic"
+                          label="Type your message ..."
+                          variant="outlined"
+                          onChange={(text) => {
+                            console.log("Chat Text", messageText);
+                            setMessageText(text.target.value);
+                          }}
+                        />
+                        <Button
+                          onClick={Message}
+                          className="chat-send-btn"
+                          variant="contained"
+                        >
+                          Send
+                        </Button>
+                      </div>
+                    </Box>
+                  </Modal>
                 </div>
                 <div className="review-container">
                   <div className="review-items-container">
