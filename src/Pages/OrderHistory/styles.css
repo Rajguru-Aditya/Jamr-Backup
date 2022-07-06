@@ -35,6 +35,11 @@
   padding: 0 10px;
 }
 
+.modalBtn4{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
 /* New order history page */
 
 .main-container {
@@ -107,7 +112,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 70%;
+  justify-content: center;
+  width: 100%;
   height: auto;
 }
 
@@ -436,8 +442,7 @@
   flex-direction: row;
   margin-right: 20px;
   align-items: center;
-  justify-content: space-between;
-  width: 50%;
+  width: 100%;
   flex-wrap: wrap;
 }
 
@@ -504,4 +509,97 @@
   align-items: center;
   width: 100%;
   justify-content: space-around;
+}
+
+@media screen and (max-width: 900px){
+
+  .contact-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .main-container {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .order-details-container,
+  .message-container,
+  .review-container {
+    flex-direction: column;
+  }
+
+  .order-details-text-content {
+    width: 100%;
+  }
+
+  .order-details-btn-container {
+    width: 100%;
+    flex-direction: row;
+    margin: 0 0 20px 10px;
+    justify-content: space-evenly;
+  }
+
+  .message-text-content {
+    width: 100%;
+    margin: 0;
+  }
+  .message-box, .review-box{
+    margin-bottom: 20px;
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .message-btn-container {
+    justify-content: center;
+    margin: 0;
+  }
+  .textarea {
+    width: 100% !important;
+  }
+
+  .help-btn-container {
+    width: 100%;
+    margin: 0 0 20px 0;
+  }
+
+  .review-items-container{
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 600px){
+  .right-top-container {
+    flex-direction: column;
+    width: 100%;
+  }
+  .request-status-container{
+    width: 90%;
+  }
+
+  .otp-container{
+    margin-bottom: 20px;
+  }
+
+  .detail-title {
+    font-size: 18px;
+  }
+  
+  .detail {
+    font-size: 22px;
+  }
+
+  .message-box h2{
+    text-align: center;
+    width: 90%;
+  }
+
+  .textarea {
+    margin-left: -10px;
+  }
 }

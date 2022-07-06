@@ -613,7 +613,7 @@ function OrderHistory() {
                           Send Message
                         </button>
                         <button
-                          className="modalBtn modalBtn2"
+                          className="modalBtn modalBtn4"
                           onClick={handleOpen}
                         >
                           Open Chat
