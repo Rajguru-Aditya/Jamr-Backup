@@ -1,6 +1,10 @@
 .studioUserProfile {
   height: 100%;
-  width: 80vw;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-upper-container {
@@ -8,7 +12,7 @@
   flex-direction: row;
   justify-content: center;
   height: 100%;
-  width: 100%;
+  width: 90%;
 }
 
 .profile-upper-left-container {
@@ -40,6 +44,10 @@
   border-radius: 50%;
 }
 
+.profile-middle-container{
+  width: 80%;
+}
+
 .input-fields-container{
   width: 80%;
   display: flex;
@@ -67,6 +75,10 @@
   width: 20px;
   position: absolute;
   right: 10px
+}
+
+.textarea-inputs{
+  width: 100%;
 }
 
 .textarea-field{

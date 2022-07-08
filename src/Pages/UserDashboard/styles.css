@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 80%;
     overflow: auto;
     padding-bottom: 50px;
@@ -99,5 +99,12 @@
         width: 80%;
         padding: 20px;
         margin-top: 30vh;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .navbar-item, .navbar-item-selected{
+        width: auto;
+        padding: 0 20px;
     }
 }
