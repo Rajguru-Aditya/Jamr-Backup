@@ -33,12 +33,7 @@
 }
 
 .sideText-container{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
-  flex: 1;
 }
 
 .sideText{
@@ -56,7 +51,7 @@
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  margin: 150px 0 100px 0;
+  margin: 50px 0 100px 0;
 }
 
 .banner-bg {
@@ -73,7 +68,7 @@
 }
 
 .services {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -83,12 +78,15 @@
 
 .service-container {
   width: 250px;
-  height: 300px;
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
 }
 
 .service-container:hover {
@@ -106,23 +104,19 @@
   width: 100%;
   height: 100%;
   display: flex;
-  flex: 0.8;
   flex-direction: column;
-  /* background-color: #fff;
-  border-radius: 30px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
   align-items: center;
   justify-content: center;
 }
 
 .service-icon {
   width: 100%;
+  margin-top: -50px;
 }
 
 .service-lowerContainer {
   width: 100%;
   display: flex;
-  flex: 0.3;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   align-items: center;
@@ -150,8 +144,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
-  width: 100%;
+  justify-content: space-between;
+  width: 80%;
   overflow: auto;
   padding-bottom: 50px;
 }
@@ -169,7 +163,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 80%;
+  width: 70%;
 }
 
 .studio-link{
@@ -254,6 +248,19 @@
   .service-link{
     margin-right: 0;
   }
+
+  /* .service-container {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  } */
   .service-container {
     width: 150px;
     height: 20px;
@@ -261,6 +268,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: none;
+    box-shadow: none;
   }
   
   .service-link{
@@ -275,16 +284,6 @@
     height: 100%;
     margin-bottom: 50px;
   }
-
-  /* .studios-main-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-bottom: 50px;
-  } */
 
   .studios-main-container {
     overflow-x: auto;

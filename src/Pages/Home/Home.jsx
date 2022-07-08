@@ -124,23 +124,18 @@ function Home(props) {
         </div>
       ) : (
         <div className="home">
+          <img
+            src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
+            alt="wavy-Orange"
+            className="wavy-orange-vector"
+          ></img>
           {/* Banner Image */}
           <div className="banner">
-            {/* <img
-                src="https://i.ibb.co/DbzFf5y/Orange-Rectangle.png"
-                alt="Orange-Rectangle"
-                className="banner-bg"
-              /> */}
             <img
               src="https://i.ibb.co/yVnjNLr/Rectangle-Orange.png"
               alt="Rectangle-Orange"
               className="banner-bg"
             />
-            {/* <img
-                src="https://i.ibb.co/sHHJ1h1/Login-BGHigher-Res.png"
-                alt="Login-BGHigher-Res"
-                className="banner-img"
-              ></img> */}
           </div>
 
           {/* Services */}
@@ -239,7 +234,7 @@ function Home(props) {
                   <h1 id="title">Music Studios</h1>
                   {/* <h1 className="subtitle">Top Picks 🔥</h1> */}
                 </div>
-                <div>
+                <div className="ideText-container">
                   <Link className="service-link" to="/studio-listing">
                     <h1 className="sideText">View More</h1>
                   </Link>
