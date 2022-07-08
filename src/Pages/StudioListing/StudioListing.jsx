@@ -72,7 +72,7 @@ function StudioListing(props) {
         >
           <div className="upper-container">
             <img
-              className="studio-image"
+              className="studio-listing-image"
               src={studio.image}
               alt={studio.name}
             />
@@ -130,7 +130,7 @@ function StudioListing(props) {
             ></img>
             <h1 className="header">Music Studios</h1>
           </div>
-          <div className="studios">
+          <div className="studio-listings">
             {studios.map((studio, index) => (
               // <Link
               //   className="studio-link"
