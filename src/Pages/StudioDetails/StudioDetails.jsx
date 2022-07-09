@@ -10,6 +10,61 @@ import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import UserDetailsContext from "../../UserDetailsContext";
 import BookingDetailsContext from "../../BookingDetailsContext";
+import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import { Close } from "@mui/icons-material";
+
+//Date Time Slots Component
+
+const DateTimeSlots = ({
+  handleSlotClick,
+  proceedBooking,
+  today,
+  dateState,
+  setDateState,
+  startTime,
+  selectedSlots,
+}) => {
+  return (
+    <div className="date-time-slots-container">
+      <div className="date-time-container">
+        <p className="date">{today}</p>
+        <p className="time">4pm to 7pm (3hrs)</p>
+      </div>
+      <div className="date-container">
+        <p className="date-title">Date</p>
+        <DatePicker
+          selected={dateState}
+          onChange={(date) => setDateState(date)}
+          className="date-inner-container datePicker"
+          minDate={moment().toDate()}
+          dateFormat="dd MMMM yyyy"
+        />
+      </div>
+      <div className="time-duration-container">
+        <div className="time-container">
+          <p className="time-title">Start Time</p>
+          <div className="time-inner-container">
+            <p>{startTime ? startTime + ":00" : "00:00"}</p>
+          </div>
+        </div>
+        <div className="duration-container">
+          <p className="duration-title">Duration</p>
+          <div className="duration-inner-container">
+            <p>{selectedSlots.length} hrs</p>
+          </div>
+        </div>
+      </div>
+      <SlotsComponent
+        slots={SlotsData}
+        onSlotClick={handleSlotClick}
+        selectedSlots={selectedSlots}
+      />
+      <div onClick={proceedBooking} className="book-now-btn">
+        <p>Book Now</p>
+      </div>
+    </div>
+  );
+};
 
 // Render Slots
 function SlotsComponent({ slots, selectedSlots, onSlotClick }) {
@@ -76,9 +131,24 @@ function StudioDetails(props) {
   const [reviews, setReviews] = useState([]);
   const { ids } = useContext(UserDetailsContext);
   let navigate = useNavigate();
-  // const studioId = ids.studioId;
-
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const { setDetails } = useContext(BookingDetailsContext);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 5,
+    justifyContent: "center",
+  };
 
   // console.log("studioId ->", studioId);
 
@@ -173,6 +243,14 @@ function StudioDetails(props) {
   const currentDate = date.getDate();
   const today = `${day} ${currentDate} ${month}, ${year}`;
   console.log("today", date.toISOString());
+
+  useEffect(() => {
+    const changeWidth = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", changeWidth);
+  }, []);
 
   const onClickPackage = (title) => {
     setPackageName(title);
@@ -417,47 +495,55 @@ function StudioDetails(props) {
               <img
                 src="https://cdn.pixabay.com/photo/2016/03/30/05/41/music-1290087_960_720.jpg"
                 alt="studio"
-                className="studio-image"
+                className="studio-detail-image"
               />
+              {/* Button to toggle date time slots modal. Only visible when screen size is < 600px */}
+              {screenWidth < 600 && (
+                <button onClick={handleOpen} className="slots-modal-btn">
+                  Book Slots
+                </button>
+              )}
 
-              <div className="date-time-slots-container">
-                <div className="date-time-container">
-                  <p className="date">{today}</p>
-                  <p className="time">4pm to 7pm (3hrs)</p>
-                </div>
-                <div className="date-container">
-                  <p className="date-title">Date</p>
-                  <DatePicker
-                    selected={dateState}
-                    onChange={(date) => setDateState(date)}
-                    className="date-inner-container datePicker"
-                    minDate={moment().toDate()}
-                    dateFormat="dd MMMM yyyy"
-                  />
-                </div>
-                <div className="time-duration-container">
-                  <div className="time-container">
-                    <p className="time-title">Start Time</p>
-                    <div className="time-inner-container">
-                      <p>{startTime ? startTime + ":00" : "00:00"}</p>
-                    </div>
-                  </div>
-                  <div className="duration-container">
-                    <p className="duration-title">Duration</p>
-                    <div className="duration-inner-container">
-                      <p>{selectedSlots.length} hrs</p>
-                    </div>
-                  </div>
-                </div>
-                <SlotsComponent
-                  slots={SlotsData}
-                  onSlotClick={handleSlotClick}
+              {screenWidth > 600 && (
+                <DateTimeSlots
                   selectedSlots={selectedSlots}
+                  startTime={startTime}
+                  setDateState={setDateState}
+                  dateState={dateState}
+                  today={today}
+                  proceedBooking={proceedBooking}
+                  handleSlotClick={handleSlotClick}
                 />
-                <div onClick={proceedBooking} className="book-now-btn">
-                  <p>Book Now</p>
-                </div>
-              </div>
+              )}
+
+              {/* DateTimeSlots Modal - toggles when book slots button is clicked */}
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={modalStyle}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    <Close onClick={handleClose} />
+                  </Typography>
+                  <div className="modal-inner-container">
+                    <DateTimeSlots
+                      selectedSlots={selectedSlots}
+                      startTime={startTime}
+                      setDateState={setDateState}
+                      dateState={dateState}
+                      today={today}
+                      proceedBooking={proceedBooking}
+                      handleSlotClick={handleSlotClick}
+                    />
+                  </div>
+                </Box>
+              </Modal>
             </div>
             <div className="studioDetails-right-container">
               <div className="studioDetails-info">
