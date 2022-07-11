@@ -495,6 +495,30 @@
   align-items: center;
 }
 
+.slot-items-mobile{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  margin: 10px 0;
+  background-color: #f8f8f8;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+.slots-inner-container-mobile{
+  overflow: auto;
+  display: flex;
+  height: 20vh;
+  flex-direction: column;
+}
+
+.slots-text-content-mobile{
+  display: flex;
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 900px) {
   .wavy-orange-details {
     display: none;
@@ -577,7 +601,7 @@
   }
 
   .modal-inner-container{
-    height: 500px;
+    height: 100%;
   }
 
   .date-time-slots-container {
@@ -587,44 +611,16 @@
     overflow-x: hidden;
     box-shadow: none;
     margin: 0;
-    padding: 0 0 10px 0;
+    padding: 0 15px 10px 0;
     flex-wrap: nowrap;
   }
 
-  .slots-inner-container{
-    overflow: auto;
-    white-space: nowrap;
-    display: flex;
-    flex-direction: column;
-    border-radius: 30px;
-  }
-
-  .slot-items{
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    align-items: center;
-    width: 90%;
-    background-color: #29c57c;
-  }
-
   .slot-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #ff782c;
-    margin-bottom: 10px;
-    cursor: pointer;
+    margin: 0;
   }
   
   .selected-slot-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #ff782c;
-    background-color: #ff782c;
-    margin-bottom: 10px;
-    cursor: pointer;
+    margin: 0;
   }
 
   .book-now-btn {

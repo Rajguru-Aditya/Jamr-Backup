@@ -22,14 +22,10 @@ const DateTimeSlots = ({
   setDateState,
   startTime,
   selectedSlots,
-  screenWidth,
+  screenWidthChanged,
 }) => {
   return (
     <div className="date-time-slots-container">
-      <div className="date-time-container">
-        <p className="date">{today}</p>
-        <p className="time">4pm to 7pm (3hrs)</p>
-      </div>
       <div className="date-container">
         <p className="date-title">Date</p>
         <DatePicker
@@ -58,7 +54,7 @@ const DateTimeSlots = ({
         slots={SlotsData}
         onSlotClick={handleSlotClick}
         selectedSlots={selectedSlots}
-        screenWidth={screenWidth}
+        screenWidthChanged={screenWidthChanged}
       />
       <div onClick={proceedBooking} className="book-now-btn">
         <p>Book Now</p>
@@ -68,48 +64,59 @@ const DateTimeSlots = ({
 };
 
 // Render Slots
-function SlotsComponent({ slots, selectedSlots, onSlotClick, screenWidth }) {
+function SlotsComponent({
+  slots,
+  selectedSlots,
+  onSlotClick,
+  screenWidthChanged,
+}) {
+  console.log("Screen Width Changed", screenWidthChanged);
   return (
     <div className="slots-container">
-      <div className="slots-inner-container">
-        {screenWidth > 600
-          ? slots.map((slot, index) => (
+      {!screenWidthChanged ? (
+        <div className="slots-inner-container">
+          {slots.map((slot, index) => (
+            <div
+              onClick={() => onSlotClick(slot.id)}
+              className="slot-items"
+              key={index}
+            >
               <div
-                onClick={() => onSlotClick(slot.id)}
-                className="slot-items"
-                key={index}
-              >
-                <div
-                  className={[
-                    selectedSlots.includes(slot.id)
-                      ? "selected-slot-circle"
-                      : "slot-circle",
-                  ]}
-                ></div>
-                <p>
-                  {slot.start}:00 - {slot.end}:00
-                </p>
-              </div>
-            ))
-          : slots.map((slot, index) => (
+                className={[
+                  selectedSlots.includes(slot.id)
+                    ? "selected-slot-circle"
+                    : "slot-circle",
+                ]}
+              ></div>
+              <p>
+                {slot.start}:00 - {slot.end}:00
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="slots-inner-container-mobile">
+          {slots.map((slot, index) => (
+            <div
+              onClick={() => onSlotClick(slot.id)}
+              className="slot-items-mobile"
+              key={index}
+            >
               <div
-                onClick={() => onSlotClick(slot.id)}
-                className="slot-items"
-                key={index}
-              >
-                <div
-                  className={[
-                    selectedSlots.includes(slot.id)
-                      ? "selected-slot-circle"
-                      : "slot-circle",
-                  ]}
-                ></div>
-                <p>
-                  {slot.start}:00 - {slot.end}:00
-                </p>
-              </div>
-            ))}
-      </div>
+                className={[
+                  selectedSlots.includes(slot.id)
+                    ? "selected-slot-circle"
+                    : "slot-circle",
+                ]}
+              ></div>
+              <p>
+                {slot.start}:00 - {slot.end}:00
+              </p>
+              <p>Select</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -560,7 +567,7 @@ function StudioDetails(props) {
                       today={today}
                       proceedBooking={proceedBooking}
                       handleSlotClick={handleSlotClick}
-                      screenWidth={screenWidth}
+                      screenWidthChanged={screenWidth > 600 ? false : true}
                     />
                   </div>
                 </Box>
