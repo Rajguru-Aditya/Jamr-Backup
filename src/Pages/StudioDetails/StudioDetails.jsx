@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./styles.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import SlotsData from "../../Data/SlotsData";
-import Calendar from "react-calendar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import UserDetailsContext from "../../UserDetailsContext";
 import BookingDetailsContext from "../../BookingDetailsContext";
-import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 //Date Time Slots Component
@@ -23,6 +22,7 @@ const DateTimeSlots = ({
   setDateState,
   startTime,
   selectedSlots,
+  screenWidth,
 }) => {
   return (
     <div className="date-time-slots-container">
@@ -58,6 +58,7 @@ const DateTimeSlots = ({
         slots={SlotsData}
         onSlotClick={handleSlotClick}
         selectedSlots={selectedSlots}
+        screenWidth={screenWidth}
       />
       <div onClick={proceedBooking} className="book-now-btn">
         <p>Book Now</p>
@@ -67,28 +68,47 @@ const DateTimeSlots = ({
 };
 
 // Render Slots
-function SlotsComponent({ slots, selectedSlots, onSlotClick }) {
+function SlotsComponent({ slots, selectedSlots, onSlotClick, screenWidth }) {
   return (
     <div className="slots-container">
       <div className="slots-inner-container">
-        {slots.map((slot, index) => (
-          <div
-            onClick={() => onSlotClick(slot.id)}
-            className="slot-items"
-            key={index}
-          >
-            <div
-              className={[
-                selectedSlots.includes(slot.id)
-                  ? "selected-slot-circle"
-                  : "slot-circle",
-              ]}
-            ></div>
-            <p>
-              {slot.start}:00 - {slot.end}:00
-            </p>
-          </div>
-        ))}
+        {screenWidth > 600
+          ? slots.map((slot, index) => (
+              <div
+                onClick={() => onSlotClick(slot.id)}
+                className="slot-items"
+                key={index}
+              >
+                <div
+                  className={[
+                    selectedSlots.includes(slot.id)
+                      ? "selected-slot-circle"
+                      : "slot-circle",
+                  ]}
+                ></div>
+                <p>
+                  {slot.start}:00 - {slot.end}:00
+                </p>
+              </div>
+            ))
+          : slots.map((slot, index) => (
+              <div
+                onClick={() => onSlotClick(slot.id)}
+                className="slot-items"
+                key={index}
+              >
+                <div
+                  className={[
+                    selectedSlots.includes(slot.id)
+                      ? "selected-slot-circle"
+                      : "slot-circle",
+                  ]}
+                ></div>
+                <p>
+                  {slot.start}:00 - {slot.end}:00
+                </p>
+              </div>
+            ))}
       </div>
     </div>
   );
@@ -146,7 +166,7 @@ function StudioDetails(props) {
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
-    borderRadius: 5,
+    borderRadius: 3,
     justifyContent: "center",
   };
 
@@ -540,6 +560,7 @@ function StudioDetails(props) {
                       today={today}
                       proceedBooking={proceedBooking}
                       handleSlotClick={handleSlotClick}
+                      screenWidth={screenWidth}
                     />
                   </div>
                 </Box>
