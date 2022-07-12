@@ -10,6 +10,7 @@ function Home(props) {
   const [jampads, setJampads] = useState([]);
   const [loading, setLoading] = useState(true);
   const { ids, setIds } = useContext(UserDetailsContext);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const color = "#FF782C";
 
   useEffect(() => {
@@ -20,6 +21,14 @@ function Home(props) {
   useEffect(() => {
     console.log("==GET DATA==", studios);
   }, [studios]);
+
+  useEffect(() => {
+    const changeWidth = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", changeWidth);
+  }, []);
 
   useEffect(() => {
     let studioList = studiosJampads.filter((studio) => studio.studio.isStudio);
@@ -86,9 +95,17 @@ function Home(props) {
   const StudioContainer = (studio) => {
     const id = studio.id;
     return (
-      <Link className="studio-link" to="/studio-details" state={id}>
+      <Link
+        className={
+          screenWidth > 600 ? "studio-link-home" : "studio-link-home-mobile"
+        }
+        to="/studio-details"
+        state={id}
+      >
         <div
-          className="studio-container"
+          className={
+            screenWidth > 600 ? "studio-container" : "studio-container-mobile"
+          }
           onClick={() => {
             setIds({
               studioId: id,
@@ -97,10 +114,26 @@ function Home(props) {
           }}
           // key={studio.key}
         >
-          <div className="studio-upperContainer">
-            <img className="studio-img" src={studio.image} alt="Studio-1" />
+          <div
+            className={
+              screenWidth > 600
+                ? "studio-upperContainer"
+                : "studio-upperContainer-mobile"
+            }
+          >
+            <img
+              className={screenWidth > 600 ? "studio-img" : "studio-img-mobile"}
+              src={studio.image}
+              alt="Studio-1"
+            />
           </div>
-          <div className="studio-lowerContainer">
+          <div
+            className={
+              screenWidth > 600
+                ? "studio-lowerContainer"
+                : "studio-lowerContainer-mobile"
+            }
+          >
             <p className="studio-name">{studio.name}</p>
             <p className="studio-rating">⭐⭐⭐⭐</p>
           </div>
@@ -197,34 +230,6 @@ function Home(props) {
                 </div>
               </div>
             </Link>
-            {/* <Link className="service-link" to="/studio-listing">
-                <div className="service-container">
-                  <div className="service-upperContainer">
-                    <img
-                      src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/500/000000/external-video-advertising-xnimrodx-lineal-color-xnimrodx-6.png"
-                      alt="video"
-                      className="service-icon"
-                    />
-                  </div>
-                  <div className="service-lowerContainer">
-                    <p>Videos</p>
-                  </div>
-                </div>
-              </Link>
-              <Link className="service-link" to="/studio-listing">
-                <div className="service-container">
-                  <div className="service-upperContainer">
-                    <img
-                      src="https://img.icons8.com/color/500/000000/teaching.png"
-                      alt="teaching"
-                      className="service-icon"
-                    />
-                  </div>
-                  <div className="service-lowerContainer">
-                    <p>Courses</p>
-                  </div>
-                </div>
-              </Link> */}
           </div>
           {/* MUSIC STUDIOS */}
           <div className="studios">
@@ -232,7 +237,6 @@ function Home(props) {
               <div className="studios-title-container">
                 <div className="title-container">
                   <h1 id="title">Music Studios</h1>
-                  {/* <h1 className="subtitle">Top Picks 🔥</h1> */}
                 </div>
                 <div className="ideText-container">
                   <Link className="service-link" to="/studio-listing">
