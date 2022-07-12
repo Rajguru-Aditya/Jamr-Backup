@@ -1,3 +1,7 @@
+.content-promotions{
+    margin: 0;
+}
+
 .promotion-content-container{
     display: flex;
     flex-direction: row;
@@ -80,7 +84,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 50%;
+    width: 100%;
+    text-align: center;
 }
 
 .promotion-refer-via-item{
@@ -94,6 +99,7 @@
     align-items: center;
     justify-content: space-evenly;
     margin-top: 50px;
+    flex-wrap: wrap;
 }
 
 .promotion-refer-platforms-item{
@@ -137,4 +143,58 @@
 .promotion-data-text, .promotion-text{
     font-size: 30px;
     color: #000;
+}
+
+@media screen and (max-width: 800px){
+    .promotion-content-container{
+        flex-direction: column-reverse;
+    }
+    .promotion-img{
+        width: 60%;
+        height: 60%;
+        margin: 0;
+    }
+    .promotion-right{
+        align-items: center;
+        width: 100%
+    }
+    .promotion-left{
+        align-items: center;
+        width: 100%
+    }
+
+    .promotion-title{
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .promotion-data-text, .promotion-text{
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .promotion-refer-via{
+        width:90%;
+    }
+
+    .promotion-refer-platforms{
+        width: 100%;
+        justify-content: space-around;
+        margin: 0;
+    }
+
+    .promotion-refer-platforms-item{
+        height: 100px;
+        width: 100px;
+    }
+
+    .promotion-data{
+        width: 90%;
+        margin: 0;
+    }
+
+    .referral-code-container{
+        border-radius: 10px;
+        padding: 10px;
+    }
 }

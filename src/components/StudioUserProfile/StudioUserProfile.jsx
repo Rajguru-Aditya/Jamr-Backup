@@ -8,7 +8,6 @@ function StudioUserProfile() {
   const { ids } = useContext(UserDetailsContext);
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const color = "#FF782C";
 
   const userIdForProfile = window.localStorage.getItem("userId");
@@ -20,14 +19,6 @@ function StudioUserProfile() {
   useEffect(() => {
     setUserData(userData);
   }, [userData]);
-
-  useEffect(() => {
-    const changeWidth = () => {
-      setScreenWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", changeWidth);
-  }, []);
 
   console.log("SHOW USER DATA", userData);
 
