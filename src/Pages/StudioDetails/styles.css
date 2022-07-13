@@ -566,6 +566,9 @@
 
   .additional-packages-container{
     justify-content: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
   }
 
   .date-time-slots-container {
@@ -593,11 +596,37 @@
 @media screen and (max-width: 600px){
 
   .additional-packages-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 170px;
+    height: 300px;
     margin-right: 0;
   }
 
+  .package-title{
+    font-size: 1.1rem;
+    padding: 5px;
+  }
+  
+  .package-text{
+    font-size: 18px;
+    color: #000;
+    padding: 5px;
+    text-align: center;
+  }
+
+  .studioDetails-left-container {
+    width: 110%;
+    padding: 0;
+  }
+
   .studioDetails-right-container {
-    margin: 50px 0 100px 0;
+    margin: -30px 0 100px 0;
+    background-color: #ffffff;
+    width: 100%;
+    padding: 0 20px;
+    border-radius: 40px 40px 0 0;
   }
 
   .modal-inner-container{

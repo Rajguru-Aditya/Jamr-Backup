@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./homeStyles.css";
 import UserDetailsContext from "../../UserDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Slider from "react-slick";
 
 function Home(props) {
   const [studiosJampads, setStudiosJampads] = useState([]);
@@ -142,6 +143,14 @@ function Home(props) {
     );
   };
 
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+  };
+
   return (
     <div>
       {loading ? (
@@ -245,16 +254,31 @@ function Home(props) {
                 </div>
               </div>
             </div>
-            <div className="studios-main-container">
-              {studios.slice(0, 3).map((studio, index) => (
-                <StudioContainer
-                  id={studio.studio.locationId}
-                  image={studio.studio.imageLocationLinks[0]}
-                  name={studio.studio.studioName}
-                  key={index}
-                />
-              ))}
-            </div>
+            {screenWidth > 600 ? (
+              <div className="studios-main-container">
+                {studios.slice(0, 3).map((studio, index) => (
+                  <StudioContainer
+                    id={studio.studio.locationId}
+                    image={studio.studio.imageLocationLinks[0]}
+                    name={studio.studio.studioName}
+                    key={index}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="studios-main-container">
+                <Slider {...sliderSettings}>
+                  {studios.slice(0, 3).map((studio, index) => (
+                    <StudioContainer
+                      id={studio.studio.locationId}
+                      image={studio.studio.imageLocationLinks[0]}
+                      name={studio.studio.studioName}
+                      key={index}
+                    />
+                  ))}
+                </Slider>
+              </div>
+            )}
           </div>
           {/* JAMPADS */}
           <div className="studios">
