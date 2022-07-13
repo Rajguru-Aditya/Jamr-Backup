@@ -96,13 +96,7 @@ function Home(props) {
   const StudioContainer = (studio) => {
     const id = studio.id;
     return (
-      <Link
-        className={
-          screenWidth > 600 ? "studio-link-home" : "studio-link-home-mobile"
-        }
-        to="/studio-details"
-        state={id}
-      >
+      <Link className={"studio-link-home"} to="/studio-details" state={id}>
         <div
           className={
             screenWidth > 600 ? "studio-container" : "studio-container-mobile"
@@ -143,12 +137,81 @@ function Home(props) {
     );
   };
 
+  const SliderStudioContainer = (studio) => {
+    const id = studio.id;
+    return (
+      <Link className={"studio-link-home"} to="/studio-details" state={id}>
+        <div
+          className={"studio-container-mobile"}
+          onClick={() => {
+            setIds({
+              studioId: id,
+            });
+            console.log(id);
+          }}
+          // key={studio.key}
+        >
+          <div className={"studio-upperContainer-mobile"}>
+            <img
+              className={"studio-img-mobile"}
+              src={studio.image}
+              alt="Studio-1"
+            />
+          </div>
+          <div className={"studio-lowerContainer-mobile"}>
+            <p className="studio-name">{studio.name}</p>
+            <p className="studio-rating">⭐⭐⭐⭐</p>
+          </div>
+        </div>
+      </Link>
+    );
+  };
+
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          height: "30px",
+          width: "30px",
+          display: "flex",
+          background: "black",
+          borderRadius: "50%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          height: "30px",
+          width: "30px",
+          display: "flex",
+          background: "black",
+          borderRadius: "50%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
   const sliderSettings = {
-    dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 1,
     slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
   };
 
   return (
@@ -266,18 +329,17 @@ function Home(props) {
                 ))}
               </div>
             ) : (
-              <div className="studios-main-container">
-                <Slider {...sliderSettings}>
-                  {studios.slice(0, 3).map((studio, index) => (
-                    <StudioContainer
-                      id={studio.studio.locationId}
-                      image={studio.studio.imageLocationLinks[0]}
-                      name={studio.studio.studioName}
-                      key={index}
-                    />
-                  ))}
-                </Slider>
-              </div>
+              <Slider {...sliderSettings} className="slider-main-container">
+                {studios.slice(0, 3).map((studio, index) => (
+                  <SliderStudioContainer
+                    id={studio.studio.locationId}
+                    image={studio.studio.imageLocationLinks[0]}
+                    name={studio.studio.studioName}
+                    key={index}
+                  />
+                ))}
+              </Slider>
+              // </div>
             )}
           </div>
           {/* JAMPADS */}
@@ -295,16 +357,30 @@ function Home(props) {
                 </div>
               </div>
             </div>
-            <div className="studios-main-container">
-              {jampads.slice(0, 3).map((jampad, index) => (
-                <StudioContainer
-                  id={jampad.studio.locationId}
-                  image={jampad.studio.imageLocationLinks[0]}
-                  name={jampad.studio.studioName}
-                  key={index}
-                />
-              ))}
-            </div>
+            {screenWidth > 600 ? (
+              <div className="studios-main-container">
+                {jampads.slice(0, 3).map((jampad, index) => (
+                  <SliderStudioContainer
+                    id={jampad.studio.locationId}
+                    image={jampad.studio.imageLocationLinks[0]}
+                    name={jampad.studio.studioName}
+                    key={index}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Slider {...sliderSettings} className="slider-main-container">
+                {jampads.slice(0, 3).map((jampad, index) => (
+                  <SliderStudioContainer
+                    id={jampad.studio.locationId}
+                    image={jampad.studio.imageLocationLinks[0]}
+                    name={jampad.studio.studioName}
+                    key={index}
+                  />
+                ))}
+              </Slider>
+              // </div>
+            )}
           </div>
         </div>
       )}
