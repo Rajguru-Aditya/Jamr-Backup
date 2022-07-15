@@ -126,10 +126,6 @@ const BookingsContent = () => {
               {moment(transaction.date).format("MMMM Do YYYY")}
             </h1>
           </div>
-          {/* <div className="bookings-body-item">
-            <h1 className="bookings-body-item-name">Time:</h1>
-            <h1 className="bookings-body-item-value">March 30, 2022</h1>
-          </div> */}
           <div className="bookings-body-item">
             <h1 className="bookings-body-item-name">Duration:</h1>
             <h1 className="bookings-body-item-value">3 hours</h1>
@@ -141,7 +137,7 @@ const BookingsContent = () => {
 
   return (
     <div className="content-bookings">
-      <div className="content-left">
+      <div className="bookings-container">
         {/* Bookings */}
         {transactionDetails &&
           transactionDetails
@@ -160,16 +156,6 @@ const BookingsContent = () => {
                 otp={transaction.otp}
               />
             ))}
-      </div>
-      <div className="content-right">
-        <div className="content-right-first">
-          <h1 className="bookings-title">Upcoming Orders</h1>
-          <p className="bookings-subtitle">0</p>
-        </div>
-        <div className="content-right-last">
-          <h1 className="bookings-title">Completed Orders</h1>
-          <p className="bookings-subtitle">0</p>
-        </div>
       </div>
     </div>
   );

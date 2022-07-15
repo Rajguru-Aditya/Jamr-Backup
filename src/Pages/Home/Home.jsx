@@ -5,7 +5,7 @@ import UserDetailsContext from "../../UserDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Slider from "react-slick";
 
-function Home(props) {
+function Home() {
   const [studiosJampads, setStudiosJampads] = useState([]);
   const [studios, setStudios] = useState([]);
   const [jampads, setJampads] = useState([]);
@@ -348,7 +348,6 @@ function Home(props) {
               <div className="studios-title-container">
                 <div className="title-container">
                   <h1 id="title">Jampads</h1>
-                  {/* <h1 className="subtitle">Top Picks 🔥</h1> */}
                 </div>
                 <div>
                   <Link className="service-link" to="/studio-listing">
@@ -360,7 +359,7 @@ function Home(props) {
             {screenWidth > 600 ? (
               <div className="studios-main-container">
                 {jampads.slice(0, 3).map((jampad, index) => (
-                  <SliderStudioContainer
+                  <StudioContainer
                     id={jampad.studio.locationId}
                     image={jampad.studio.imageLocationLinks[0]}
                     name={jampad.studio.studioName}

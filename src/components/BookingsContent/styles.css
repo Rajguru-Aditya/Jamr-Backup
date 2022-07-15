@@ -3,35 +3,27 @@
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
-    margin: 100px 0;
 }
 
-.content-promotions{
+.bookings-container{
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    width: 100%;
-    margin: 100px 0;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-}
-
-.content-left{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 40%;
+    justify-content: flex-start;
+    width: 90%;
 }
 
 .bookings{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
-    margin-bottom: 50px;
-    border: 2px solid #000;
+    margin: 0 0 5% 2%;
+    border: 1px solid #000;
     border-radius: 50px;
-    box-shadow: 0 3px 3px 3px #ccc;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    width: 400px;
 }
 
 .bookings-header{
@@ -40,7 +32,7 @@
     width: 100%;
     align-items: center;
     justify-content: space-around;
-    border-bottom: 2px solid #000;
+    border-bottom: 1px solid #000;
 }
 
 .bookings-header-title{
@@ -52,15 +44,16 @@
 .bookings-body{
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     align-items: center;
     justify-content: space-around;
+    padding: 0 10px;
 }
 
 .bookings-body-item{
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 80%;
     align-items: center;
     justify-content: space-between;
 }
@@ -68,41 +61,11 @@
 .bookings-body-item-name{
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
 }
 
 .bookings-body-item-value{
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
-}
-
-.content-right{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 40%;
-    background-color: #FF782C;
-    height: 200px;
-}
-
-.content-right-first{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-
-.content-right-last{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
 }
 
 .bookings-title {
@@ -117,103 +80,8 @@
     color: #fff;
 }
 
-.writeReviewBtnContainer{
-    margin: 10px 0;
-}
-
-.writeReviewBtn{
-    background-color: #ff782c;
-    border-radius: 50px;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 15px;
-    margin-bottom: 10;
-    border: none;
-    cursor: pointer;
-}
-
-.modalInnerContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.reviewForm{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    width: 100%;
-}
-
-.reviewTextArea{
-    border-radius: 10px;
-    padding: 20px;
-    width: 50%;
-}
-
-.submitReviewBtn{
-    background-color: #ff782c;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px;
-    margin-top: 20px;
-    border: none;
-    cursor: pointer;
-}
-
-.star-container{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0 20px;
-    margin-bottom: 20px;
-}
-
-.ratingStars{
-    cursor: pointer;
-    margin: 0 10px;
-    transition: all 0.2s ease-in-out;
-}
-
-.ratingStarClicked{
-    transform: scale(1.5);
-}
-
-.ratingStars:hover{
-    transform: scale(1.5);
-}
-
-.closeBtn{
-    cursor: pointer;
-}
-
-@media screen and (max-width: 800px) {
-    .content-bookings{
-        flex-direction: column-reverse;
-        align-items: center;
-        width: 100%;
-        padding: 0;
-    }
-
-    .content-left{
-        width: 100%;
-    }
-    .content-right{
-        width: 100%;
-        align-items: center;
+@media screen and (max-width: 900px) {
+    .bookings-container{
         justify-content: center;
-    }
-
-    .content-right-first, .content-right-last{
-        text-align: center;
     }
 }
