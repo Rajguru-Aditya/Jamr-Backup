@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import { ref, onValue } from "firebase/database";
 import { db } from "../../config/index.js";
-import BookingDetailsContext from "../../BookingDetailsContext";
+import BookingDetailsContext from "../../Context/BookingDetailsContext";
 import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.jsx";
 import OtpInput from "react-otp-input";
 import { FileUploader } from "react-drag-drop-files";

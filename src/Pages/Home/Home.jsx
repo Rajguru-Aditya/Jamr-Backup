@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./homeStyles.css";
-import UserDetailsContext from "../../UserDetailsContext";
+import UserDetailsContext from "../../Context/UserDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Slider from "react-slick";
 
@@ -20,8 +20,9 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    console.log("==GET DATA==", studios);
-  }, [studios]);
+    console.log("==GET STUDIOS DATA==", studios);
+    console.log("==GET JAMPADS DATA==", jampads);
+  }, [jampads, studios]);
 
   useEffect(() => {
     const changeWidth = () => {
@@ -32,8 +33,10 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    let studioList = studiosJampads.filter((studio) => studio.studio.isStudio);
-    let jampadList = studiosJampads.filter((jampad) => jampad.studio.isJampad);
+    let studioList = studiosJampads.filter((studio) => studio.studioprice > 0);
+    let jampadList = studiosJampads.filter(
+      (jampad) => jampad.jampadApplicable === true
+    );
     setStudios(studioList);
     setJampads(jampadList);
   }, [studiosJampads]);
@@ -47,20 +50,12 @@ function Home() {
     ) {
       window.localStorage.setItem("userId", ids.userId);
     }
-    // else {
-    //   if (
-    //     ids.userId !== "" &&
-    //     window.localStorage.getItem("userId") !== ids.userId
-    //   ) {
-    //     window.localStorage.setItem("userId", ids.userId);
-    //   }
-    // }
   }, []);
 
   const fetchStudios = async () => {
     //PRODUCTION
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0}`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio`,
       {
         //TESTING
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
@@ -75,14 +70,9 @@ function Home() {
         return response.json();
       })
       .then((data) => {
-        if (!data.isError) {
-          console.log("studiosData ----->", data.data);
-          setStudiosJampads(data.data);
-          // studios.map((studio, index) => {
-          //   console.log("====================================");
-          //   console.log("studio ----->", studio.studioName);
-          //   console.log("====================================");
-          // });
+        if (data) {
+          console.log("studiosData ----->", data);
+          setStudiosJampads(data);
           setLoading(false);
         } else {
           console.log("Failed", data.isError);
@@ -321,9 +311,9 @@ function Home() {
               <div className="studios-main-container">
                 {studios.slice(0, 3).map((studio, index) => (
                   <StudioContainer
-                    id={studio.studio.locationId}
-                    image={studio.studio.imageLocationLinks[0]}
-                    name={studio.studio.studioName}
+                    id={studio.id}
+                    // image={studio.imageLocationLinks[0]}
+                    name={studio.name}
                     key={index}
                   />
                 ))}
@@ -332,10 +322,10 @@ function Home() {
               <Slider {...sliderSettings} className="slider-main-container">
                 {studios.slice(0, 3).map((studio, index) => (
                   <SliderStudioContainer
-                    id={studio.studio.locationId}
-                    image={studio.studio.imageLocationLinks[0]}
-                    name={studio.studio.studioName}
-                    key={index}
+                  id={studio.id}
+                  // image={studio.imageLocationLinks[0]}
+                  name={studio.name}
+                  key={index}
                   />
                 ))}
               </Slider>
@@ -360,9 +350,9 @@ function Home() {
               <div className="studios-main-container">
                 {jampads.slice(0, 3).map((jampad, index) => (
                   <StudioContainer
-                    id={jampad.studio.locationId}
-                    image={jampad.studio.imageLocationLinks[0]}
-                    name={jampad.studio.studioName}
+                    id={jampad.id}
+                    // image={jampad.imageLocationLinks[0]}
+                    name={jampad.name}
                     key={index}
                   />
                 ))}
@@ -371,10 +361,10 @@ function Home() {
               <Slider {...sliderSettings} className="slider-main-container">
                 {jampads.slice(0, 3).map((jampad, index) => (
                   <SliderStudioContainer
-                    id={jampad.studio.locationId}
-                    image={jampad.studio.imageLocationLinks[0]}
-                    name={jampad.studio.studioName}
-                    key={index}
+                  id={jampad.id}
+                  // image={jampad.imageLocationLinks[0]}
+                  name={jampad.name}
+                  key={index}
                   />
                 ))}
               </Slider>

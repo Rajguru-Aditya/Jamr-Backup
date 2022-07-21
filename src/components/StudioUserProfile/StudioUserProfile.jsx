@@ -1,32 +1,55 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./styles.css";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import UserDetailsContext from "../../UserDetailsContext";
 import ReferralContent from "../../components/ReferralContent/ReferralContent";
+import Alert from "@mui/material/Alert";
 
 function StudioUserProfile() {
-  const { ids } = useContext(UserDetailsContext);
+  const [userId, setUserId] = useState("");
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [editIconClicked, setEditIconClicked] = useState({
+    name: false,
+    phone: false,
+    email: false,
+  });
+  const [editedDetail, setEditedDetail] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
   const color = "#FF782C";
 
-  const userIdForProfile = window.localStorage.getItem("userId");
+  const name = useRef("");
+  const mobile = useRef("");
+  const email = useRef("");
+
+  useEffect(() => {
+    setUserId(window.localStorage.getItem("userId"));
+  }, []);
+
+  useEffect(() => {
+    console.log("LS USER ID >>", userId);
+  }, []);
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     setUserData(userData);
   }, [userData]);
 
+  useEffect(() => {
+    setTimeout(() => setShowAlert(false), 4000);
+  }, [showAlert]);
+
   console.log("SHOW USER DATA", userData);
 
   const fetchUserData = async () => {
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${
-        process.env.REACT_APP_DOMAIN
-      }/user/profile/${userIdForProfile ? userIdForProfile : 0}`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/${userId}`,
       {
         method: "GET",
         headers: {
@@ -39,9 +62,20 @@ function StudioUserProfile() {
         return response.json();
       })
       .then((data) => {
+        console.log("USER ID", userId);
+        console.log("Response Body -> ", JSON.parse(JSON.stringify(data)));
+
         if (!data.isError) {
-          setUserData(data.data);
-          console.log("USER DETAILS ----->", data.data);
+          setUserData(data);
+          console.log("USER DETAILS ----->", data);
+          setEditedDetail({
+            name: data.name,
+            phone: data.mobile,
+            email: data.email,
+          });
+          name.current = data.name;
+          mobile.current = data.mobile;
+          email.current = data.email;
           setLoading(false);
         } else {
           console.log("Failed", data.isError);
@@ -50,6 +84,73 @@ function StudioUserProfile() {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const UpdateUser = async () => {
+    //PRODUCTION
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/${userId}`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: `${
+            editedDetail.name !== userData.name &&
+            editedDetail.name !== undefined
+              ? editedDetail.name
+              : name.current
+          }`,
+          mobile: `${
+            editedDetail.phone !== userData.mobile &&
+            editedDetail.phone !== undefined
+              ? editedDetail.phone
+              : mobile.current
+          }`,
+          email: `${
+            editedDetail.email !== userData.email &&
+            editedDetail.email !== undefined
+              ? editedDetail.email
+              : email.current
+          }`,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("Update detail ----->", data);
+          setShowAlert(true);
+          handleCancleEdit();
+        } else {
+          console.log("Failed", data.isError);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleCancleEdit = () => {
+    setEditIconClicked({
+      name: false,
+      phone: false,
+      email: false,
+    });
+  };
+
+  const handleUpdateUser = () => {
+    console.log("original data: ", name.current);
+    console.log("original data: ", mobile.current);
+    console.log("original data: ", email.current);
+    console.log("Edited data: ", editedDetail.name);
+    console.log("Edited data: ", editedDetail.phone);
+    console.log("Edited data: ", editedDetail.email);
+    UpdateUser();
   };
 
   return (
@@ -86,13 +187,17 @@ function StudioUserProfile() {
                       className="input-fields"
                       type="text"
                       placeholder="Name"
-                      value={userData[0] ? userData[0].Fullname : ""}
-                      disabled={true}
+                      value={editedDetail ? editedDetail.name : ""}
+                      onChange={(text) =>
+                        setEditedDetail({ name: text.target.value })
+                      }
+                      disabled={!editIconClicked.name}
                     />
                     <img
                       src="https://img.icons8.com/fluency-systems-filled/48/000000/edit.png"
                       alt="edit"
                       className="edit-icon"
+                      onClick={() => setEditIconClicked({ name: true })}
                     />
                   </div>
                   <div className="input-fields-container">
@@ -100,13 +205,17 @@ function StudioUserProfile() {
                       className="input-fields"
                       type="text"
                       placeholder="Mobile Number"
-                      value={userData[0] ? userData[0].MobileNumber : ""}
-                      disabled={true}
+                      value={editedDetail ? editedDetail.phone : ""}
+                      onChange={(text) =>
+                        setEditedDetail({ phone: text.target.value })
+                      }
+                      disabled={!editIconClicked.phone}
                     />
                     <img
                       src="https://img.icons8.com/fluency-systems-filled/48/000000/edit.png"
                       alt="edit"
                       className="edit-icon"
+                      onClick={() => setEditIconClicked({ phone: true })}
                     />
                   </div>
                   <div className="input-fields-container">
@@ -114,16 +223,45 @@ function StudioUserProfile() {
                       className="input-fields"
                       type="text"
                       placeholder="Email Address"
-                      value={userData[0] ? userData[0].EmailId : ""}
-                      disabled={true}
+                      value={editedDetail ? editedDetail.email : ""}
+                      onChange={(text) =>
+                        setEditedDetail({ email: text.target.value })
+                      }
+                      disabled={!editIconClicked.email}
                     />
                     <img
                       src="https://img.icons8.com/fluency-systems-filled/48/000000/edit.png"
                       alt="edit"
                       className="edit-icon"
+                      onClick={() => setEditIconClicked({ email: true })}
                     />
                   </div>
                 </div>
+                {editIconClicked.name ||
+                editIconClicked.phone ||
+                editIconClicked.email ? (
+                  <div className="edit-btn-container">
+                    <div
+                      onClick={handleUpdateUser}
+                      className="edit-save-cancel-btn"
+                      id="edit-save-btn"
+                    >
+                      Save changes
+                    </div>
+                    <div
+                      onClick={handleCancleEdit}
+                      className="edit-save-cancel-btn"
+                      id="edit-cancel-btn"
+                    >
+                      Cancel
+                    </div>
+                  </div>
+                ) : null}
+                {showAlert ? (
+                  <Alert severity="success">
+                    User Details Updated Successfully!
+                  </Alert>
+                ) : null}
               </div>
             </div>
             <div className="profile-middle-container">
@@ -141,7 +279,7 @@ function StudioUserProfile() {
               </div>
             </div>
           </div>
-          <ReferralContent />
+          <ReferralContent userReferralCode={userData.referralCode} />
         </>
       )}
     </div>

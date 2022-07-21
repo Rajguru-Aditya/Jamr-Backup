@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./navbar.css";
 import { useNavigate } from "react-router-dom";
-import UserDetailsContext from "../../UserDetailsContext";
-import NavigationContext from "../../NavigationContext";
+import { MenuItem, Menu } from "@mui/material/";
+import UserDetailsContext from "../../Context/UserDetailsContext";
+import NavigationContext from "../../Context/NavigationContext";
 
 function Navbar() {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -10,32 +11,18 @@ function Navbar() {
   const navigate = useNavigate();
   const { ids } = useContext(UserDetailsContext);
   const { setOpenComponent } = useContext(NavigationContext);
+  const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
 
-  // useEffect(() => {
-  //   if (
-  //     window.localStorage.getItem("userId") === null ||
-  //     window.localStorage.getItem("userId") === undefined ||
-  //     window.localStorage.getItem("userId") === ""
-  //   ) {
-  //     window.localStorage.setItem("userId", ids.userId);
-  //   } else {
-  //     if (
-  //       ids.userId !== "" &&
-  //       window.localStorage.getItem("userId") !== ids.userId
-  //     ) {
-  //       window.localStorage.setItem("userId", ids.userId);
-  //     } else {
-  //       if (
-  //         window.localStorage.getItem("userId") === undefined &&
-  //         ids.userId === ""
-  //       ) {
-  //         setIdExists(false);
-  //       } else {
-  //         setIdExists(true);
-  //       }
-  //     }
-  //   }
-  // }, []);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const ITEM_HEIGHT = 42;
+  const openCities = Boolean(anchorEl);
+  const handleClickCities = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   console.log(ids.userId);
 
@@ -50,6 +37,39 @@ function Navbar() {
 
     window.addEventListener("resize", changeWidth);
   }, []);
+
+  useEffect(() => {
+    GetCities();
+  }, []);
+
+  const GetCities = async () => {
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/cities/unique`,
+      {
+        //Testing
+        // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          console.log("CITY LIST ->", data);
+          setCities(data);
+        } else {
+          console.log("Something went wrong", data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const onClickLogin = () => {
     navigate("/Login");
@@ -73,13 +93,44 @@ function Navbar() {
               alt="location-marker"
               className="location-marker"
             />
-            <h2 className="location-text"> Mumbai </h2>
+            <h2 className="location-text">
+              {" "}
+              {selectedCity === "" ? "Mumbai" : selectedCity}{" "}
+            </h2>
             <img
               src="https://img.icons8.com/ios-glyphs/30/000000/sort-down.png"
               alt="dropdown-arrow"
               className="dropdown-arrow"
+              onClick={handleClickCities}
             />
+            <Menu
+              id="long-menu"
+              anchorEl={anchorEl}
+              open={openCities}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+              PaperProps={{
+                style: {
+                  maxHeight: ITEM_HEIGHT * 4.5,
+                  width: "20ch",
+                },
+              }}
+            >
+              {cities.map((city) => (
+                <MenuItem
+                  onClick={() => {
+                    setSelectedCity(city);
+                    handleClose();
+                  }}
+                >
+                  {city}
+                </MenuItem>
+              ))}
+            </Menu>
           </div>
+
           <div className="faq">
             <p className="faq-text"> FAQs </p>
           </div>

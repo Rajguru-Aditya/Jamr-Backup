@@ -7,8 +7,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
-import UserDetailsContext from "../../UserDetailsContext";
-import BookingDetailsContext from "../../BookingDetailsContext";
+import UserDetailsContext from "../../Context/UserDetailsContext";
+import BookingDetailsContext from "../../Context/BookingDetailsContext";
 import { Modal, Box, Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -23,6 +23,7 @@ const DateTimeSlots = ({
   startTime,
   selectedSlots,
   screenWidthChanged,
+  bookedSlots,
 }) => {
   return (
     <div className="date-time-slots-container">
@@ -55,6 +56,7 @@ const DateTimeSlots = ({
         onSlotClick={handleSlotClick}
         selectedSlots={selectedSlots}
         screenWidthChanged={screenWidthChanged}
+        bookedSlots={bookedSlots}
       />
       <div onClick={proceedBooking} className="book-now-btn">
         <p>Book Now</p>
@@ -69,6 +71,7 @@ function SlotsComponent({
   selectedSlots,
   onSlotClick,
   screenWidthChanged,
+  bookedSlots,
 }) {
   console.log("Screen Width Changed", screenWidthChanged);
   return (
@@ -83,7 +86,10 @@ function SlotsComponent({
             >
               <div
                 className={[
-                  selectedSlots.includes(slot.id)
+                  bookedSlots.filledSlots.length > 0
+                    ? bookedSlots.filledSlots.includes(slot.id) &&
+                      "disabled-slots"
+                    : selectedSlots.includes(slot.id)
                     ? "selected-slot-circle"
                     : "slot-circle",
                 ]}
@@ -104,7 +110,10 @@ function SlotsComponent({
             >
               <div
                 className={[
-                  selectedSlots.includes(slot.id)
+                  bookedSlots.filledSlots.length > 0
+                    ? bookedSlots.filledSlots.includes(slot.id) &&
+                      "disabled-slots"
+                    : selectedSlots.includes(slot.id)
                     ? "selected-slot-circle"
                     : "slot-circle",
                 ]}
@@ -125,7 +134,7 @@ function SlotsComponent({
 const EquipmentsComponent = (eqData) => {
   return (
     <>
-      {Object.values(eqData).forEach((key) => {
+      {/* {Object.values(eqData).forEach((key) => {
         Object.entries(key).forEach(([key, value]) => {
           console.log("---key---", key);
           console.log("---value---", value);
@@ -136,7 +145,7 @@ const EquipmentsComponent = (eqData) => {
             </div>
           );
         });
-      })}
+      })} */}
     </>
   );
 };
@@ -213,11 +222,7 @@ function StudioDetails(props) {
   }, []);
 
   useEffect(() => {
-    bookedSlots.map((slot) => {
-      console.log("slot ->", slot.SlotBooked);
-      return bookedSlotsArray.push(slot.SlotBooked);
-    });
-    console.log("bookedSlotsArray ->", bookedSlotsArray);
+    console.log("bookedSlots ->", bookedSlots.filledSlots);
     // SlotsComponent();
   }, [bookedSlots]);
 
@@ -291,11 +296,9 @@ function StudioDetails(props) {
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${
         process.env.REACT_APP_DOMAIN
-      }/slots?id=${
-        localStorage.getItem("studioId")
-          ? localStorage.getItem("studioId")
-          : ids.studioId
-      }&date=${moment(dateState).format("YYYY-MM-DD")}`,
+      }/studio/${localStorage.getItem("studioId")}/slots?date=${moment(
+        dateState
+      ).format("YYYY-MM-DD")}`,
       {
         //Testing
         // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
@@ -310,10 +313,9 @@ function StudioDetails(props) {
         return response.json();
       })
       .then((data) => {
-        if (data.data) {
+        if (data) {
           console.log("BOOKED SLOTS", data);
-          console.log("BOOKED SLOTS LIST ->", data.data);
-          setBookedSlots(data.data);
+          setBookedSlots(data);
         } else {
           console.log("Something went wrong", data);
         }
@@ -328,11 +330,7 @@ function StudioDetails(props) {
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${
         process.env.REACT_APP_DOMAIN
-      }/studio/details?type=D&id=${
-        localStorage.getItem("studioId")
-          ? localStorage.getItem("studioId")
-          : ids.studioId
-      }`,
+      }/studio/${localStorage.getItem("studioId")}`,
       {
         //Testing
         // await fetch(`http://localhost:3000/studio/details/?type=D&id=${studioId}`, {
@@ -349,9 +347,9 @@ function StudioDetails(props) {
       .then((data) => {
         if (!data.isError) {
           // console.log("=========>", data.data[0]);
-          console.log("STUDIO DATA=========>", data.data);
-          setStudioData(data.data[0].studio);
-          setEquipmentData(data.data[0].equipment);
+          console.log("STUDIO DATA=========>", data);
+          setStudioData(data);
+          setEquipmentData(data);
           // console.log("studioData ----->", data.data);
           // console.log("Equipment Data in states ----->", equipmentData);
           setLoading(false);
@@ -404,12 +402,12 @@ function StudioDetails(props) {
 
   //Filtered equipment data
 
-  useEffect(() => {
-    Object.entries(equipmentData).map(([key, value]) => {
-      console.log("---New key---", key);
-      console.log("---New value---", value);
-    });
-  }, [equipmentData]);
+  // useEffect(() => {
+  //   Object.entries(equipmentData).map(([key, value]) => {
+  //     console.log("---New key---", key);
+  //     console.log("---New value---", value);
+  //   });
+  // }, [equipmentData]);
 
   // Add and delete slots
 
@@ -488,8 +486,6 @@ function StudioDetails(props) {
   };
   console.log(dateState.toISOString());
 
-  console.log("Studio Name", studioData ? studioData : null);
-
   return (
     <div>
       {loading ? (
@@ -540,6 +536,7 @@ function StudioDetails(props) {
                   today={today}
                   proceedBooking={proceedBooking}
                   handleSlotClick={handleSlotClick}
+                  bookedSlots={bookedSlots}
                 />
               )}
 
@@ -576,15 +573,12 @@ function StudioDetails(props) {
             <div className="studioDetails-right-container">
               <div className="studioDetails-info">
                 <div className="studioDetails-info-title">
-                  <h1 className="title">
-                    {studioData ? studioData.studioName : null}
-                  </h1>
+                  <h1 className="title">{studioData?.name}</h1>
                 </div>
                 <div className="studioDetails-info-address">
                   <p className="address">
-                    {studioData ? studioData.address : null},{" "}
-                    {studioData ? studioData.locality : null},{" "}
-                    {studioData ? studioData.city : null}
+                    {studioData?.address}, {studioData?.locality},{" "}
+                    {studioData?.city}, {studioData?.state}
                   </p>
                 </div>
                 <div className="studioDetails-rating-cost-container">
@@ -599,8 +593,8 @@ function StudioDetails(props) {
                     <p className="cost">
                       ₹
                       {studioData
-                        ? studioData.studioPrice !== "0.00"
-                          ? studioData.studioPrice
+                        ? studioData.studioprice !== 0
+                          ? studioData.studioprice
                           : studioData.jampadPrice
                         : null}
                       /hr

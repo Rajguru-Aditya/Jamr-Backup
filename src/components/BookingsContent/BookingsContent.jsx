@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./styles.css";
-import BookingDetailsContext from "../../BookingDetailsContext";
+import BookingDetailsContext from "../../Context/BookingDetailsContext";
 import Modal from "react-modal";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";

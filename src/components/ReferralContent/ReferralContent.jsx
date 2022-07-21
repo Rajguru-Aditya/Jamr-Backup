@@ -1,153 +1,83 @@
-import React, { useEffect, useState } from "react";
 import "./styles.css";
-import { useContext } from "react";
-import UserDetailsContext from "../../UserDetailsContext";
-import ScaleLoader from "react-spinners/ScaleLoader";
 
-function ReferralContent() {
-  const [referralCode, setReferralCode] = useState("");
-  const [getReferralData, setReferralData] = useState("");
-  const { ids } = useContext(UserDetailsContext);
-  const [loading, setLoading] = useState(true);
-  const color = "#FF782C";
-
-  console.log(ids.userId);
-
-  const userIdForReferral = window.localStorage.getItem("userId");
-  console.log(" SHOW UID", userIdForReferral);
-
-  useEffect(() => {
-    fetchReferralCode();
-  }, []);
-
-  useEffect(() => {
-    setReferralCode(getReferralData[0]?.ReferralCode);
-  }, [getReferralData]);
-
-  const fetchReferralCode = async () => {
-    await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${
-        process.env.REACT_APP_DOMAIN
-      }/referral/${userIdForReferral ? userIdForReferral : 0}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (!data.isError) {
-          setReferralData(data.data);
-          console.log("REFERRALCODE ----->", data.data);
-          setLoading(false);
-        } else {
-          console.log("Failed", data.isError);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
+function ReferralContent({ userReferralCode }) {
   return (
-    <div>
-      {loading ? (
-        <div className="loader">
-          <ScaleLoader
-            color={color}
-            loading={loading}
-            height={100}
-            width={20}
-            radius={100}
-            margin={10}
+    <div className="content-promotions">
+      <div className="promotion-content-container">
+        <div className="promotion-left">
+          <h1 className="promotion-title">Refer and get FREE services</h1>
+          <div className="referral-code-container">
+            <p className="referral-code-text">Your Code: </p>
+            <p className="referral-code">{userReferralCode}</p>
+          </div>
+          <p className="promotion-text">
+            Invite your friends to Jamr. They get instant ₹100 off. You win upto
+            ₹5000 in rewards.
+          </p>
+          <div className="promotion-refer-via">
+            <div className="promotion-refer-via-item"></div>
+            <p className="refer">Refer Via</p>
+            <div className="promotion-refer-via-item"></div>
+          </div>
+          <div className="promotion-refer-platforms">
+            <div className="promotion-refer-platforms-item"></div>
+            <div className="promotion-refer-platforms-item"></div>
+            <div className="promotion-refer-platforms-item"></div>
+          </div>
+        </div>
+        <div className="promotion-right">
+          <img
+            className="promotion-img"
+            src="https://i.ibb.co/9cj4bTR/Screenshot-346-1.png"
+            alt="promotion"
           />
         </div>
-      ) : (
-        <div className="content-promotions">
-          <div className="promotion-content-container">
-            <div className="promotion-left">
-              <h1 className="promotion-title">Refer and get FREE services</h1>
-              <div className="referral-code-container">
-                <p className="referral-code-text">Your Code: </p>
-                <p className="referral-code">
-                  {referralCode ? referralCode : ""}
-                </p>
-              </div>
-              <p className="promotion-text">
-                Invite your friends to Jamr. They get instant ₹100 off. You win
-                upto ₹5000 in rewards.
-              </p>
-              <div className="promotion-refer-via">
-                <div className="promotion-refer-via-item"></div>
-                <p className="refer">Refer Via</p>
-                <div className="promotion-refer-via-item"></div>
-              </div>
-              <div className="promotion-refer-platforms">
-                <div className="promotion-refer-platforms-item"></div>
-                <div className="promotion-refer-platforms-item"></div>
-                <div className="promotion-refer-platforms-item"></div>
-              </div>
-            </div>
-            <div className="promotion-right">
-              <img
-                className="promotion-img"
-                src="https://i.ibb.co/9cj4bTR/Screenshot-346-1.png"
-                alt="promotion"
-              />
-            </div>
+      </div>
+      <div className="promotion-bottom">
+        <div className="promotion-bottom-title">
+          <h1 className="promotion-title">
+            Refer everyone - The most generous referral program
+          </h1>
+        </div>
+        <div className="promotion-data">
+          <div className="promotion-data-item">
+            <img
+              className="promotion-data-icon"
+              src="https://i.ibb.co/QJ0NXCq/Frame.png"
+              alt="Frame"
+              border="0"
+            />
+            <p className="promotion-data-text">
+              Invite all friends even if they have tried us. You will get
+              rewarded everytime.
+            </p>
           </div>
-          <div className="promotion-bottom">
-            <div className="promotion-bottom-title">
-              <h1 className="promotion-title">
-                Refer everyone - The most generous referral program
-              </h1>
-            </div>
-            <div className="promotion-data">
-              <div className="promotion-data-item">
-                <img
-                  className="promotion-data-icon"
-                  src="https://i.ibb.co/QJ0NXCq/Frame.png"
-                  alt="Frame"
-                  border="0"
-                />
-                <p className="promotion-data-text">
-                  Invite all friends even if they have tried us. You will get
-                  rewarded everytime.
-                </p>
-              </div>
-              <div className="promotion-data-item">
-                <img
-                  className="promotion-data-icon"
-                  src="https://i.ibb.co/6wPsc4S/Group-45.png"
-                  alt="Group-45"
-                  border="0"
-                ></img>
-                <p className="promotion-data-text">
-                  Upon inviting, we’ll give them rewards for the services they
-                  havent tried yet.
-                </p>
-              </div>
-              <div className="promotion-data-item">
-                <img
-                  className="promotion-data-icon"
-                  src="https://i.ibb.co/W2w3P0d/Vector.png"
-                  alt="Vector"
-                  border="0"
-                />
-                <p className="promotion-data-text">
-                  For every successful signup, you can win upto ₹5000, and
-                  minimum ₹100
-                </p>
-              </div>
-            </div>
+          <div className="promotion-data-item">
+            <img
+              className="promotion-data-icon"
+              src="https://i.ibb.co/6wPsc4S/Group-45.png"
+              alt="Group-45"
+              border="0"
+            ></img>
+            <p className="promotion-data-text">
+              Upon inviting, we’ll give them rewards for the services they
+              havent tried yet.
+            </p>
+          </div>
+          <div className="promotion-data-item">
+            <img
+              className="promotion-data-icon"
+              src="https://i.ibb.co/W2w3P0d/Vector.png"
+              alt="Vector"
+              border="0"
+            />
+            <p className="promotion-data-text">
+              For every successful signup, you can win upto ₹5000, and minimum
+              ₹100
+            </p>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -44,11 +44,11 @@
   border-radius: 50%;
 }
 
-.profile-middle-container{
+.profile-middle-container {
   width: 80%;
 }
 
-.input-fields-container{
+.input-fields-container {
   width: 80%;
   display: flex;
   flex-direction: row;
@@ -56,7 +56,7 @@
   position: relative;
 }
 
-.input-fields{
+.input-fields {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,14 +70,43 @@
   font-size: 20px;
 }
 
-.edit-icon{
+.edit-icon {
   height: 20px;
   width: 20px;
   position: absolute;
-  right: 10px
+  right: 10px;
+  cursor: pointer;
 }
 
-.textarea-inputs{
+.edit-btn-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.edit-save-cancel-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 5px #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+#edit-save-btn {
+  background-color: #4bc85c;
+}
+
+#edit-cancel-btn {
+  background-color: rgb(253, 65, 65);
+}
+
+.textarea-inputs {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -85,7 +114,7 @@
   align-items: center;
 }
 
-.textarea-field{
+.textarea-field {
   width: 100%;
   font-size: 20px;
   padding: 10px;
@@ -103,12 +132,11 @@
     margin-top: 50px;
   }
 
-  .textarea-field{
+  .textarea-field {
     width: 80%;
     font-size: 20px;
     padding: 10px;
     border: none;
     border-bottom: 2px solid #000;
   }
-  
 }

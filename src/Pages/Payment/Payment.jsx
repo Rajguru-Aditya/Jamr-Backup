@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import moment from "moment";
-import BookingDetailsContext from "../../BookingDetailsContext";
+import BookingDetailsContext from "../../Context/BookingDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { useNavigate } from "react-router-dom";
 

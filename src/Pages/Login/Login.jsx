@@ -4,7 +4,7 @@ import { authentication } from "../../config";
 import { useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useContext } from "react";
-import UserDetailsContext from "../../UserDetailsContext";
+import UserDetailsContext from "../../Context/UserDetailsContext";
 
 function Login() {
   let navigate = useNavigate();
@@ -209,17 +209,16 @@ function Login() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(
-          "POST Response",
-          "Response Body -> " + JSON.stringify(data.data)
-        );
+        console.log("Response Body -> ", JSON.parse(JSON.stringify(data)));
         // setdata(data.data.UserId);
         if (!data.isError) {
           // props.navigation.navigate("Home");
           alert("Registration Successful");
           setIds({
-            userId: data.data.UserId,
+            userId: data.id,
           });
+          window.localStorage.setItem("userId", data.id);
+          console.log("USER ID", data);
           navigate("/");
         } else {
           alert("Something went wrong", data.message);

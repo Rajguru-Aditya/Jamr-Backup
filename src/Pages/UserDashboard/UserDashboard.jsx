@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./styles.css";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import BookingsContent from "../../components/BookingsContent/BookingsContent";
 import ReferralContent from "../../components/ReferralContent/ReferralContent";
-import StudioOwnerProfile from "../../components/StudioOwnerProfile/StudioOwnerProfile";
 import StudioUserProfile from "../../components/StudioUserProfile/StudioUserProfile";
-import NavigationContext from "../../NavigationContext";
+import NavigationContext from "../../Context/NavigationContext";
 
 function UserDashboard() {
   const [navItemName, setNavItemName] = useState("Bookings");

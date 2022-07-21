@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
-import UserDetailsContext from "../../UserDetailsContext";
+import UserDetailsContext from "../../Context/UserDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 function StudioListing(props) {
