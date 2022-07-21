@@ -158,9 +158,7 @@ function Payment() {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          sid: window.localStorage.getItem("studioId"),
-          baseAmount: storeDetails?.pricePerHour,
-          hours: storeDetails?.selectedSlots.length,
+          amount: window.localStorage.getItem("netAmount"),
         }),
       }
     )
@@ -168,14 +166,18 @@ function Payment() {
         return response.json();
       })
       .then((data) => {
-        if (!data.isError) {
+        if (data) {
           console.log("payment api called ----->", data);
           // alert("Transaction Successful");
           // navigate("/");
-          RazorPayPayment(data);
-          receiptId.push(data.receipt);
+          // RazorPayPayment(data);
+          // receiptId.push(data.receipt);
+          window.localStorage.setItem("orderId", data.gatewayorderid);
+          window.localStorage.setItem("payment-id", data.id);
+          RazorPayPayment();
         } else {
-          console.log("Failed", data.isError);
+          console.log("Failed", data);
+          setPaymentLoading(false);
         }
       })
       .catch((error) => {
@@ -204,7 +206,7 @@ function Payment() {
     });
   };
 
-  const RazorPayPayment = async (data) => {
+  const RazorPayPayment = async () => {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -216,13 +218,13 @@ function Payment() {
 
     const options = {
       key: "rzp_test_JQQLKxhPmex7o8", // Enter the Key ID generated from the Dashboard
-      amount: data.subunitAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      amount: window.localStorage.getItem("netAmount"), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       currency: "INR",
       name: "JAMR",
       description: "Test Transaction",
       image:
         "https://i.ibb.co/TP8VqHk/Whats-App-Image-2022-02-01-at-21-17-1.png",
-      order_id: data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      order_id: window.localStorage.getItem("orderId"), //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       handler: function (response) {
         setPaymentLoading(false);
         alert("SUCCESS");
@@ -231,6 +233,7 @@ function Payment() {
         // alert(response.razorpay_signature);
         console.log(response);
         transaction(response);
+        PaymentSuccess();
       },
       theme: {
         color: "#FF782C",
@@ -241,18 +244,18 @@ function Payment() {
       setPaymentLoading(false);
       alert(response.error.code);
       alert(response.error.description);
-      alert(response.error.source);
-      alert(response.error.step);
-      alert(response.error.reason);
-      alert(response.error.metadata.order_id);
-      alert(response.error.metadata.payment_id);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
     });
     rzp1.open();
   };
 
   //----------> New APIs <-----------
 
-  const NewOrder = async (response) => {
+  const NewOrder = async () => {
     //PRODUCTION
     await fetch(
       `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/orders/studio/new`,
@@ -268,8 +271,55 @@ function Payment() {
           bookingdate: storeDetails?.bookingDate,
           priceperhour: parseInt(storeDetails?.pricePerHour),
           isjamrpackage: false,
-          starttime: storeDetails?.startTime,
-          endtime: storeDetails?.endTime,
+          starttime:
+            storeDetails?.startTime > 9
+              ? storeDetails?.startTime + ":00:00"
+              : "0" + storeDetails?.startTime + ":00:00",
+          endtime:
+            storeDetails?.startTime > 9
+              ? storeDetails?.endTime + ":00:00"
+              : "0" + storeDetails?.endTime + ":00:00",
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.netamount) {
+          console.log("Order history ----->", data);
+          // console.log("Order Id", response.razorpay_order_id);
+          // alert("Transaction Successful");
+          // setTransactionId(data.data.transactionId);
+          window.localStorage.setItem("netAmount", data.netamount);
+          window.localStorage.setItem("order-id", data.id);
+          // navigate("/dashboard");
+          PaymentInitiate();
+        } else {
+          console.log("Failed", data.isError);
+          alert("Transaction Failed");
+          setPaymentLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  // Payment Success
+  const PaymentSuccess = async () => {
+    //PRODUCTION
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/orders/studio/new`,
+      {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          orderid: window.localStorage.getItem("order-id"),
+          paymentid: window.localStorage.getItem("payment-id"),
         }),
       }
     )
@@ -278,12 +328,13 @@ function Payment() {
       })
       .then((data) => {
         if (!data.isError) {
-          console.log("Order history ----->", data);
+          console.log("Order Details Success ----->", data);
           // console.log("Order Id", response.razorpay_order_id);
-          // alert("Transaction Successful");
+          alert("Payment Successful");
           // setTransactionId(data.data.transactionId);
-          window.localStorage.setItem("netAmount", data.netamount);
-          // navigate("/dashboard");
+          // window.localStorage.setItem("netAmount", data.netamount);
+          // window.localStorage.setItem("order-id", data.id);
+          navigate("/dashboard");
         } else {
           console.log("Failed", data.isError);
           alert("Transaction Failed");
@@ -291,6 +342,7 @@ function Payment() {
       })
       .catch((error) => {
         console.error(error);
+        setPaymentLoading(false);
       });
   };
 

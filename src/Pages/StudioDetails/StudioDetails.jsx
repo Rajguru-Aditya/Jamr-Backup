@@ -456,34 +456,27 @@ function StudioDetails(props) {
   };
 
   const proceedBooking = () => {
-    if (
-      window.localStorage.getItem("userId") === null ||
-      window.localStorage.getItem("userId") === undefined ||
-      window.localStorage.getItem("userId") === ""
-    ) {
-      alert("Please Login/Register to proceed");
-      navigate("/login");
-    } else {
-      setDetails({
-        bookingDate: dateState,
-        selectedSlots: selectedSlots,
-        totalPrice:
-          selectedSlots.length *
-          (studioData.studioPrice !== "0.00"
-            ? studioData.studioPrice
-            : studioData.jampadPrice),
-        pricePerHour:
-          studioData.studioPrice !== "0.00"
-            ? studioData.studioPrice
-            : studioData.jampadPrice,
-        startTime: startTime,
-        endTime: endTime,
-        studioName: studioData.studioName,
-        studioAddress: studioData.locality + " , " + studioData.city,
-      });
-      navigate("/Payment");
-    }
+    setDetails({
+      bookingDate: dateState,
+      selectedSlots: selectedSlots,
+      totalPrice:
+        selectedSlots.length *
+        (studioData.studioprice !== 0
+          ? studioData.studioprice
+          : studioData.jampadprice),
+      pricePerHour:
+        studioData.studioprice !== 0
+          ? studioData.studioprice
+          : studioData.jampadprice,
+      startTime: startTime,
+      endTime: endTime,
+      studioName: studioData.name,
+      studioAddress: studioData.locality + " , " + studioData.city,
+    });
+    console.log("BOOKING DETAILS: ", studioData.studioprice, studioData.name);
+    navigate("/Payment");
   };
+
   console.log(dateState.toISOString());
 
   return (
@@ -595,7 +588,7 @@ function StudioDetails(props) {
                       {studioData
                         ? studioData.studioprice !== 0
                           ? studioData.studioprice
-                          : studioData.jampadPrice
+                          : studioData.jampadprice
                         : null}
                       /hr
                     </p>
