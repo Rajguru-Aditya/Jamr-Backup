@@ -144,10 +144,10 @@ function Payment() {
 
   // PAYMENT
 
-  const payment = async () => {
+  const PaymentInitiate = async () => {
     //PRODUCTION
     await fetch(
-      `https://jamr-razorpay-test.herokuapp.com/payment/gateway/initiate`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/payment/initiate`,
       // `https://backend.jamr.online/payment/gateway/initiate`,
       {
         //TESTING
@@ -250,6 +250,50 @@ function Payment() {
     rzp1.open();
   };
 
+  //----------> New APIs <-----------
+
+  const NewOrder = async (response) => {
+    //PRODUCTION
+    await fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/orders/studio/new`,
+      {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          studioid: window.localStorage.getItem("studioId"),
+          userid: window.localStorage.getItem("userId"),
+          bookingdate: storeDetails?.bookingDate,
+          priceperhour: parseInt(storeDetails?.pricePerHour),
+          isjamrpackage: false,
+          starttime: storeDetails?.startTime,
+          endtime: storeDetails?.endTime,
+        }),
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (!data.isError) {
+          console.log("Order history ----->", data);
+          // console.log("Order Id", response.razorpay_order_id);
+          // alert("Transaction Successful");
+          // setTransactionId(data.data.transactionId);
+          window.localStorage.setItem("netAmount", data.netamount);
+          // navigate("/dashboard");
+        } else {
+          console.log("Failed", data.isError);
+          alert("Transaction Failed");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const PromoCode = () => (
     <div className="promotional-code">
       <p className="subtitle-promo-code">Apply a promotional code</p>
@@ -293,7 +337,7 @@ function Payment() {
         className="proceed-payment-btn"
         id="payment-button"
         onClick={() => {
-          payment();
+          NewOrder();
         }}
       >
         <p>Proceed to pay</p>
@@ -353,7 +397,7 @@ function Payment() {
           <div
             className="payment-btn"
             onClick={() => {
-              payment();
+              NewOrder();
               setPaymentLoading(true);
             }}
           >
