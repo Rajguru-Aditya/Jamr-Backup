@@ -23,34 +23,32 @@ const BookingsContent = () => {
   const fetchBookingData = async () => {
     //PRODUCTION
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/history`,
+      `${process.env.REACT_APP_PROTOCOL}://${
+        process.env.REACT_APP_DOMAIN
+      }/orders/studio/all?userid=${window.localStorage.getItem("userId")}`,
       {
         //TESTING
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
-        method: "Post",
+        method: "get",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({
-          listType: "S",
-          uid: uid,
-        }),
       }
     )
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        if (!data.isError) {
-          console.log("Transaction history ----->", data.data);
-          setTransactionDetails(data.data);
+        if (data.message) {
+          alert("Failed", data.message);
         } else {
-          console.log("Failed", data.isError);
+          console.log("Transaction history ----->", data);
+          setTransactionDetails(data);
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("ERROR: ", error);
       });
   };
 
@@ -65,6 +63,10 @@ const BookingsContent = () => {
       setUid(window.localStorage.getItem("userId"));
     }
   }, []);
+
+  useEffect(() => {
+    console.log("UID", uid);
+  }, [uid]);
 
   const getLSTrnID = window.localStorage.getItem("transactionId");
 
@@ -146,13 +148,12 @@ const BookingsContent = () => {
             .map((transaction, index) => (
               <RenderBookingDetails
                 key={index}
-                // studioName={transaction.studioName}
-                cost={transaction.NetAmount}
+                cost={transaction.netamount}
                 orderNo={transaction.OrderNumber}
-                orderId={transaction.order_id}
-                date={transaction.DateOfBooking}
+                orderId={transaction.id}
+                date={transaction.bookingdate}
                 trnId={transaction.id}
-                sid={transaction.studioId}
+                sid={transaction.studioid}
                 otp={transaction.otp}
               />
             ))}

@@ -124,6 +124,7 @@ function Navbar() {
                     setSelectedCity(city);
                     handleClose();
                   }}
+                  key={city}
                 >
                   {city}
                 </MenuItem>

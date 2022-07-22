@@ -86,7 +86,7 @@ function SlotsComponent({
             >
               <div
                 className={[
-                  bookedSlots.filledSlots.length > 0
+                  bookedSlots.filledSlots?.length > 0
                     ? bookedSlots.filledSlots.includes(slot.id) &&
                       "disabled-slots"
                     : selectedSlots.includes(slot.id)
@@ -346,16 +346,16 @@ function StudioDetails(props) {
         return response.json();
       })
       .then((data) => {
-        if (!data.isError) {
-          // console.log("=========>", data.data[0]);
-          console.log("STUDIO DATA=========>", data);
-          setStudioData(data);
-          setEquipmentData(data);
+        if (data.message) {
+          console.log("Failed", data.message);
           // console.log("studioData ----->", data.data);
           // console.log("Equipment Data in states ----->", equipmentData);
           setLoading(false);
         } else {
-          console.log("Failed", data.isError);
+          console.log("STUDIO DATA=========>", data);
+          setStudioData(data);
+          setEquipmentData(data);
+          setLoading(false);
         }
       })
       .catch((error) => {
@@ -473,6 +473,7 @@ function StudioDetails(props) {
       endTime: endTime,
       studioName: studioData.name,
       studioAddress: studioData.locality + " , " + studioData.city,
+      jampadApplicable: studioData.jampadApplicable,
     });
     console.log("BOOKING DETAILS: ", studioData.studioprice, studioData.name);
     const bookingDetailsLS = {
@@ -491,6 +492,7 @@ function StudioDetails(props) {
       endTime: endTime,
       studioName: studioData.name,
       studioAddress: studioData.locality + " , " + studioData.city,
+      jampadApplicable: studioData.jampadApplicable,
     };
     window.localStorage.setItem("details", JSON.stringify(bookingDetailsLS));
     // SaveInLocalStorage();
