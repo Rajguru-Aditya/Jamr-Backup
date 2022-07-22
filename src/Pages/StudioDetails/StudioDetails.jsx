@@ -170,8 +170,9 @@ function StudioDetails(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { setDetails } = useContext(BookingDetailsContext);
+  const { details, setDetails } = useContext(BookingDetailsContext);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [bookingDetails, setBookingDetails] = useState();
 
   const modalStyle = {
     position: "absolute",
@@ -474,8 +475,19 @@ function StudioDetails(props) {
       studioAddress: studioData.locality + " , " + studioData.city,
     });
     console.log("BOOKING DETAILS: ", studioData.studioprice, studioData.name);
-    navigate("/Payment");
+    SaveInLocalStorage();
+    // NavigateToPayment();
   };
+
+  const SaveInLocalStorage = async () => {
+    window.localStorage.setItem("details", JSON.stringify(details));
+    // navigate("/Payment");
+    console.log("DETAILS CONTEXT: ", bookingDetails);
+  };
+
+  // const NavigateToPayment = () => {
+  //   navigate("/Payment");
+  // };
 
   console.log(dateState.toISOString());
 
@@ -557,6 +569,7 @@ function StudioDetails(props) {
                       today={today}
                       proceedBooking={proceedBooking}
                       handleSlotClick={handleSlotClick}
+                      bookedSlots={bookedSlots}
                       screenWidthChanged={screenWidth > 600 ? false : true}
                     />
                   </div>

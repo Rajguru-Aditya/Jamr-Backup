@@ -14,6 +14,7 @@ function Login() {
   const [navItem, setNavItem] = useState("login");
   const [uid, setUid] = useState("");
   const { ids, setIds } = useContext(UserDetailsContext);
+  const [token, setToken] = useState();
   // STATES FOR REGISTRASTION
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -73,7 +74,6 @@ function Login() {
   const onPressSendOtp = (e) => {
     e.preventDefault();
     if (phone.length === 10) {
-      authenticateUserWithPhone(phone);
       generateRecaptcha();
       // let appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(
@@ -95,29 +95,35 @@ function Login() {
     }
   };
 
-  const authenticateUserWithPhone = (userPhone) => {
+  const authenticateUserWithPhone = (idToken) => {
     fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/user/exists?identify=${userPhone}`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/auth/login/phone`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          phone: phone,
+          token: idToken,
+        }),
       }
     )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (!data.isError) {
+        if (data.code) {
+          console.log("Failed");
+          alert("No User found, Please Register first");
+          setUserExists(false);
+        } else {
           console.log("Success", data);
-          setUid(data.userId);
+          setUid(data.id);
           setIds({
-            userId: data.UserId,
+            userId: data.id,
           });
           setUserExists(true);
-        } else {
-          console.log("Failed");
-          setUserExists(false);
+          alert("Welcome back", data.name);
         }
       })
       .catch((error) => {
@@ -135,27 +141,30 @@ function Login() {
         .confirm(otp)
         .then((result) => {
           // User signed in successfully.
-          // const user = result.user;
+          const user = result.user;
           // console.log(user + "signed in");
-          console.log(result);
-          if (userExists) {
-            // User exists
-            // Redirect to home page
-            alert("User signed in successfully");
-            setIds({
-              userId: uid,
-            });
-            navigate("/");
-          } else {
-            // User does not exist
-            // Redirect to signup page
-            alert("No user found. Please register first");
-          }
+          console.log("Result", result);
+          console.log("Result TOKEN", result._tokenResponse.idToken);
+          authenticateUserWithPhone(result._tokenResponse.idToken);
+          // if (userExists) {
+          //   // User exists
+          //   // Redirect to home page
+          //   alert("User signed in successfully");
+          //   setIds({
+          //     userId: uid,
+          //   });
+          //   navigate("/");
+          // } else {
+          //   // User does not exist
+          //   // Redirect to signup page
+          //   alert("No user found. Please register first");
+          // }
           // ...
         })
         .catch((error) => {
           // User couldn't sign in (bad verification code?)
           // ...
+          alert("ERROR Occurred", error);
         });
     }
   };
@@ -230,6 +239,45 @@ function Login() {
       });
   };
 
+  const loginwithusername = () => {
+    fetch(
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: userDetails.username,
+          password: userDetails.password,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response Body -> ", JSON.parse(JSON.stringify(data)));
+        // setdata(data.data.UserId);
+        if (!data.message) {
+          // props.navigation.navigate("Home");
+          console.log(data);
+          alert("Login Successful");
+          setIds({
+            userId: data.id,
+          });
+          window.localStorage.setItem("userId", data.id);
+          console.log("USER ID", data);
+          navigate("/");
+        } else {
+          alert("Something went wrong", data.message);
+          console.log("Something went wrong", data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const loginForm = () => (
     <div className="login-container">
       <div className="login-left">
@@ -284,7 +332,10 @@ function Login() {
             </div>
           </div>
           <div className="login-actions">
-            <div className="text-container">
+            <div
+              className="text-container"
+              onClick={() => setNavItem("username")}
+            >
               <p className="login-with">Login with</p>
               <p className="username-pass">Username and password</p>
             </div>
@@ -311,7 +362,7 @@ function Login() {
         <form className="login-form">
           <h1 className="login-title">Hey user,</h1>
           <p className="login-text">
-            Please enter your Mobile number to Login/Signup
+            Please enter your details to Login/Signup
           </p>
           <div className="inputs">
             <div className="text-input-container">
@@ -415,6 +466,56 @@ function Login() {
     </div>
   );
 
+  const userpassLogin = () => (
+    <div className="login-container">
+      <div className="login-left">
+        <img
+          src="https://i.ibb.co/6DPp9sg/verification-BG.png"
+          alt="registration-illustration"
+          className="login-left-img"
+        />
+      </div>
+      <div className="login-right">
+        <form className="login-form">
+          <h1 className="login-title">Hey user,</h1>
+          <p className="login-text">
+            Please enter your details to Login/Signup
+          </p>
+          <div className="inputs">
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="text"
+                placeholder="Username"
+                value={userDetails.username}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, username: e.target.value })
+                }
+              />
+            </div>
+            <div className="text-input-container">
+              <input
+                className="text-input"
+                type="password"
+                placeholder="Password"
+                value={userDetails.password}
+                onChange={(e) =>
+                  setUserDetails({ ...userDetails, password: e.target.value })
+                }
+              />
+            </div>
+          </div>
+          <div className="login-actions">
+            <button className="login-page-btn" onClick={loginwithusername}>
+              Login
+            </button>
+          </div>
+        </form>
+        <div id="recaptcha-container"></div>
+      </div>
+    </div>
+  );
+
   // console.log("NUMBER", phone);
 
   return (
@@ -455,7 +556,13 @@ function Login() {
               <p className="login-nav-text">Register</p>
             </div>
           </div>
-          {navItem === "login" ? loginForm() : registrationForm()}
+          {navItem === "login"
+            ? loginForm()
+            : navItem === "register"
+            ? registrationForm()
+            : navItem === "username"
+            ? userpassLogin()
+            : null}
         </div>
       )}
     </>
