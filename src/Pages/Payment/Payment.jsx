@@ -158,7 +158,7 @@ function Payment() {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          amount: window.localStorage.getItem("netAmount"),
+          amount: Math.round(window.localStorage.getItem("netAmount")),
         }),
       }
     )
@@ -186,6 +186,7 @@ function Payment() {
   };
 
   console.log("storeDetails", storeDetails);
+  console.log("storeDetails DATE", storeDetails?.bookingDate.substring(0, 10));
 
   // RAZORPAY PAYMENT
 
@@ -268,7 +269,7 @@ function Payment() {
         body: JSON.stringify({
           studioid: window.localStorage.getItem("studioId"),
           userid: window.localStorage.getItem("userId"),
-          bookingdate: storeDetails?.bookingDate,
+          bookingdate: (storeDetails?.bookingDate).substring(0, 10),
           priceperhour: parseInt(storeDetails?.pricePerHour),
           isjamrpackage: false,
           starttime:
@@ -276,7 +277,7 @@ function Payment() {
               ? storeDetails?.startTime + ":00:00"
               : "0" + storeDetails?.startTime + ":00:00",
           endtime:
-            storeDetails?.startTime > 9
+            storeDetails?.endTime > 9
               ? storeDetails?.endTime + ":00:00"
               : "0" + storeDetails?.endTime + ":00:00",
         }),
@@ -296,7 +297,7 @@ function Payment() {
           // navigate("/dashboard");
           PaymentInitiate();
         } else {
-          console.log("Failed", data.isError);
+          console.log("Failed", data.message);
           alert("Transaction Failed");
           setPaymentLoading(false);
         }

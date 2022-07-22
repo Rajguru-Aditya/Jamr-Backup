@@ -475,8 +475,26 @@ function StudioDetails(props) {
       studioAddress: studioData.locality + " , " + studioData.city,
     });
     console.log("BOOKING DETAILS: ", studioData.studioprice, studioData.name);
-    SaveInLocalStorage();
-    // NavigateToPayment();
+    const bookingDetailsLS = {
+      bookingDate: dateState,
+      selectedSlots: selectedSlots,
+      totalPrice:
+        selectedSlots.length *
+        (studioData.studioprice !== 0
+          ? studioData.studioprice
+          : studioData.jampadprice),
+      pricePerHour:
+        studioData.studioprice !== 0
+          ? studioData.studioprice
+          : studioData.jampadprice,
+      startTime: startTime,
+      endTime: endTime,
+      studioName: studioData.name,
+      studioAddress: studioData.locality + " , " + studioData.city,
+    };
+    window.localStorage.setItem("details", JSON.stringify(bookingDetailsLS));
+    // SaveInLocalStorage();
+    navigate("/Payment");
   };
 
   const SaveInLocalStorage = async () => {
