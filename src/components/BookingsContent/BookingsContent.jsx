@@ -40,11 +40,11 @@ const BookingsContent = () => {
         return response.json();
       })
       .then((data) => {
-        if (data.message) {
-          alert("Failed", data.message);
-        } else {
+        if (data) {
           console.log("Transaction history ----->", data);
           setTransactionDetails(data);
+        } else {
+          alert("Failed", data.message);
         }
       })
       .catch((error) => {

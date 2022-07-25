@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import "./homeStyles.css";
 import UserDetailsContext from "../../Context/UserDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import Slider from "react-slick";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [studiosJampads, setStudiosJampads] = useState([]);
@@ -13,6 +15,27 @@ function Home() {
   const { ids, setIds } = useContext(UserDetailsContext);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const color = "#FF782C";
+  const navigate = useNavigate();
+
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
 
   useEffect(() => {
     document.title = "Jamr | Home";
@@ -86,122 +109,46 @@ function Home() {
   const StudioContainer = (studio) => {
     const id = studio.id;
     return (
-      <Link className={"studio-link-home"} to="/studio-details" state={id}>
+      // <Link className={"studio-link-home"} to="/studio-details" state={id}>
+      <div
+        className={
+          screenWidth > 600 ? "studio-container" : "studio-container-mobile"
+        }
+        onClick={() => {
+          setIds({
+            studioId: id,
+          });
+          navigate("/studio-details");
+          console.log(id);
+        }}
+        // key={studio.key}
+      >
         <div
           className={
-            screenWidth > 600 ? "studio-container" : "studio-container-mobile"
+            screenWidth > 600
+              ? "studio-upperContainer"
+              : "studio-upperContainer-mobile"
           }
-          onClick={() => {
-            setIds({
-              studioId: id,
-            });
-            console.log(id);
-          }}
-          // key={studio.key}
         >
-          <div
-            className={
-              screenWidth > 600
-                ? "studio-upperContainer"
-                : "studio-upperContainer-mobile"
-            }
-          >
-            <img
-              className={screenWidth > 600 ? "studio-img" : "studio-img-mobile"}
-              src={studio.image}
-              alt="Studio-1"
-            />
-          </div>
-          <div
-            className={
-              screenWidth > 600
-                ? "studio-lowerContainer"
-                : "studio-lowerContainer-mobile"
-            }
-          >
-            <p className="studio-name">{studio.name}</p>
-            <p className="studio-rating">⭐⭐⭐⭐</p>
-          </div>
+          <img
+            className={screenWidth > 600 ? "studio-img" : "studio-img-mobile"}
+            src={studio.image}
+            alt="Studio-1"
+          />
         </div>
-      </Link>
-    );
-  };
-
-  const SliderStudioContainer = (studio) => {
-    const id = studio.id;
-    return (
-      <Link className={"studio-link-home"} to="/studio-details" state={id}>
         <div
-          className={"studio-container-mobile"}
-          onClick={() => {
-            setIds({
-              studioId: id,
-            });
-            console.log(id);
-          }}
-          // key={studio.key}
+          className={
+            screenWidth > 600
+              ? "studio-lowerContainer"
+              : "studio-lowerContainer-mobile"
+          }
         >
-          <div className={"studio-upperContainer-mobile"}>
-            <img
-              className={"studio-img-mobile"}
-              src={studio.image}
-              alt="Studio-1"
-            />
-          </div>
-          <div className={"studio-lowerContainer-mobile"}>
-            <p className="studio-name">{studio.name}</p>
-            <p className="studio-rating">⭐⭐⭐⭐</p>
-          </div>
+          <p className="studio-name">{studio.name}</p>
+          <p className="studio-rating">⭐⭐⭐⭐</p>
         </div>
-      </Link>
+      </div>
+      // </Link>
     );
-  };
-
-  function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{
-          height: "30px",
-          width: "30px",
-          display: "flex",
-          background: "black",
-          borderRadius: "50%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        onClick={onClick}
-      />
-    );
-  }
-
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{
-          height: "30px",
-          width: "30px",
-          display: "flex",
-          background: "black",
-          borderRadius: "50%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        onClick={onClick}
-      />
-    );
-  }
-
-  const sliderSettings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
   };
 
   return (
@@ -307,30 +254,19 @@ function Home() {
                 </div>
               </div>
             </div>
-            {screenWidth > 600 ? (
-              <div className="studios-main-container">
-                {studios.slice(0, 3).map((studio, index) => (
-                  <StudioContainer
-                    id={studio.id}
-                    // image={studio.imageLocationLinks[0]}
-                    name={studio.name}
-                    key={index}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Slider {...sliderSettings} className="slider-main-container">
-                {studios.slice(0, 3).map((studio, index) => (
-                  <SliderStudioContainer
+            <Carousel
+              containerClass="studios-main-container"
+              responsive={responsive}
+            >
+              {studios.slice(0, 3).map((studio, index) => (
+                <StudioContainer
                   id={studio.id}
-                  // image={studio.imageLocationLinks[0]}
+                  // image={studio.studio.imageLocationLinks[0]}
                   name={studio.name}
                   key={index}
-                  />
-                ))}
-              </Slider>
-              // </div>
-            )}
+                />
+              ))}
+            </Carousel>
           </div>
           {/* JAMPADS */}
           <div className="studios">
@@ -346,30 +282,19 @@ function Home() {
                 </div>
               </div>
             </div>
-            {screenWidth > 600 ? (
-              <div className="studios-main-container">
-                {jampads.slice(0, 3).map((jampad, index) => (
-                  <StudioContainer
-                    id={jampad.id}
-                    // image={jampad.imageLocationLinks[0]}
-                    name={jampad.name}
-                    key={index}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Slider {...sliderSettings} className="slider-main-container">
-                {jampads.slice(0, 3).map((jampad, index) => (
-                  <SliderStudioContainer
+            <Carousel
+              containerClass="studios-main-container"
+              responsive={responsive}
+            >
+              {jampads.slice(0, 3).map((jampad, index) => (
+                <StudioContainer
                   id={jampad.id}
-                  // image={jampad.imageLocationLinks[0]}
+                  // image={jampad.studio.imageLocationLinks[0]}
                   name={jampad.name}
                   key={index}
-                  />
-                ))}
-              </Slider>
-              // </div>
-            )}
+                />
+              ))}
+            </Carousel>
           </div>
         </div>
       )}
