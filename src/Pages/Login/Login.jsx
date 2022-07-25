@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { authentication } from "../../config";
 import { useNavigate } from "react-router-dom";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  onAuthStateChanged,
+  getIdToken,
+} from "firebase/auth";
 import { useContext } from "react";
 import UserDetailsContext from "../../Context/UserDetailsContext";
 
@@ -142,6 +147,18 @@ function Login() {
         .then((result) => {
           // User signed in successfully.
           const user = result.user;
+          console.log("User", user);
+          let jwtToken = onAuthStateChanged(function (user) {
+            console.log("Firebase User", user);
+            if (user) {
+              user.getIdToken().then(function (idToken) {
+                // <------ Check this line
+                alert(idToken); // It shows the Firebase token now
+                return idToken;
+              });
+            }
+          });
+          console.log("JWT", jwtToken);
           // console.log(user + "signed in");
           console.log("Result", result);
           console.log("Result TOKEN", result._tokenResponse.idToken);

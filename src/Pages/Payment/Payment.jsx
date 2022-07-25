@@ -1,19 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import moment from "moment";
-import BookingDetailsContext from "../../Context/BookingDetailsContext";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { useNavigate } from "react-router-dom";
 
 function Payment() {
-  const [pressed, setPressed] = useState(false);
-  const { details, transactionId, setTransactionId } = useContext(
-    BookingDetailsContext
-  );
   const [storeDetails, setStoreDetails] = useState();
-  const [storeTrnId, setStoreTrnId] = useState();
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const [LSTransactionId, setLSTransactionId] = useState();
   let receiptId = [];
   let LSItems;
   let navigate = useNavigate();
@@ -95,52 +88,52 @@ function Payment() {
     JSON.parse(window.localStorage.getItem("details"))
   );
 
-  const transaction = async (response) => {
-    //PRODUCTION
-    await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`,
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          studioId: window.localStorage.getItem("studioId"),
-          clientId: window.localStorage.getItem("userId"),
-          date: storeDetails?.bookingDate,
-          basePrice: storeDetails?.pricePerHour,
-          paymentMode: "test card",
-          isJamr: 0,
-          slots: storeDetails?.selectedSlots,
-          couponCode: "",
-          order_id: response.razorpay_order_id,
-          receipt_id: receiptId[0],
-          payment_id: response.razorpay_payment_id,
-          paymentSignature: response.razorpay_signature,
-        }),
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (!data.isError) {
-          console.log("Transaction history ----->", data.data);
-          console.log("Order Id", response.razorpay_order_id);
-          alert("Transaction Successful");
-          setTransactionId(data.data.transactionId);
-          window.localStorage.setItem("transactionId", transactionId);
-          navigate("/dashboard");
-        } else {
-          console.log("Failed", data.isError);
-          alert("Transaction Failed");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  // const transaction = async (response) => {
+  //   //PRODUCTION
+  //   await fetch(
+  //     `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/transaction/new`,
+  //     {
+  //       method: "Post",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Access-Control-Allow-Origin": "*",
+  //       },
+  //       body: JSON.stringify({
+  //         studioId: window.localStorage.getItem("studioId"),
+  //         clientId: window.localStorage.getItem("userId"),
+  //         date: storeDetails?.bookingDate,
+  //         basePrice: storeDetails?.pricePerHour,
+  //         paymentMode: "test card",
+  //         isJamr: 0,
+  //         slots: storeDetails?.selectedSlots,
+  //         couponCode: "",
+  //         order_id: response.razorpay_order_id,
+  //         receipt_id: receiptId[0],
+  //         payment_id: response.razorpay_payment_id,
+  //         paymentSignature: response.razorpay_signature,
+  //       }),
+  //     }
+  //   )
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       if (!data.isError) {
+  //         console.log("Transaction history ----->", data.data);
+  //         console.log("Order Id", response.razorpay_order_id);
+  //         alert("Transaction Successful");
+  //         setTransactionId(data.data.transactionId);
+  //         window.localStorage.setItem("transactionId", transactionId);
+  //         navigate("/dashboard");
+  //       } else {
+  //         console.log("Failed", data.isError);
+  //         alert("Transaction Failed");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   // PAYMENT
 
@@ -158,7 +151,7 @@ function Payment() {
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
-          amount: Math.round(window.localStorage.getItem("netAmount")),
+          amount: window.localStorage.getItem("netAmount"),
         }),
       }
     )
@@ -201,6 +194,7 @@ function Payment() {
 
       script.onerror = () => {
         resolve(false);
+        setPaymentLoading(false);
       };
 
       document.body.appendChild(script);
@@ -233,7 +227,6 @@ function Payment() {
         // alert(response.razorpay_order_id);
         // alert(response.razorpay_signature);
         console.log(response);
-        transaction(response);
         PaymentSuccess();
       },
       theme: {
@@ -311,7 +304,7 @@ function Payment() {
   const PaymentSuccess = async () => {
     //PRODUCTION
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/orders/studio/new`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/orders/studio/status/success`,
       {
         method: "Post",
         headers: {
@@ -328,17 +321,14 @@ function Payment() {
         return response.json();
       })
       .then((data) => {
-        if (!data.isError) {
-          console.log("Order Details Success ----->", data);
-          // console.log("Order Id", response.razorpay_order_id);
-          alert("Payment Successful");
-          // setTransactionId(data.data.transactionId);
-          // window.localStorage.setItem("netAmount", data.netamount);
-          // window.localStorage.setItem("order-id", data.id);
-          navigate("/dashboard");
+        if (data.message) {
+          console.log("Failed", data.message);
+          alert(data.message);
         } else {
-          console.log("Failed", data.isError);
-          alert("Transaction Failed");
+          setPaymentLoading(false);
+          console.log("Order Details Success ----->", data);
+          alert("Payment Successful");
+          navigate("/dashboard");
         }
       })
       .catch((error) => {

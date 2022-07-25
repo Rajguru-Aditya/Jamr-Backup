@@ -452,6 +452,7 @@
   border: 2px solid #ff782c;
   margin-bottom: 10px;
   cursor: pointer;
+  background-color: #fff;
 }
 
 .selected-slot-circle {

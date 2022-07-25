@@ -79,11 +79,7 @@ function SlotsComponent({
       {!screenWidthChanged ? (
         <div className="slots-inner-container">
           {slots.map((slot, index) => (
-            <div
-              onClick={() => onSlotClick(slot.id)}
-              className="slot-items"
-              key={index}
-            >
+            <div className="slot-items" key={index}>
               <button
                 onClick={() => onSlotClick(slot.id)}
                 className={[
