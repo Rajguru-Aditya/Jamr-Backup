@@ -86,9 +86,8 @@ function SlotsComponent({
             >
               <div
                 className={[
-                  bookedSlots.filledSlots?.length > 0
-                    ? bookedSlots.filledSlots.includes(slot.id) &&
-                      "disabled-slots"
+                  bookedSlots?.includes(slot.id)
+                    ? "disabled-slots"
                     : selectedSlots.includes(slot.id)
                     ? "selected-slot-circle"
                     : "slot-circle",
@@ -163,7 +162,7 @@ function StudioDetails(props) {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [bookedSlots, setBookedSlots] = useState([]);
-  const bookedSlotsArray = [];
+  const [bookedSlotsArray, setBookedSlotsArray] = useState([]);
   const [reviews, setReviews] = useState([]);
   const { ids } = useContext(UserDetailsContext);
   let navigate = useNavigate();
@@ -223,7 +222,7 @@ function StudioDetails(props) {
   }, []);
 
   useEffect(() => {
-    console.log("bookedSlots ->", bookedSlots.filledSlots);
+    console.log("bookedSlots ->", bookedSlots);
     // SlotsComponent();
   }, [bookedSlots]);
 
@@ -316,7 +315,7 @@ function StudioDetails(props) {
       .then((data) => {
         if (data) {
           console.log("BOOKED SLOTS", data);
-          setBookedSlots(data);
+          setBookedSlots(data.filledSlots);
         } else {
           console.log("Something went wrong", data);
         }
