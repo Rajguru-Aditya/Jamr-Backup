@@ -84,7 +84,8 @@ function SlotsComponent({
               className="slot-items"
               key={index}
             >
-              <div
+              <button
+                onClick={() => onSlotClick(slot.id)}
                 className={[
                   bookedSlots?.includes(slot.id)
                     ? "disabled-slots"
@@ -92,7 +93,8 @@ function SlotsComponent({
                     ? "selected-slot-circle"
                     : "slot-circle",
                 ]}
-              ></div>
+                disabled={bookedSlots?.includes(slot.id)}
+              ></button>
               <p>
                 {slot.start}:00 - {slot.end}:00
               </p>
