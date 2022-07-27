@@ -142,21 +142,18 @@ const BookingsContent = () => {
       <div className="bookings-container">
         {/* Bookings */}
         {transactionDetails &&
-          transactionDetails
-            .slice(0)
-            .reverse()
-            .map((transaction, index) => (
-              <RenderBookingDetails
-                key={index}
-                cost={transaction.netamount}
-                orderNo={transaction.OrderNumber}
-                orderId={transaction.id}
-                date={transaction.bookingdate}
-                trnId={transaction.id}
-                sid={transaction.studioid}
-                otp={transaction.otp}
-              />
-            ))}
+          transactionDetails.map((transaction, index) => (
+            <RenderBookingDetails
+              key={index}
+              cost={transaction.netamount}
+              orderNo={transaction.OrderNumber}
+              orderId={transaction.id}
+              date={transaction.bookingdate}
+              trnId={transaction.id}
+              sid={transaction.studioid}
+              otp={transaction.otp}
+            />
+          ))}
       </div>
     </div>
   );

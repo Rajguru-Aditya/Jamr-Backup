@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { ref, onValue } from "firebase/database";
 import { db } from "../../config/index.js";
-import BookingDetailsContext from "../../Context/BookingDetailsContext";
-import { ReBookingModal } from "../../components/ReBookingModal/ReBookingModal.jsx";
-import OtpInput from "react-otp-input";
+import OtpInput from "react-otp-input-rc-17";
 import { FileUploader } from "react-drag-drop-files";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Rating from "@material-ui/lab/Rating";
@@ -13,12 +11,6 @@ import { FaFileAudio } from "react-icons/fa";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
 function OrderHistory() {
-  const [allRequests, setallRequests] = useState([]);
-  const [studioRequests, setstudioRequests] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [relatedOrders, setRelatedOrders] = useState([]);
-  const [relatedMessages, setRelatedMessages] = useState([]);
   const [LSOrderId, setLSOrderId] = useState(null);
   const [LSUserId, setLSUserId] = useState(null);
   const [LSStudioId, setLSStudioId] = useState(null);
@@ -30,9 +22,12 @@ function OrderHistory() {
   const [allFiles, setAllFiles] = useState([]);
   const [ratingValue, setRatingValue] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertReview, setShowAlertReview] = useState(false);
   const [reviewText, setReviewText] = useState();
   const [messageText, setMessageText] = useState();
   const [chatMessages, setChatMessages] = useState([]);
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [orderMessages, setOrderMessages] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -118,88 +113,59 @@ function OrderHistory() {
     }
   }, [getLSUserID]);
 
-  //Fetching all requests from Firebase
+  //Fetching order details from Firebase
   useEffect(() => {
-    onValue(ref(db), (snapshot) => {
-      setallRequests([]);
-      const data = snapshot.val();
-      if (data !== null) {
-        Object.values(data).forEach((request) => {
-          setallRequests((requests) => [...requests, request]);
-        });
+    onValue(
+      ref(
+        db,
+        `/${window.localStorage.getItem(
+          "trnStudioId"
+        )}/orders/${window.localStorage.getItem("order-id")}`
+      ),
+      (snapshot) => {
+        setOrderDetails([]);
+        const data = snapshot.val();
+        if (data !== null) {
+          setOrderDetails(data);
+        }
       }
-    });
+    );
   }, []);
 
   useEffect(() => {
-    setstudioRequests(allRequests[parseInt(LSStudioId - 1)]);
-  }, [allRequests]);
+    onValue(
+      ref(
+        db,
+        `/${window.localStorage.getItem(
+          "trnStudioId"
+        )}/messages/${window.localStorage.getItem("orderId")}`
+      ),
+      (snapshot) => {
+        setOrderMessages([]);
+        const data = snapshot.val();
+        if (data !== null) {
+          setOrderMessages(data);
+        }
+      }
+    );
+  }, []);
 
   useEffect(() => {
-    console.log("STUDIO REQUEST", studioRequests);
-    setOrders(studioRequests ? studioRequests.orders : []);
-    setMessages(studioRequests ? studioRequests.messages : []);
-  }, [orders, messages, studioRequests]);
+    console.log("Firebase Data order", orderDetails);
+  }, [orderDetails]);
 
   useEffect(() => {
-    console.log("ORDERS", orders);
-    console.log("Messages", messages);
-  }, [messages, orders]);
-
-  useEffect(() => {
-    setRelatedOrders([]);
-    if (orders) {
-      Object.entries(orders).forEach(([key, value]) => {
-        return key === LSOrderId
-          ? setRelatedOrders((relatedOrders) => [
-              ...relatedOrders,
-              {
-                orderId: key,
-                orderDetails: value,
-              },
-            ])
-          : null;
-      });
-    }
-  }, [LSOrderId, orders]);
-
-  useEffect(() => {
-    setRelatedMessages([]);
-    if (messages) {
-      Object.entries(messages).forEach(([key, value]) => {
-        return key === LSOrderId
-          ? setRelatedMessages((relatedMessages) => [
-              ...relatedMessages,
-              {
-                messageDetails: value,
-              },
-            ])
-          : null;
-      });
-    }
-  }, [LSOrderId, messages]);
-
-  useEffect(() => {
-    // console.log("RELATED ORDERS", relatedOrders);
-    relatedOrders.map((order) => {
-      console.log("ORDER", order);
-      console.log("ORDER ID", order.orderId);
-      console.log("ORDER LS ID", LSOrderId);
-      console.log("ORDER State", order.orderDetails.state);
-      // return order.orderId === LSOrderId;
-    });
-  }, [LSOrderId, relatedOrders]);
+    console.log("Firebase Data order Messages", orderMessages);
+  }, [orderMessages]);
 
   useEffect(() => {
     setChatMessages([]);
-    relatedMessages.map((message) => {
-      // console.log("Message ->>>", message);
-      Object.values(message.messageDetails).forEach((value) => {
-        // console.log("Message Value", value);
-        return setChatMessages((msg) => [...msg, value]);
-      });
+
+    Object.values(orderMessages).forEach((value) => {
+      // console.log("Message Value", value);
+      return setChatMessages((msg) => [...msg, value]);
     });
-  }, [LSOrderId, relatedMessages]);
+  }, [LSOrderId, orderMessages]);
 
   useEffect(() => {
     // console.log("RELATED ORDERS", relatedOrders);
@@ -212,13 +178,6 @@ function OrderHistory() {
   }, [chatMessages]);
 
   useEffect(() => {
-    // console.log("RELATED ORDERS", relatedOrders);
-    relatedOrders.filter((order) => {
-      return order.orderId === LSOrderId;
-    });
-  }, [LSOrderId, relatedOrders]);
-
-  useEffect(() => {
     console.log("LS TRN ID", LSTrnId);
   }, [LSTrnId]);
 
@@ -229,6 +188,9 @@ function OrderHistory() {
   useEffect(() => {
     setTimeout(() => setShowAlert(false), 4000);
   }, [showAlert]);
+  useEffect(() => {
+    setTimeout(() => setShowAlertReview(false), 4000);
+  }, [showAlertReview]);
 
   const options = {
     method: "post",
@@ -451,12 +413,12 @@ function OrderHistory() {
             <div className="request-status-container">
               <h2>Order Status</h2>
               <h1 className="request-status">
-                {relatedOrders.map((order) => {
-                  return order.orderDetails.state === -1
+                {orderDetails.map((order) => {
+                  return order.state === -1
                     ? "Pending"
-                    : order.orderDetails.state === 1
+                    : order.state === 1
                     ? "Order Accepted"
-                    : order.orderDetails.state === 0
+                    : order.state === 0
                     ? "Order Rejected"
                     : "Error";
                 })}
@@ -495,9 +457,8 @@ function OrderHistory() {
               <button className="modalBtn">Get directions</button>
             </div>
           </div>
-          {relatedOrders.map((order) => {
-            return order.orderDetails.state === -1 ? null : order.orderDetails
-                .state === 1 ? (
+          {orderDetails.map((order) => {
+            return order.state === -1 ? null : order.state === 1 ? (
               <>
                 <div className="file-upload-container">
                   <div className="file-upload-inner-container">

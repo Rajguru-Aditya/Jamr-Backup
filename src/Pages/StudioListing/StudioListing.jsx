@@ -44,7 +44,7 @@ function StudioListing(props) {
         return response.json();
       })
       .then((data) => {
-        if (data) {
+        if (!data.message) {
           setStudiosList(data);
           console.log("studiosData ----->", studiosList);
           setLoading(false);

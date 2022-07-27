@@ -169,7 +169,7 @@ function Home() {
           <img
             src="https://i.ibb.co/RycX0TC/wavy-Orange.png"
             alt="wavy-Orange"
-            className="wavy-orange-vector"
+            className="wavy-orange-home-vector"
           ></img>
           {/* Banner Image */}
           <div className="banner">

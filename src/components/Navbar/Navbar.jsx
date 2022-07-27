@@ -31,6 +31,10 @@ function Navbar() {
   };
 
   useEffect(() => {
+    console.log(window.location.pathname);
+  }, []);
+
+  useEffect(() => {
     const changeWidth = () => {
       setScreenWidth(window.innerWidth);
     };

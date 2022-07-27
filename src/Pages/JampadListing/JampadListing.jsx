@@ -22,14 +22,14 @@ function StudioListing(props) {
   }, [studiosList]);
 
   useEffect(() => {
-    let studioList = studiosList.filter((jampad) => jampad.studio.isJampad);
+    let studioList = studiosList.filter((jampad) => jampad.jampadprice > 0);
     setStudios(studioList);
   }, [studiosList]);
 
   //PRODUCTION
   const fetchStudioList = async () => {
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio/details?type=L&id=0`,
+      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/studio`,
       {
         //TESTIN
         // await fetch(`http://localhost:3000/studio/details/?type=L`, {
@@ -44,12 +44,12 @@ function StudioListing(props) {
         return response.json();
       })
       .then((data) => {
-        if (!data.isError) {
-          setStudiosList(data.data);
+        if (!data.message) {
+          setStudiosList(data);
           console.log("studiosData ----->", studiosList);
           setLoading(false);
         } else {
-          console.log("Failed", data.isError);
+          console.log("Failed", data.message);
         }
       })
       .catch((error) => {
@@ -88,9 +88,9 @@ function StudioListing(props) {
               <p id="studio-cost" className="studio-text">
                 ₹{studio.price}/hr
               </p>
-              <p id="studio-ratings" className="studio-text">
+              {/* <p id="studio-ratings" className="studio-text">
                 {"⭐".repeat(studio.ratings)}
-              </p>
+              </p> */}
             </div>
           </div>
           <div className="bookNow-btn">
@@ -137,15 +137,15 @@ function StudioListing(props) {
               // >
               // {console.log(studio.LocationId)}
               <StudioContainer
-                id={studio.studio.locationId}
-                name={studio.studio.studioName}
-                address={studio.studio.locality}
+                id={studio.id}
+                name={studio.name}
+                address={studio.locality + ", " + studio.city}
                 price={
-                  studio.studio.studioPrice !== "0.00"
-                    ? studio.studio.studioPrice
-                    : studio.studio.jampadPrice
+                  studio.studioprice !== 0
+                    ? studio.studioprice
+                    : studio.jampadprice
                 }
-                image={studio.studio.imageLocationLinks[0]}
+                // image={studio.studio.imageLocationLinks[0]}
                 key={index}
               />
               // </Link>
