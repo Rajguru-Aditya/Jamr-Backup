@@ -138,7 +138,7 @@ function OrderHistory() {
         db,
         `/${window.localStorage.getItem(
           "trnStudioId"
-        )}/messages/${window.localStorage.getItem("orderId")}`
+        )}/messages/${window.localStorage.getItem("order-id")}`
       ),
       (snapshot) => {
         setOrderMessages([]);
@@ -211,12 +211,13 @@ function OrderHistory() {
   const UploadFile = async (data) => {
     const formData = new FormData();
 
-    formData.append("file_name", data.name);
-    formData.append("order_id", LSOrderId);
+    formData.append("name", data.name);
     formData.append("upload_file", data);
 
     await fetch(
-      `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}/order/files/upload`,
+      `${process.env.REACT_APP_PROTOCOL}://${
+        process.env.REACT_APP_DOMAIN
+      }/orders/studio/${window.localStorage.getItem("order-id")}/files/upload`,
       {
         method: "post",
         headers: {
@@ -413,15 +414,13 @@ function OrderHistory() {
             <div className="request-status-container">
               <h2>Order Status</h2>
               <h1 className="request-status">
-                {orderDetails.map((order) => {
-                  return order.state === -1
-                    ? "Pending"
-                    : order.state === 1
-                    ? "Order Accepted"
-                    : order.state === 0
-                    ? "Order Rejected"
-                    : "Error";
-                })}
+                {orderDetails.state === -1
+                  ? "Pending"
+                  : orderDetails.state === 1
+                  ? "Order Accepted"
+                  : orderDetails.state === 0
+                  ? "Order Rejected"
+                  : "Error"}
               </h1>
             </div>
             <div className="request-status-container">
@@ -457,249 +456,235 @@ function OrderHistory() {
               <button className="modalBtn">Get directions</button>
             </div>
           </div>
-          {orderDetails.map((order) => {
-            return order.state === -1 ? null : order.state === 1 ? (
-              <>
-                <div className="file-upload-container">
-                  <div className="file-upload-inner-container">
-                    <div>
-                      <FileUploader
-                        handleChange={handleFileChange}
-                        name="file"
-                        types={fileTypes}
-                        classes="file-upload-box"
-                        maxSize={1024}
-                        children={
-                          <>
-                            <h2>Drag and Drop a File here</h2>
-                            <h2>OR</h2>
-                            <h3 className="modalBtn modalBtn2">
-                              Click here to select a file
-                            </h3>
-                            <p>Max file size 1GB</p>
-                          </>
-                        }
-                      />
+          {orderDetails.state === -1 ? null : orderDetails.state === 1 ? (
+            <>
+              <div className="file-upload-container">
+                <div className="file-upload-inner-container">
+                  <div>
+                    <FileUploader
+                      handleChange={handleFileChange}
+                      name="file"
+                      types={fileTypes}
+                      classes="file-upload-box"
+                      maxSize={1024}
+                      children={
+                        <>
+                          <h2>Drag and Drop a File here</h2>
+                          <h2>OR</h2>
+                          <h3 className="modalBtn modalBtn2">
+                            Click here to select a file
+                          </h3>
+                          <p>Max file size 1GB</p>
+                        </>
+                      }
+                    />
+                  </div>
+                </div>
+                {file ? (
+                  <>
+                    <div className="selected-file-container">
+                      <div className="selected-file">
+                        <h1 className="detail">{file.name}</h1>
+                      </div>
+                    </div>
+                    <button
+                      className="modalBtn modalBtn3"
+                      onClick={() => {
+                        setUploading(true);
+                        UploadFile(file);
+                      }}
+                    >
+                      {uploading ? (
+                        <div>
+                          <ScaleLoader
+                            color={"#fff"}
+                            loading={uploading}
+                            height={20}
+                            width={5}
+                            radius={50}
+                          />
+                        </div>
+                      ) : (
+                        <p>Upload File</p>
+                      )}
+                    </button>
+                  </>
+                ) : null}
+                {showAlert ? (
+                  <Alert severity="success">File Uploaded Successfully!</Alert>
+                ) : null}
+                {allFiles ? (
+                  <div className="uploaded-file-container">
+                    <h3>Uploaded Files</h3>
+                    <div className="file-container">
+                      {allFiles.map((file) => {
+                        let fileName = file.name;
+                        return (
+                          <div className="uploaded-file" key={file.downloadUrl}>
+                            <a
+                              className="file-link"
+                              href={file.downloadUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <FaFileAudio size={26} color={"#888"} />
+                              <p className="file-name">
+                                {fileName.slice(0, -4)}
+                              </p>
+                            </a>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                  {file ? (
-                    <>
-                      <div className="selected-file-container">
-                        <div className="selected-file">
-                          <h1 className="detail">{file.name}</h1>
-                        </div>
-                      </div>
-                      <button
-                        className="modalBtn modalBtn3"
-                        onClick={() => {
-                          setUploading(true);
-                          UploadFile(file);
+                ) : null}
+              </div>
+              <div className="message-container">
+                <div className="message-text-content">
+                  <div className="message-box">
+                    <h2>Write a message to the host</h2>
+                    <form
+                      className="message-form"
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                      }}
+                    >
+                      <textarea
+                        rows={6}
+                        name="message"
+                        className="textarea"
+                        value={messageText}
+                        onChange={(text) => {
+                          setMessageText(text.target.value);
                         }}
-                      >
-                        {uploading ? (
-                          <div>
-                            <ScaleLoader
-                              color={"#fff"}
-                              loading={uploading}
-                              height={20}
-                              width={5}
-                              radius={50}
-                            />
-                          </div>
-                        ) : (
-                          <p>Upload File</p>
-                        )}
+                      ></textarea>
+                    </form>
+                    <div className="message-btn-container">
+                      <button className="modalBtn modalBtn2" onClick={Message}>
+                        Send Message
                       </button>
-                    </>
-                  ) : null}
-                  {showAlert ? (
-                    <Alert severity="success">
-                      File Uploaded Successfully!
-                    </Alert>
-                  ) : null}
-                  {allFiles ? (
-                    <div className="uploaded-file-container">
-                      <h3>Uploaded Files</h3>
-                      <div className="file-container">
-                        {allFiles.map((file) => {
-                          let fileName = file.name;
-                          return (
-                            <div
-                              className="uploaded-file"
-                              key={file.downloadUrl}
-                            >
-                              <a
-                                className="file-link"
-                                href={file.downloadUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <FaFileAudio size={26} color={"#888"} />
-                                <p className="file-name">
-                                  {fileName.slice(0, -4)}
-                                </p>
-                              </a>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-                <div className="message-container">
-                  <div className="message-text-content">
-                    <div className="message-box">
-                      <h2>Write a message to the host</h2>
-                      <form
-                        className="message-form"
-                        onSubmit={(event) => {
-                          event.preventDefault();
-                        }}
+                      <button
+                        className="modalBtn modalBtn4"
+                        onClick={handleOpen}
                       >
+                        Open Chat
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="help-btn-container">
+                  <h2>Need Help?</h2>
+                  <div className="buttons-container">
+                    <button className="contact-btn live-chat-btn">
+                      Live Chat
+                    </button>
+                    <button className="contact-btn call-us-btn">Call Us</button>
+                  </div>
+                </div>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={modalStyle}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      Text in a modal
+                    </Typography>
+                    <div className="chat-area">
+                      {chatMessages.map((msg) => (
+                        <>
+                          {msg.from === "client" ? (
+                            <div className="message-text-box">
+                              <p style={{ margin: 0 }}>Client</p>
+                              <p className="chat-text-user">{msg.message}</p>
+                            </div>
+                          ) : (
+                            <div className="message-text-box">
+                              <p style={{ margin: 0 }}>Studio</p>
+                              <p className="chat-text-studio">{msg.message}</p>
+                            </div>
+                          )}
+                        </>
+                      ))}
+                    </div>
+                    <div className="chat-input">
+                      <TextField
+                        className="outlined-basic"
+                        label="Type your message ..."
+                        variant="outlined"
+                        onChange={(text) => {
+                          console.log("Chat Text", messageText);
+                          setMessageText(text.target.value);
+                        }}
+                      />
+                      <Button
+                        onClick={Message}
+                        className="chat-send-btn"
+                        variant="contained"
+                      >
+                        Send
+                      </Button>
+                    </div>
+                  </Box>
+                </Modal>
+              </div>
+              <div className="review-container">
+                <div className="review-items-container">
+                  <div className="review-stars-container">
+                    <h2>Rate the Studio</h2>
+                    <Rating
+                      name="no-value"
+                      value={ratingValue}
+                      onChange={(event, newValue) => {
+                        console.log("Ratings", newValue);
+                        setRatingValue(newValue);
+                      }}
+                      size="large"
+                    />
+                  </div>
+                  <div className="review-text-content">
+                    <div className="review-box">
+                      <h2>Write a Review</h2>
+                      <form>
                         <textarea
                           rows={6}
-                          name="message"
+                          name="review"
                           className="textarea"
-                          value={messageText}
+                          value={reviewText}
                           onChange={(text) => {
-                            setMessageText(text.target.value);
+                            console.log("Review", text.target.value);
+                            setReviewText(text.target.value);
                           }}
                         ></textarea>
                       </form>
-                      <div className="message-btn-container">
-                        <button
-                          className="modalBtn modalBtn2"
-                          onClick={Message}
-                        >
-                          Send Message
-                        </button>
-                        <button
-                          className="modalBtn modalBtn4"
-                          onClick={handleOpen}
-                        >
-                          Open Chat
-                        </button>
-                      </div>
                     </div>
                   </div>
-                  <div className="help-btn-container">
-                    <h2>Need Help?</h2>
-                    <div className="buttons-container">
-                      <button className="contact-btn live-chat-btn">
-                        Live Chat
-                      </button>
-                      <button className="contact-btn call-us-btn">
-                        Call Us
-                      </button>
-                    </div>
-                  </div>
-                  <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box sx={modalStyle}>
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        Text in a modal
-                      </Typography>
-                      <div className="chat-area">
-                        {chatMessages.map((msg) => (
-                          <>
-                            {msg.from === "client" ? (
-                              <div className="message-text-box">
-                                <p style={{ margin: 0 }}>Client</p>
-                                <p className="chat-text-user">{msg.message}</p>
-                              </div>
-                            ) : (
-                              <div className="message-text-box">
-                                <p style={{ margin: 0 }}>Studio</p>
-                                <p className="chat-text-studio">
-                                  {msg.message}
-                                </p>
-                              </div>
-                            )}
-                          </>
-                        ))}
-                      </div>
-                      <div className="chat-input">
-                        <TextField
-                          className="outlined-basic"
-                          label="Type your message ..."
-                          variant="outlined"
-                          onChange={(text) => {
-                            console.log("Chat Text", messageText);
-                            setMessageText(text.target.value);
-                          }}
-                        />
-                        <Button
-                          onClick={Message}
-                          className="chat-send-btn"
-                          variant="contained"
-                        >
-                          Send
-                        </Button>
-                      </div>
-                    </Box>
-                  </Modal>
                 </div>
-                <div className="review-container">
-                  <div className="review-items-container">
-                    <div className="review-stars-container">
-                      <h2>Rate the Studio</h2>
-                      <Rating
-                        name="no-value"
-                        value={ratingValue}
-                        onChange={(event, newValue) => {
-                          console.log("Ratings", newValue);
-                          setRatingValue(newValue);
-                        }}
-                        size="large"
-                      />
-                    </div>
-                    <div className="review-text-content">
-                      <div className="review-box">
-                        <h2>Write a Review</h2>
-                        <form>
-                          <textarea
-                            rows={6}
-                            name="review"
-                            className="textarea"
-                            value={reviewText}
-                            onChange={(text) => {
-                              console.log("Review", text.target.value);
-                              setReviewText(text.target.value);
-                            }}
-                          ></textarea>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <button className="modalBtn modalBtn2" onClick={submitReview}>
-                    Submit Review
-                  </button>
-                </div>
-              </>
-            ) : order.orderDetails.state === 0 ? (
-              <div className="rebooking-container">
-                <div className="rebooking-inner-container">
-                  <h1 className="detail rebooking-text">
-                    The studio owner has rejected your order. Please Rebook your
-                    order with different slots
-                  </h1>
-                  <button className="modalBtn modalBtn2" onClick={submitReview}>
-                    Rebook Slots
-                  </button>
-                </div>
+                <button className="modalBtn modalBtn2" onClick={submitReview}>
+                  Submit Review
+                </button>
               </div>
-            ) : (
-              "Error"
-            );
-          })}
+            </>
+          ) : orderDetails.state === 0 ? (
+            <div className="rebooking-container">
+              <div className="rebooking-inner-container">
+                <h1 className="detail rebooking-text">
+                  The studio owner has rejected your order. Please Rebook your
+                  order with different slots
+                </h1>
+                <button className="modalBtn modalBtn2" onClick={submitReview}>
+                  Rebook Slots
+                </button>
+              </div>
+            </div>
+          ) : (
+            "Error"
+          )}
         </div>
       </div>
     </div>
